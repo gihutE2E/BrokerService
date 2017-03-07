@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<adapter-config name="LOG_ORCHESTRATOR_D_STATUS" adapter="Database Adapter" wsdlLocation="LOG_ORCHESTRATOR_D_STATUS.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+   <connection-factory location="eis/DB/DBConnection" UIConnectionName="MDWDesa" adapterRef=""/>
+   <endpoint-interaction portType="LOG_ORCHESTRATOR_D_STATUS_ptt" operation="LOG_ORCHESTRATOR_D_STATUSSelect">
+      <interaction-spec className="oracle.tip.adapter.db.DBReadInteractionSpec">
+         <property name="DescriptorName" value="LOG_ORCHESTRATOR_D_PENDING.LogOrchestratorProduct"/>
+         <property name="QueryName" value="LOG_ORCHESTRATOR_D_STATUSSelect"/>
+         <property name="MappingsMetaDataURL" value="LOG_ORCHESTRATOR_D_STATUS-or-mappings.xml"/>
+         <property name="ReturnSingleResultSet" value="false"/>
+         <property name="GetActiveUnitOfWork" value="false"/>
+      </interaction-spec>
+   </endpoint-interaction>
+</adapter-config>

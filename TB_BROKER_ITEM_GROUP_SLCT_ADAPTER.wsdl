@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="TB_BROKER_ITEM_GROUP_SLCT_ADAPTER" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/Broker/O2/TB_BROKER_ITEM_GROUP_SLCT_ADAPTER" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/Broker/O2/TB_BROKER_ITEM_GROUP_SLCT_ADAPTER" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:top="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_BROKER_ITEM_GROUP_SLCT_ADAPTER">
+   <plt:partnerLinkType name="TB_BROKER_ITEM_GROUP_SLCT_ADAPTER_plt">
+      <plt:role name="TB_BROKER_ITEM_GROUP_SLCT_ADAPTER_role">
+         <plt:portType name="tns:TB_BROKER_ITEM_GROUP_SLCT_ADAPTER_ptt"/>
+      </plt:role>
+   </plt:partnerLinkType>
+   <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema">
+         <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_BROKER_ITEM_GROUP_SLCT_ADAPTER" schemaLocation="xsd/TB_BROKER_ITEM_GROUP_SLCT_ADAPTER_table.xsd"/>
+      </schema>
+   </wsdl:types>
+   <wsdl:message name="TB_BROKER_ITEM_GROUP_SLCT_ADAPTERSelect_inputParameters">
+      <wsdl:part name="TB_BROKER_ITEM_GROUP_SLCT_ADAPTERSelect_inputParameters" element="top:readObject_dummyInputParameters"/>
+   </wsdl:message>
+   <wsdl:message name="TbBrokerItemGroupConfCollection_msg">
+      <wsdl:part name="TbBrokerItemGroupConfCollection" element="top:TbBrokerItemGroupConfCollection"/>
+   </wsdl:message>
+   <wsdl:portType name="TB_BROKER_ITEM_GROUP_SLCT_ADAPTER_ptt">
+      <wsdl:operation name="TB_BROKER_ITEM_GROUP_SLCT_ADAPTERSelect">
+         <wsdl:input message="tns:TB_BROKER_ITEM_GROUP_SLCT_ADAPTERSelect_inputParameters"/>
+         <wsdl:output message="tns:TbBrokerItemGroupConfCollection_msg"/>
+      </wsdl:operation>
+   </wsdl:portType>
+</wsdl:definitions>

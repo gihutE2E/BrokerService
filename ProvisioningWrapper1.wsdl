@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="Provisioning" targetNamespace="http://tigo.com/enterprise/taskService/provisioning/v1" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://tigo.com/enterprise/taskService/provisioning/v1" xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <plnk:partnerLinkType name="DProvisioningService">
+      <plnk:role name="ProvisioningPort" portType="tns:ProvisioningPort"/>
+   </plnk:partnerLinkType>
+   <wsdl:import namespace="http://tigo.com/enterprise/taskService/provisioning/v1" location="http://soao2pvstst-srv.tigo.com.gt:8001/soa-infra/directWsdl/ffs/Provisioning/DProvisioningServices?resource=%2Fwsdl%2FBasicProvisioningService.wsdl"/>
+</wsdl:definitions>

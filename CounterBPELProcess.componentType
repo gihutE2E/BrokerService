@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+   <service name="counterbpelprocess_client" ui:wsdlLocation="CounterBPELProcess.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/Broker/Broker/CounterBPELProcess#wsdl.interface(CounterBPELProcess)"/>
+   </service>
+   <reference name="MasterStatusService" ui:wsdlLocation="BasicMasterStatusServiceWrapper.wsdl">
+      <interface.wsdl interface="http://www.tigo.com/resource/masterStatusServices/masterStatus/v1#wsdl.interface(MasterStatusService_Port)"/>
+   </reference>
+</componentType>

@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+   <service name="paymentprocess_client" ui:wsdlLocation="PaymentProcessWrapper.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/serviceEntity/payment/paymentProcess#wsdl.interface(BasicPaymentPort)"/>
+   </service>
+   <reference name="LOG_ORCHESTRATOR_CHARGE_UPDATE" ui:wsdlLocation="LOG_ORCHESTRATOR_CHARGE_UPDATE.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_CHARGE_UPDATE#wsdl.interface(LOG_ORCHESTRATOR_CHARGE_UPDATE_ptt)"/>
+   </reference>
+   <reference name="LOG_ORCHESTRATOR_CHARGE" ui:wsdlLocation="LOG_ORCHESTRATOR_CHARGE.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_CHARGE#wsdl.interface(LOG_ORCHESTRATOR_CHARGE_ptt)"/>
+   </reference>
+   <reference name="PaymentMediator.PaymentMediator" ui:wsdlLocation="BasicPaymentServiceWrapper.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/taskService/paymentService/v1#wsdl.interface(BasicPaymentPort)"/>
+   </reference>
+   <reference name="FaultNotificationService" ui:wsdlLocation="BasicFaultNotificationWrapper6.wsdl">
+      <interface.wsdl interface="http://tigo.hn/enterprise/faultNotificationService/createFault#wsdl.interface(FaultNotification_Port)"/>
+   </reference>
+</componentType>

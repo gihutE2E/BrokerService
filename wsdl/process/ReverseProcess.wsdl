@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="ReverseProcess" targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/reverseProcess" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:sch="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema" xmlns:tns="http://tigo.com/enterprise/serviceEntity/provisioning/reverseProcess" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cmn="http://tigo.com/commons/generalResponse/v1/schema">
+   <wsdl:types>
+      <xsd:schema targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderProcess">
+         <xsd:import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema" schemaLocation="../../xsd/BasicOrderRequest_schema.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="BasicVoidOrderRequest_msg">
+      <wsdl:part element="sch:BasicVoidOrderRequest" name="body"/>
+   </wsdl:message>
+   <wsdl:portType name="BasicOrderPort">
+      <wsdl:operation name="initiate">
+         <wsdl:input message="tns:BasicVoidOrderRequest_msg" name="BasicVoidOrderPortRequest"/>
+      </wsdl:operation>
+   </wsdl:portType>
+</wsdl:definitions>

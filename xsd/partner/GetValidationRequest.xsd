@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xmlns.tigo.com/ProcessValidator/GetValidationRequest" xmlns:tns="http://xmlns.tigo.com/ProcessValidator/GetValidationRequest" xmlns:requestHeader="http://xmlns.tigo.com/RequestHeader/V3" elementFormDefault="qualified">
+   <xsd:import namespace="http://xmlns.tigo.com/RequestHeader/V3" schemaLocation="commons/RequestHeaderV3.xsd"/>
+   <xsd:element name="GetValidationRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="requestHeader:RequestHeader"/>
+            <xsd:element name="requestBody">
+               <xsd:complexType>
+                  <xsd:sequence>
+                     <xsd:element name="token" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                  </xsd:sequence>
+               </xsd:complexType>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+</xsd:schema>

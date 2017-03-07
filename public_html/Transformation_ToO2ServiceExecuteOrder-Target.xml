@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ns15:BasicOrderRequest xmlns:ns15="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema">
+   <payload/>
+</ns15:BasicOrderRequest>

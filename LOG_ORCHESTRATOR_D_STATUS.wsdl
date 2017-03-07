@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="LOG_ORCHESTRATOR_D_STATUS" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/O2_Release/LOG_ORCHESTRATOR_D_STATUS" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/O2_Release/LOG_ORCHESTRATOR_D_STATUS" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:top="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_D_PENDING">
+   <plt:partnerLinkType name="LOG_ORCHESTRATOR_D_STATUS_plt">
+      <plt:role name="LOG_ORCHESTRATOR_D_STATUS_role">
+         <plt:portType name="tns:LOG_ORCHESTRATOR_D_STATUS_ptt"/>
+      </plt:role>
+   </plt:partnerLinkType>
+   <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema">
+         <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_D_PENDING" schemaLocation="xsd/LOG_ORCHESTRATOR_D_STATUS_table.xsd"/>
+      </schema>
+   </wsdl:types>
+   <wsdl:message name="LOG_ORCHESTRATOR_D_STATUSSelect_inputParameters">
+      <wsdl:part name="LOG_ORCHESTRATOR_D_STATUSSelect_inputParameters" element="top:LOG_ORCHESTRATOR_D_STATUSSelect_status_correlationIdInputParameters"/>
+   </wsdl:message>
+   <wsdl:message name="LogOrchestratorProductCollection_msg">
+      <wsdl:part name="LogOrchestratorProductCollection" element="top:LogOrchestratorProductCollection"/>
+   </wsdl:message>
+   <wsdl:portType name="LOG_ORCHESTRATOR_D_STATUS_ptt">
+      <wsdl:operation name="LOG_ORCHESTRATOR_D_STATUSSelect">
+         <wsdl:input message="tns:LOG_ORCHESTRATOR_D_STATUSSelect_inputParameters"/>
+         <wsdl:output message="tns:LogOrchestratorProductCollection_msg"/>
+      </wsdl:operation>
+   </wsdl:portType>
+</wsdl:definitions>

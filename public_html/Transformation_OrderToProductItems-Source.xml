@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<BasicProvisioningRequest xmlns="http://tigo.com/enterprise/taskService/provideProcess/schema">
+   <basicRequest xmlns="http://tigo.com/commons/basicRequest/v1/schema">
+      <externalApplicationID xmlns="">externalApplicationID1</externalApplicationID>
+      <externalTransactionID xmlns="">externalTransactionID2</externalTransactionID>
+      <utiReference xmlns="">utiReference3</utiReference>
+   </basicRequest>
+   <client xmlns="http://tigo.com/enterprise/businessEntity/client/basic/v1/schema">
+      <ID xmlns="">ID4</ID>
+      <idType xmlns="">idType5</idType>
+   </client>
+   <productOffering xmlns="">
+      <order xmlns="http://tigo.com/enterprise/serviceEntity/provisioning/order/v1/schema">
+         <product xmlns="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema">
+            <CODE xmlns="">CODE6</CODE>
+            <name xmlns="">name7</name>
+         </product>
+         <offeringDetail xmlns="http://tigo.com/serviceEntity/provisioning/offeringDetail/v1/schema">
+            <value xmlns="">80.73</value>
+         </offeringDetail>
+         <additionals xmlns="http://tigo.com/commons/resources/additional/v1/schema">
+            <additional xmlns="">
+               <name>name9</name>
+               <value>value10</value>
+            </additional>
+            <additional xmlns="">
+               <name>name11</name>
+               <value>value12</value>
+            </additional>
+            <additional xmlns="">
+               <name>name13</name>
+               <value>value14</value>
+            </additional>
+         </additionals>
+      </order>
+      <order xmlns="http://tigo.com/enterprise/serviceEntity/provisioning/order/v1/schema">
+         <product xmlns="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema">
+            <CODE xmlns="">CODE15</CODE>
+            <name xmlns="">name16</name>
+         </product>
+         <offeringDetail xmlns="http://tigo.com/serviceEntity/provisioning/offeringDetail/v1/schema">
+            <value xmlns="">170.73</value>
+         </offeringDetail>
+         <additionals xmlns="http://tigo.com/commons/resources/additional/v1/schema">
+            <additional xmlns="">
+               <name>name18</name>
+               <value>value19</value>
+            </additional>
+            <additional xmlns="">
+               <name>name20</name>
+               <value>value21</value>
+            </additional>
+            <additional xmlns="">
+               <name>name22</name>
+               <value>value23</value>
+            </additional>
+         </additionals>
+      </order>
+      <order xmlns="http://tigo.com/enterprise/serviceEntity/provisioning/order/v1/schema">
+         <product xmlns="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema">
+            <CODE xmlns="">CODE24</CODE>
+            <name xmlns="">name25</name>
+         </product>
+         <offeringDetail xmlns="http://tigo.com/serviceEntity/provisioning/offeringDetail/v1/schema">
+            <value xmlns="">260.73</value>
+         </offeringDetail>
+         <additionals xmlns="http://tigo.com/commons/resources/additional/v1/schema">
+            <additional xmlns="">
+               <name>name27</name>
+               <value>value28</value>
+            </additional>
+            <additional xmlns="">
+               <name>name29</name>
+               <value>value30</value>
+            </additional>
+            <additional xmlns="">
+               <name>name31</name>
+               <value>value32</value>
+            </additional>
+         </additionals>
+      </order>
+   </productOffering>
+   <dataChangeRequest_orders xmlns="">
+      <dataChangeRequest xmlns="http://tigo.com/enterprise/serviceEntity/provisioning/dataChangeRequest/v1/schema">
+         <dataReference xmlns="">dataReference33</dataReference>
+         <dataValue xmlns="">dataValue34</dataValue>
+      </dataChangeRequest>
+      <dataChangeRequest xmlns="http://tigo.com/enterprise/serviceEntity/provisioning/dataChangeRequest/v1/schema">
+         <dataReference xmlns="">dataReference35</dataReference>
+         <dataValue xmlns="">dataValue36</dataValue>
+      </dataChangeRequest>
+      <dataChangeRequest xmlns="http://tigo.com/enterprise/serviceEntity/provisioning/dataChangeRequest/v1/schema">
+         <dataReference xmlns="">dataReference37</dataReference>
+         <dataValue xmlns="">dataValue38</dataValue>
+      </dataChangeRequest>
+   </dataChangeRequest_orders>
+</BasicProvisioningRequest>

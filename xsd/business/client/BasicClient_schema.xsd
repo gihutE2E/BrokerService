@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://tigo.com/enterprise/business/entities/client/basic/v1/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:prm="http://tigo.com/enterprise/resources/parameters/simple/v1/schema" xmlns:cli="http://tigo.com/enterprise/business/entities/client/basic/v1/schema">
+   <xsd:import namespace="http://tigo.com/enterprise/resources/parameters/simple/v1/schema" schemaLocation="../../commons/resources/Parameters.xsd"/>
+   <xsd:element name="client" type="cli:basicClient_type"/>
+   <xsd:complexType name="basicClient_type">
+      <xsd:sequence>
+         <xsd:element name="ID" type="xsd:string" minOccurs="0"/>
+         <xsd:element name="IDType" type="xsd:string" minOccurs="0"/>
+         <xsd:element name="parameters" type="prm:parameter_array" minOccurs="0" maxOccurs="0"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

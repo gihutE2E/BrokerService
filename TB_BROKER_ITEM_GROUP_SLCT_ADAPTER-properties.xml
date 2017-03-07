@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<properties>
+   <entry key="TB_BROKER_ITEM_GROUP_CONF.ITEM_ID:db_column_not_null">false</entry>
+   <entry key="TB_BROKER_ITEM_GROUP_CONF.ITEM_ACTION:db_column_size">60</entry>
+   <entry key="TB_BROKER_ITEM_GROUP_CONF.ITEM_ACTION:db_column_not_null">false</entry>
+   <entry key="TB_BROKER_ITEM_GROUP_CONF.GROUP_ID:db_column_size">100</entry>
+   <entry key="TB_BROKER_ITEM_GROUP_CONF.ITEM_TYPE:db_column_size">20</entry>
+   <entry key="TB_BROKER_ITEM_GROUP_CONF:db_column_3">ITEM_TYPE</entry>
+   <entry key="TB_BROKER_ITEM_GROUP_CONF:db_column_2">ITEM_ACTION</entry>
+   <entry key="TB_BROKER_ITEM_GROUP_CONF:db_column_1">ITEM_ID</entry>
+   <entry key="TB_BROKER_ITEM_GROUP_CONF:db_column_0">GROUP_ID</entry>
+   <entry key="TB_BROKER_ITEM_GROUP_CONF.GROUP_ID:db_column_not_null">true</entry>
+   <entry key="return_single_result_set">false</entry>
+   <entry key="TB_BROKER_ITEM_GROUP_CONF.ITEM_ID:db_column_type">NVARCHAR2</entry>
+   <entry key="TB_BROKER_ITEM_GROUP_CONF.ITEM_TYPE:db_column_not_null">false</entry>
+   <entry key="TB_BROKER_ITEM_GROUP_CONF:db_table_type">TABLE</entry>
+   <entry key="root_descriptor_alias">TB_BROKER_ITEM_GROUP_CONF</entry>
+   <entry key="TB_BROKER_ITEM_GROUP_CONF.ITEM_ACTION:db_column_type">NVARCHAR2</entry>
+   <entry key="TB_BROKER_ITEM_GROUP_CONF.GROUP_ID:db_column_type">NVARCHAR2</entry>
+   <entry key="TB_BROKER_ITEM_GROUP_CONF.ITEM_TYPE:db_column_type">NVARCHAR2</entry>
+   <entry key="TB_BROKER_ITEM_GROUP_CONF.ITEM_ID:db_column_size">120</entry>
+</properties>

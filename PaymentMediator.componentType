@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+   <service name="PaymentMediator" ui:wsdlLocation="wsdl/BasicPaymentService.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/taskService/paymentService/v1#wsdl.interface(BasicPaymentPort)"/>
+   </service>
+   <reference name="PaymentService" ui:wsdlLocation="http://192.168.164.144:8001/soa-infra/services/ffs/Payment!1.0/wsdl/process/PaymentService.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/taskService/paymentService/v1#wsdl.interface(BasicPaymentPort)"/>
+   </reference>
+</componentType>

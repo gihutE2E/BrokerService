@@ -1,0 +1,973 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Tue Mar 05 08:43:40 COT 2013
+  Author:  Harcalejo
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="ContinueOrderProcess"
+         targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/continueOrder/v1"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="http://tigo.com/enterprise/serviceEntity/provisioning/continueOrder/v1"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://tigo.com/enterprise/taskService/provisioning/v1"
+         xmlns:ns2="http://tigo.com/enterprise/serviceEntity/provisioning/continueProvisioningProcess/v1"
+         xmlns:ns3="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_M_ADAPTER"
+         xmlns:ns4="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_M_ADAPTER"
+         xmlns:ns6="http://tigo.com/commons/basicRequest/v1/schema"
+         xmlns:ns5="http://tigo.com/enterprise/serviceEntity/provisioning/orderContinueRequest/v1/schema"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns7="http://tigo.com/commons/generalResponse/v1/schema"
+         xmlns:ns8="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_M_UPDATE"
+         xmlns:ns9="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_M_UPDATE"
+         xmlns:ns10="http://tigo.com/enterprise/serviceEntity/provisioning/reverseProcess"
+         xmlns:ns11="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema"
+         xmlns:ns12="http://tigo.hn/enterprise/faultNotificationService/createFault"
+         xmlns:ns13="http://tigo.com/enterprise/basicOrderState/v1/schema"
+         xmlns:ns14="http://tigo.com/commons/resources/additional/v1/schema"
+         xmlns:ns15="http://xmlns.oracle.com/pcbpel/adapter/jms/OrchestratorOrders/O2/PromotionQueue"
+         xmlns:ns21="http://tigo.com/enterprise/serviceEntity/provisioning/dataChangeRequest/v1/schema"
+         xmlns:ns17="http://tigo.com/enterprise/businessEntity/charge/v1/schema"
+         xmlns:ns19="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema"
+         xmlns:ns22="http://tigo.com/enterprise/serviceEntity/provisioning/fieldService/v1/schema"
+         xmlns:ns20="http://tigo.com/serviceEntity/provisioning/offeringDetail/v1/schema"
+         xmlns:ns16="http://tigo.com/enterprise/businessEntity/client/basic/v1/schema"
+         xmlns:ns18="http://tigo.com/enterprise/serviceEntity/provisioning/order/v1/schema"
+         xmlns:ns23="http://xmlns.oracle.com/pcbpel/adapter/db/O2/O2/LOG_PROVISIONING_PRODUCT_SELECT"
+         xmlns:ns24="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_PROVISIONING_PRODUCT_SELECT"
+         queryLanguage="http://www.w3.org/TR/1999/REC-xpath-19991116"
+         expressionLanguage="http://www.w3.org/TR/1999/REC-xpath-19991116"
+         suppressJoinFailure="no" exitOnStandardFault="no"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:ns25="http://tigo.hn/commons/resources/faultNotificationService/createFaultSchema/schema">
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="continueorderprocess_client"
+                 partnerLinkType="client:ContinueOrderProcess"
+                 myRole="BasicContinueOrderPort"/>
+    <partnerLink name="ContinueProvisioningProcess.continueprovisioningprocess_client"
+                 partnerLinkType="ns2:ContinueProvisioningProcess"
+                 partnerRole="BasicContinueOrderPort"/>
+    <partnerLink name="LOG_ORCHESTRATOR_M_ADAPTER"
+                 partnerLinkType="ns3:LOG_ORCHESTRATOR_M_ADAPTER_plt"
+                 partnerRole="LOG_ORCHESTRATOR_M_ADAPTER_role"/>
+    <partnerLink name="LOG_ORCHESTRATOR_M_UPDATE"
+                 partnerLinkType="ns8:LOG_ORCHESTRATOR_M_UPDATE_plt"
+                 partnerRole="LOG_ORCHESTRATOR_M_UPDATE_role"/>
+    <partnerLink name="ReverseProcess.reverseprocess_client"
+                 partnerLinkType="ns10:BasicOrderPort_PL"
+                 partnerRole="BasicOrderPort_Role"/>
+    <partnerLink name="FaultNotificationService"
+                 partnerLinkType="ns12:FaultNotificationService"
+                 partnerRole="FaultNotification_Port"/>
+    <partnerLink name="PromotionQueue"
+                 partnerLinkType="ns15:Produce_Message_plt"
+                 partnerRole="Produce_Message_role"/>
+    <partnerLink name="LOG_PROVISIONING_PRODUCT_SELECT"
+                 partnerLinkType="ns23:LOG_PROVISIONING_PRODUCT_SELECT_plt"
+                 partnerRole="LOG_PROVISIONING_PRODUCT_SELECT_role"/>
+  </partnerLinks>
+  <variables>
+    <variable name="inputVariable"
+              messageType="client:BasicContinueOrderRequest_msg"/>
+    <variable name="outputVariable"
+              messageType="client:BasicContinueOrderResponse_msg"/>
+    <variable name="Invoke_LogM_Input"
+              messageType="ns3:LOG_ORCHESTRATOR_M_ADAPTERSelect_inputParameters"/>
+    <variable name="Invoke_LogM_Output"
+              messageType="ns3:LogOrchestratorMCollection_msg"/>
+    <variable name="Invoke_ContinueProvisioning_Input"
+              messageType="ns2:BasicContinueOrderRequest_msg"/>
+    <variable name="Invoke_ContinueProvisioningr_Output"
+              messageType="ns2:BasicContinueOrderResponse_msg"/>
+    <variable name="generalResponse" messageType="client:GeneralResponse_msg"/>
+    <variable name="Invoke_LogMInsert_Input"
+              messageType="ns3:LogOrchestratorMCollection_msg"/>
+    <variable name="Invoke_LogMUpdate_Input"
+              messageType="ns8:LogOrchestratorMCollection_msg"/>
+    <variable name="Invoke_ReverseProcess_Input"
+              messageType="ns10:BasicVoidOrderRequest_msg"/>
+    <variable name="globalFault" element="ns7:GeneralResponse"/>
+    <variable name="Invoke_notificationQueue_Input"
+              messageType="ns15:Produce_Message_msg"/>
+    <variable name="input_ProvisioningProductLogSelect"
+              messageType="ns23:LOG_PROVISIONING_PRODUCT_SELECTSelect_inputParameters"/>
+    <variable name="output_ProvisioningProductLogSelect"
+              messageType="ns23:LogProvisioningProductCollection_msg"/>
+    <variable name="ProcessStatus" type="xsd:string"/>
+    <variable name="input_FaultNotification"
+              messageType="ns12:CreateFaultRequest_msg"/>
+    <variable name="output_FaultNotification"
+              messageType="ns12:CreateFaultResponse_msg"/>
+  </variables>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <faultHandlers>
+    <catch faultName="ns12:fault">
+      <sequence name="faultNotification">
+        <scope name="LogMError" exitOnStandardFault="no">
+          <invoke name="Invoke_LogMUpdate"
+                  partnerLink="LOG_ORCHESTRATOR_M_UPDATE"
+                  portType="ns8:LOG_ORCHESTRATOR_M_UPDATE_ptt"
+                  operation="update" inputVariable="Invoke_LogMUpdate_Input"
+                  bpelx:invokeAsDetail="no"/>
+        </scope>
+        <reply name="ReplyFault" faultName="client:fault"
+               variable="generalResponse"
+               partnerLink="continueorderprocess_client"
+               portType="client:BasicContinueOrderPort"
+               operation="ContinueOrder"/>
+        <exit name="Exit2"/>
+      </sequence>
+    </catch>
+  </faultHandlers>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+    <!-- Receive input from requestor. (Note: This maps to operation defined in ContinueOrderProcess.wsdl) -->
+    <receive name="receiveInput" partnerLink="continueorderprocess_client"
+             portType="client:BasicContinueOrderPort" operation="ContinueOrder"
+             variable="inputVariable" createInstance="yes"/>
+    <!-- Generate reply to synchronous request -->
+    <if name="If_Error">
+      <documentation>Error</documentation>
+      <condition>$inputVariable.body/ns13:orderState/status != '00' and $inputVariable.body/ns13:orderState/status != '100'</condition>
+      <assign name="Assign_ErrorToStatus">
+        <copy>
+          <from>'ERROR'</from>
+          <to>$ProcessStatus</to>
+        </copy>
+      </assign>
+      <else>
+        <documentation>Ok</documentation>
+        <assign name="Assign_OkToStatus">
+          <copy>
+            <from>'OK'</from>
+            <to>$ProcessStatus</to>
+          </copy>
+        </assign>
+      </else>
+    </if>
+    <scope name="Scope1">
+      <faultHandlers>
+        <catchAll>
+          <scope name="Scope2">
+            <faultHandlers>
+              <catch faultName="ns12:fault" faultVariable="faultVariable"
+                     faultElement="ns7:GeneralResponse">
+                <sequence name="Sequence3">
+                  <assign name="Assign_FaultResponse">
+                    <copy>
+                      <from>$faultVariable/uti</from>
+                      <to>$generalResponse.fault/uti</to>
+                    </copy>
+                    <copy>
+                      <from>$faultVariable/status</from>
+                      <to>$generalResponse.fault/status</to>
+                    </copy>
+                    <copy>
+                      <from>$faultVariable/code</from>
+                      <to>$generalResponse.fault/code</to>
+                    </copy>
+                    <copy>
+                      <from>$faultVariable/message</from>
+                      <to>$generalResponse.fault/message</to>
+                    </copy>
+                  </assign>
+                  <throw name="Throw1" faultName="ns12:fault"/>
+                </sequence>
+              </catch>
+            </faultHandlers>
+            <sequence name="Sequence2">
+              <assign name="Assign_FaultNotification">
+                <copy>
+                  <from>ora:getECID()</from>
+                  <to>$input_FaultNotification.body/uti</to>
+                </copy>
+                <copy>
+                  <from>'5'</from>
+                  <to>$input_FaultNotification.body/errorID</to>
+                </copy>
+                <copy>
+                  <from>'INS_LOGCONTINUEORDERINS_ERROR'</from>
+                  <to>$input_FaultNotification.body/instanceID</to>
+                </copy>
+                <copy>
+                  <from>ora:getFaultAsString()</from>
+                  <to>$input_FaultNotification.body/serviceDetailID</to>
+                </copy>
+                <copy>
+                  <from>'CO_TEC01'</from>
+                  <to>$input_FaultNotification.body/reasonID</to>
+                </copy>
+                <copy>
+                  <from>'195'</from>
+                  <to>$input_FaultNotification.body/errorMappingID</to>
+                </copy>
+                <copy>
+                  <from>'177'</from>
+                  <to>$input_FaultNotification.body/serviceID</to>
+                </copy>
+                <copy>
+                  <from>'LogMInsert'</from>
+                  <to>$input_FaultNotification.body/stageName</to>
+                </copy>
+              </assign>
+              <invoke name="Invoke_FaultNotification"
+                      partnerLink="FaultNotificationService"
+                      portType="ns12:FaultNotification_Port"
+                      operation="CreateFault"
+                      inputVariable="input_FaultNotification"
+                      bpelx:invokeAsDetail="no"
+                      outputVariable="output_FaultNotification"/>
+            </sequence>
+          </scope>
+        </catchAll>
+      </faultHandlers>
+      <sequence name="CreateLogMaster">
+        <assign name="Assign_LogMInsertReq">
+          <copy>
+            <from>ora:getECID()</from>
+            <to>$Invoke_LogMInsert_Input.LogOrchestratorMCollection/ns4:LogOrchestratorM/ns4:uti</to>
+          </copy>
+          <copy ignoreMissingFromData="yes">
+            <from>$inputVariable.body/ns6:basicRequest/externalApplicationID</from>
+            <to>$Invoke_LogMInsert_Input.LogOrchestratorMCollection/ns4:LogOrchestratorM/ns4:externalApplicationId</to>
+          </copy>
+          <copy ignoreMissingFromData="yes">
+            <from>$inputVariable.body/ns6:basicRequest/externalTransactionID</from>
+            <to>$Invoke_LogMInsert_Input.LogOrchestratorMCollection/ns4:LogOrchestratorM/ns4:externalTransactionId</to>
+          </copy>
+          <copy>
+            <from>xp20:current-dateTime()</from>
+            <to>$Invoke_LogMInsert_Input.LogOrchestratorMCollection/ns4:LogOrchestratorM/ns4:requestDate</to>
+          </copy>
+          <copy>
+            <from>'PROCESSING'</from>
+            <to>$Invoke_LogMInsert_Input.LogOrchestratorMCollection/ns4:LogOrchestratorM/ns4:status</to>
+          </copy>
+        </assign>
+        <invoke name="Invoke_LogMInsert"
+                partnerLink="LOG_ORCHESTRATOR_M_ADAPTER"
+                portType="ns3:LOG_ORCHESTRATOR_M_ADAPTER_ptt" operation="insert"
+                inputVariable="Invoke_LogMInsert_Input"
+                bpelx:invokeAsDetail="no"/>
+      </sequence>
+    </scope>
+    <scope name="Scope3">
+      <faultHandlers>
+        <catchAll>
+          <scope name="Scope4">
+            <faultHandlers>
+              <catch faultName="ns12:fault" faultVariable="faultVariable"
+                     faultElement="ns7:GeneralResponse">
+                <sequence name="Sequence3">
+                  <assign name="Assign_FaultResponse">
+                    <copy>
+                      <from>$faultVariable/uti</from>
+                      <to>$generalResponse.fault/uti</to>
+                    </copy>
+                    <copy>
+                      <from>$faultVariable/status</from>
+                      <to>$generalResponse.fault/status</to>
+                    </copy>
+                    <copy>
+                      <from>$faultVariable/code</from>
+                      <to>$generalResponse.fault/code</to>
+                    </copy>
+                    <copy>
+                      <from>$faultVariable/message</from>
+                      <to>$generalResponse.fault/message</to>
+                    </copy>
+                  </assign>
+                  <throw name="Throw1" faultName="ns12:fault"/>
+                </sequence>
+              </catch>
+            </faultHandlers>
+            <sequence name="Sequence2">
+              <assign name="Assign_FaultNotification">
+                <copy>
+                  <from>ora:getECID()</from>
+                  <to>$input_FaultNotification.body/uti</to>
+                </copy>
+                <copy>
+                  <from>ora:getFaultAsString()</from>
+                  <to>$input_FaultNotification.body/serviceDetailID</to>
+                </copy>
+                <copy>
+                  <from>'5'</from>
+                  <to>$input_FaultNotification.body/errorID</to>
+                </copy>
+                <copy>
+                  <from>'INS_LOGPROVPRODUCTDSEL_ERROR'</from>
+                  <to>$input_FaultNotification.body/instanceID</to>
+                </copy>
+                <copy>
+                  <from>'CO_TEC02'</from>
+                  <to>$input_FaultNotification.body/reasonID</to>
+                </copy>
+                <copy>
+                  <from>'196'</from>
+                  <to>$input_FaultNotification.body/errorMappingID</to>
+                </copy>
+                <copy>
+                  <from>'177'</from>
+                  <to>$input_FaultNotification.body/serviceID</to>
+                </copy>
+                <copy>
+                  <from>'Seq_GetCorrelationID'</from>
+                  <to>$input_FaultNotification.body/stageName</to>
+                </copy>
+              </assign>
+              <invoke name="Invoke_FaultNotification"
+                      partnerLink="FaultNotificationService"
+                      portType="ns12:FaultNotification_Port"
+                      operation="CreateFault"
+                      inputVariable="input_FaultNotification"
+                      outputVariable="output_FaultNotification"
+                      bpelx:invokeAsDetail="no"/>
+            </sequence>
+          </scope>
+        </catchAll>
+      </faultHandlers>
+      <sequence name="Seq_GetCorrelationID">
+        <assign name="Assign_GetCorrelationID">
+          <copy>
+            <from>$inputVariable.body/ns6:basicRequest/utiReference</from>
+            <to>$input_ProvisioningProductLogSelect.LOG_PROVISIONING_PRODUCT_SELECTSelect_inputParameters/ns24:uti</to>
+          </copy>
+        </assign>
+        <invoke name="Invoke_GetCorrelationID"
+                partnerLink="LOG_PROVISIONING_PRODUCT_SELECT"
+                portType="ns23:LOG_PROVISIONING_PRODUCT_SELECT_ptt"
+                operation="LOG_PROVISIONING_PRODUCT_SELECTSelect"
+                inputVariable="input_ProvisioningProductLogSelect"
+                bpelx:invokeAsDetail="no"
+                outputVariable="output_ProvisioningProductLogSelect"/>
+      </sequence>
+    </scope>
+    <scope name="LogOrchestratorM" exitOnStandardFault="no">
+      <faultHandlers>
+        <catchAll>
+          <scope name="Scope5">
+            <faultHandlers>
+              <catch faultName="ns12:fault" faultVariable="faultVariable"
+                     faultElement="ns7:GeneralResponse">
+                <sequence name="Sequence3">
+                  <assign name="Assign_FaultResponse">
+                    <copy>
+                      <from>$faultVariable/uti</from>
+                      <to>$generalResponse.fault/uti</to>
+                    </copy>
+                    <copy>
+                      <from>$faultVariable/status</from>
+                      <to>$generalResponse.fault/status</to>
+                    </copy>
+                    <copy>
+                      <from>$faultVariable/code</from>
+                      <to>$generalResponse.fault/code</to>
+                    </copy>
+                    <copy>
+                      <from>$faultVariable/message</from>
+                      <to>$generalResponse.fault/message</to>
+                    </copy>
+                  </assign>
+                  <throw name="Throw1" faultName="ns12:fault"/>
+                </sequence>
+              </catch>
+            </faultHandlers>
+            <sequence name="Sequence2">
+              <assign name="Assign_FaultNotification">
+                <copy>
+                  <from>ora:getECID()</from>
+                  <to>$input_FaultNotification.body/uti</to>
+                </copy>
+                <copy>
+                  <from>ora:getFaultAsString()</from>
+                  <to>$input_FaultNotification.body/serviceDetailID</to>
+                </copy>
+                <copy>
+                  <from>'5'</from>
+                  <to>$input_FaultNotification.body/errorID</to>
+                </copy>
+                <copy>
+                  <from>'INS_LOGCONTINUEORDERSEL_ERROR'</from>
+                  <to>$input_FaultNotification.body/instanceID</to>
+                </copy>
+                <copy>
+                  <from>'CO_TEC03'</from>
+                  <to>$input_FaultNotification.body/reasonID</to>
+                </copy>
+                <copy>
+                  <from>'197'</from>
+                  <to>$input_FaultNotification.body/errorMappingID</to>
+                </copy>
+                <copy>
+                  <from>'177'</from>
+                  <to>$input_FaultNotification.body/serviceID</to>
+                </copy>
+                <copy>
+                  <from>'LogOrchestratorM'</from>
+                  <to>$input_FaultNotification.body/stageName</to>
+                </copy>
+              </assign>
+              <invoke name="Invoke_FaultNotification"
+                      partnerLink="FaultNotificationService"
+                      portType="ns12:FaultNotification_Port"
+                      operation="CreateFault"
+                      inputVariable="input_FaultNotification"
+                      outputVariable="output_FaultNotification"
+                      bpelx:invokeAsDetail="no"/>
+            </sequence>
+          </scope>
+        </catchAll>
+      </faultHandlers>
+      <sequence name="LogOrchestratorM">
+        <assign name="Assign_LogMReq">
+          <copy ignoreMissingFromData="yes">
+            <from>$output_ProvisioningProductLogSelect.LogProvisioningProductCollection/ns24:LogProvisioningProduct[1]/ns24:correlationId</from>
+            <to>$Invoke_LogM_Input.LOG_ORCHESTRATOR_M_ADAPTERSelect_inputParameters/ns4:uti</to>
+          </copy>
+        </assign>
+        <invoke name="Invoke_LogM" partnerLink="LOG_ORCHESTRATOR_M_ADAPTER"
+                portType="ns3:LOG_ORCHESTRATOR_M_ADAPTER_ptt"
+                operation="LOG_ORCHESTRATOR_M_ADAPTERSelect"
+                inputVariable="Invoke_LogM_Input"
+                outputVariable="Invoke_LogM_Output" bpelx:invokeAsDetail="no"/>
+      </sequence>
+    </scope>
+    <if name="Transaction">
+      <documentation>Not Empty</documentation>
+      <condition>ora:countNodes('Invoke_LogM_Output','LogOrchestratorMCollection','ns4:LogOrchestratorM') &gt; 0 and $Invoke_LogM_Output.LogOrchestratorMCollection/ns4:LogOrchestratorM/ns4:status = 'PENDING'</condition>
+      <sequence name="Continue">
+        <scope name="ContinueProvisioningProcess" exitOnStandardFault="no">
+          <faultHandlers>
+            <catch faultName="ns2:fault" faultVariable="faultVariable"
+                   faultElement="ns7:GeneralResponse">
+              <sequence name="fault">
+                <assign name="Assign_LogMUpdate">
+                  <copy>
+                    <from>ora:getECID()</from>
+                    <to>$Invoke_LogMUpdate_Input.LogOrchestratorMCollection/ns9:LogOrchestratorM/ns9:uti</to>
+                  </copy>
+                  <copy>
+                    <from>'ERROR'</from>
+                    <to>$Invoke_LogMUpdate_Input.LogOrchestratorMCollection/ns9:LogOrchestratorM/ns9:status</to>
+                  </copy>
+                </assign>
+                <assign name="Assign_ReplyFault">
+                  <copy>
+                    <from>$faultVariable/status</from>
+                    <to>$generalResponse.fault/status</to>
+                  </copy>
+                  <copy>
+                    <from>$faultVariable/code</from>
+                    <to>$generalResponse.fault/code</to>
+                  </copy>
+                  <copy>
+                    <from>ora:getECID()</from>
+                    <to>$generalResponse.fault/uti</to>
+                  </copy>
+                  <copy>
+                    <from>$faultVariable/message</from>
+                    <to>$generalResponse.fault/message</to>
+                  </copy>
+                </assign>
+                <throw name="FaultNotification" faultName="ns12:fault"
+                       faultVariable="globalFault"/>
+              </sequence>
+            </catch>
+            <catchAll>
+              <scope name="Scope6">
+                <faultHandlers>
+                  <catch faultName="ns12:faultNotification"
+                         faultVariable="faultVariable"
+                         faultElement="ns7:GeneralResponse">
+                    <sequence name="Sequence3">
+                      <assign name="Assign_FaultResponse">
+                        <copy>
+                          <from>$faultVariable/uti</from>
+                          <to>$generalResponse.fault/uti</to>
+                        </copy>
+                        <copy>
+                          <from>$faultVariable/status</from>
+                          <to>$generalResponse.fault/status</to>
+                        </copy>
+                        <copy>
+                          <from>$faultVariable/code</from>
+                          <to>$generalResponse.fault/code</to>
+                        </copy>
+                        <copy>
+                          <from>$faultVariable/message</from>
+                          <to>$generalResponse.fault/message</to>
+                        </copy>
+                      </assign>
+                      <throw name="Throw1" faultName="ns12:fault"/>
+                    </sequence>
+                  </catch>
+                </faultHandlers>
+                <sequence name="Sequence2">
+                  <assign name="Assign_FaultNotification">
+                    <copy>
+                      <from>ora:getECID()</from>
+                      <to>$input_FaultNotification.body/uti</to>
+                    </copy>
+                    <copy>
+                      <from>ora:getFaultAsString()</from>
+                      <to>$input_FaultNotification.body/serviceDetailID</to>
+                    </copy>
+                    <copy>
+                      <from>'6'</from>
+                      <to>$input_FaultNotification.body/errorID</to>
+                    </copy>
+                    <copy>
+                      <from>'INS_CONTINUEORD_TECH_ERROR_O3'</from>
+                      <to>$input_FaultNotification.body/instanceID</to>
+                    </copy>
+                    <copy>
+                      <from>'CO_TEC04'</from>
+                      <to>$input_FaultNotification.body/reasonID</to>
+                    </copy>
+                    <copy>
+                      <from>'198'</from>
+                      <to>$input_FaultNotification.body/errorMappingID</to>
+                    </copy>
+                    <copy>
+                      <from>'177'</from>
+                      <to>$input_FaultNotification.body/serviceID</to>
+                    </copy>
+                    <copy>
+                      <from>'ContinueProvisioningProcess'</from>
+                      <to>$input_FaultNotification.body/stageName</to>
+                    </copy>
+                  </assign>
+                  <invoke name="Invoke_FaultNotification"
+                          partnerLink="FaultNotificationService"
+                          portType="ns12:FaultNotification_Port"
+                          operation="CreateFault"
+                          inputVariable="input_FaultNotification"
+                          outputVariable="output_FaultNotification"
+                          bpelx:invokeAsDetail="no"/>
+                </sequence>
+              </scope>
+            </catchAll>
+          </faultHandlers>
+          <sequence name="Sequence1">
+            <sequence name="ContinueProvisioning">
+              <assign name="Assign_ContinueProvisioningReq">
+                <copy>
+                  <from>$inputVariable.body/ns6:basicRequest/externalApplicationID</from>
+                  <to>$Invoke_ContinueProvisioning_Input.body/ns6:basicRequest/externalApplicationID</to>
+                </copy>
+                <copy ignoreMissingFromData="yes">
+                  <from>$inputVariable.body/ns13:orderState</from>
+                  <to>$Invoke_ContinueProvisioning_Input.body/ns13:orderState</to>
+                </copy>
+                <copy>
+                  <from>$inputVariable.body/ns6:basicRequest/externalTransactionID</from>
+                  <to>$Invoke_ContinueProvisioning_Input.body/ns6:basicRequest/externalTransactionID</to>
+                </copy>
+                <copy>
+                  <from>$output_ProvisioningProductLogSelect.LogProvisioningProductCollection/ns24:LogProvisioningProduct[1]/ns24:correlationId</from>
+                  <to>$Invoke_ContinueProvisioning_Input.body/ns6:basicRequest/utiReference</to>
+                </copy>
+              </assign>
+              <invoke name="Invoke_ContinueProvisioning"
+                      partnerLink="ContinueProvisioningProcess.continueprovisioningprocess_client"
+                      portType="ns2:BasicContinueOrderPort"
+                      operation="ContinueOrder"
+                      inputVariable="Invoke_ContinueProvisioning_Input"
+                      outputVariable="Invoke_ContinueProvisioningr_Output"
+                      bpelx:invokeAsDetail="no"/>
+            </sequence>
+          </sequence>
+        </scope>
+        <scope name="LogMUpdate" exitOnStandardFault="no">
+          <faultHandlers>
+            <catchAll>
+              <scope name="Scope7">
+                <faultHandlers>
+                  <catch faultName="ns12:fault" faultVariable="faultVariable"
+                         faultElement="ns7:GeneralResponse">
+                    <sequence name="Sequence3">
+                      <assign name="Assign_FaultResponse">
+                        <copy>
+                          <from>$faultVariable/uti</from>
+                          <to>$generalResponse.fault/uti</to>
+                        </copy>
+                        <copy>
+                          <from>$faultVariable/status</from>
+                          <to>$generalResponse.fault/status</to>
+                        </copy>
+                        <copy>
+                          <from>$faultVariable/code</from>
+                          <to>$generalResponse.fault/code</to>
+                        </copy>
+                        <copy>
+                          <from>$faultVariable/message</from>
+                          <to>$generalResponse.fault/message</to>
+                        </copy>
+                      </assign>
+                      <throw name="Throw1" faultName="ns12:fault"/>
+                    </sequence>
+                  </catch>
+                </faultHandlers>
+                <sequence name="Sequence2">
+                  <assign name="Assign_FaultNotification">
+                    <copy>
+                      <from>ora:getECID()</from>
+                      <to>$input_FaultNotification.body/uti</to>
+                    </copy>
+                    <copy>
+                      <from>ora:getFaultAsString()</from>
+                      <to>$input_FaultNotification.body/serviceDetailID</to>
+                    </copy>
+                    <copy>
+                      <from>'5'</from>
+                      <to>$input_FaultNotification.body/errorID</to>
+                    </copy>
+                    <copy>
+                      <from>'INS_LOGCONTINUEORDERUPD_ERROR'</from>
+                      <to>$input_FaultNotification.body/instanceID</to>
+                    </copy>
+                    <copy>
+                      <from>'CO_TEC05'</from>
+                      <to>$input_FaultNotification.body/reasonID</to>
+                    </copy>
+                    <copy>
+                      <from>'199'</from>
+                      <to>$input_FaultNotification.body/errorMappingID</to>
+                    </copy>
+                    <copy>
+                      <from>'177'</from>
+                      <to>$input_FaultNotification.body/serviceID</to>
+                    </copy>
+                    <copy>
+                      <from>'LogMUpdate'</from>
+                      <to>$input_FaultNotification.body/stageName</to>
+                    </copy>
+                  </assign>
+                  <invoke name="Invoke_FaultNotification"
+                          partnerLink="FaultNotificationService"
+                          portType="ns12:FaultNotification_Port"
+                          operation="CreateFault"
+                          inputVariable="input_FaultNotification"
+                          outputVariable="output_FaultNotification"
+                          bpelx:invokeAsDetail="no"/>
+                </sequence>
+              </scope>
+            </catchAll>
+          </faultHandlers>
+          <sequence name="LogMUpdate">
+            <assign name="AssignLogMUpdateReq">
+              <copy ignoreMissingFromData="yes">
+                <from>$output_ProvisioningProductLogSelect.LogProvisioningProductCollection/ns24:LogProvisioningProduct[1]/ns24:correlationId</from>
+                <to>$Invoke_LogMUpdate_Input.LogOrchestratorMCollection/ns9:LogOrchestratorM/ns9:uti</to>
+              </copy>
+              <copy>
+                <from>ora:getECID()</from>
+                <to>$Invoke_LogMUpdate_Input.LogOrchestratorMCollection/ns9:LogOrchestratorM/ns9:utiReference</to>
+              </copy>
+              <copy>
+                <from>$ProcessStatus</from>
+                <to>$Invoke_LogMUpdate_Input.LogOrchestratorMCollection/ns9:LogOrchestratorM/ns9:status</to>
+              </copy>
+            </assign>
+            <invoke name="Invoke_LogMUpdate"
+                    partnerLink="LOG_ORCHESTRATOR_M_UPDATE"
+                    portType="ns8:LOG_ORCHESTRATOR_M_UPDATE_ptt"
+                    operation="update" inputVariable="Invoke_LogMUpdate_Input"
+                    bpelx:invokeAsDetail="no"/>
+          </sequence>
+        </scope>
+        <scope name="Notification" exitOnStandardFault="no">
+          <faultHandlers>
+            <catchAll>
+              <scope name="Scope7">
+                <faultHandlers>
+                  <catch faultName="ns12:fault" faultVariable="faultVariable"
+                         faultElement="ns7:GeneralResponse">
+                    <sequence name="Sequence3">
+                      <assign name="Assign_FaultResponse">
+                        <copy>
+                          <from>$faultVariable/uti</from>
+                          <to>$generalResponse.fault/uti</to>
+                        </copy>
+                        <copy>
+                          <from>$faultVariable/status</from>
+                          <to>$generalResponse.fault/status</to>
+                        </copy>
+                        <copy>
+                          <from>$faultVariable/code</from>
+                          <to>$generalResponse.fault/code</to>
+                        </copy>
+                        <copy>
+                          <from>$faultVariable/message</from>
+                          <to>$generalResponse.fault/message</to>
+                        </copy>
+                      </assign>
+                      <throw name="Throw1" faultName="ns12:fault"/>
+                    </sequence>
+                  </catch>
+                </faultHandlers>
+                <sequence name="Sequence2">
+                  <assign name="Assign_FaultNotification">
+                    <copy>
+                      <from>ora:getECID()</from>
+                      <to>$input_FaultNotification.body/uti</to>
+                    </copy>
+                    <copy>
+                      <from>ora:getFaultAsString()</from>
+                      <to>$input_FaultNotification.body/serviceDetailID</to>
+                    </copy>
+                    <copy>
+                      <from>'6'</from>
+                      <to>$input_FaultNotification.body/errorID</to>
+                    </copy>
+                    <copy>
+                      <from>'INS_CONTINUEORD_TECH_ERROR_O4'</from>
+                      <to>$input_FaultNotification.body/instanceID</to>
+                    </copy>
+                    <copy>
+                      <from>'CO_TEC06'</from>
+                      <to>$input_FaultNotification.body/reasonID</to>
+                    </copy>
+                    <copy>
+                      <from>'200'</from>
+                      <to>$input_FaultNotification.body/errorMappingID</to>
+                    </copy>
+                    <copy>
+                      <from>'177'</from>
+                      <to>$input_FaultNotification.body/serviceID</to>
+                    </copy>
+                    <copy>
+                      <from>'Notification'</from>
+                      <to>$input_FaultNotification.body/stageName</to>
+                    </copy>
+                  </assign>
+                  <invoke name="Invoke_FaultNotification"
+                          partnerLink="FaultNotificationService"
+                          portType="ns12:FaultNotification_Port"
+                          operation="CreateFault"
+                          inputVariable="input_FaultNotification"
+                          outputVariable="output_FaultNotification"
+                          bpelx:invokeAsDetail="no"/>
+                </sequence>
+              </scope>
+            </catchAll>
+          </faultHandlers>
+          <sequence name="Notification">
+            <assign name="AssignNotificationReq">
+              <copy>
+                <from>$inputVariable.body/ns6:basicRequest/externalApplicationID</from>
+                <to>$Invoke_notificationQueue_Input.body/ns6:basicRequest/externalApplicationID</to>
+              </copy>
+              <copy>
+                <from>$inputVariable.body/ns6:basicRequest/externalTransactionID</from>
+                <to>$Invoke_notificationQueue_Input.body/ns6:basicRequest/externalTransactionID</to>
+              </copy>
+              <copy ignoreMissingFromData="yes">
+                <from>$output_ProvisioningProductLogSelect.LogProvisioningProductCollection/ns24:LogProvisioningProduct[1]/ns24:correlationId</from>
+                <to>$Invoke_notificationQueue_Input.body/ns6:basicRequest/utiReference</to>
+              </copy>
+            </assign>
+            <invoke name="Invoke_notification" partnerLink="PromotionQueue"
+                    portType="ns15:Produce_Message_ptt"
+                    operation="Produce_Message"
+                    inputVariable="Invoke_notificationQueue_Input"
+                    bpelx:invokeAsDetail="no"/>
+          </sequence>
+        </scope>
+        <scope name="LogMasterUpdate" exitOnStandardFault="no">
+          <faultHandlers>
+            <catchAll>
+              <scope name="Scope7">
+                <faultHandlers>
+                  <catch faultName="ns12:fault" faultVariable="faultVariable"
+                         faultElement="ns7:GeneralResponse">
+                    <sequence name="Sequence3">
+                      <assign name="Assign_FaultResponse">
+                        <copy>
+                          <from>$faultVariable/uti</from>
+                          <to>$generalResponse.fault/uti</to>
+                        </copy>
+                        <copy>
+                          <from>$faultVariable/status</from>
+                          <to>$generalResponse.fault/status</to>
+                        </copy>
+                        <copy>
+                          <from>$faultVariable/code</from>
+                          <to>$generalResponse.fault/code</to>
+                        </copy>
+                        <copy>
+                          <from>$faultVariable/message</from>
+                          <to>$generalResponse.fault/message</to>
+                        </copy>
+                      </assign>
+                      <throw name="Throw1" faultName="ns12:fault"/>
+                    </sequence>
+                  </catch>
+                </faultHandlers>
+                <sequence name="Sequence2">
+                  <assign name="Assign_FaultNotification">
+                    <copy>
+                      <from>ora:getECID()</from>
+                      <to>$input_FaultNotification.body/uti</to>
+                    </copy>
+                    <copy>
+                      <from>ora:getFaultAsString()</from>
+                      <to>$input_FaultNotification.body/serviceDetailID</to>
+                    </copy>
+                    <copy>
+                      <from>'5'</from>
+                      <to>$input_FaultNotification.body/errorID</to>
+                    </copy>
+                    <copy>
+                      <from>'INS_LOGCONTINUEORDERUPD_ERROR'</from>
+                      <to>$input_FaultNotification.body/instanceID</to>
+                    </copy>
+                    <copy>
+                      <from>'CO_TEC05'</from>
+                      <to>$input_FaultNotification.body/reasonID</to>
+                    </copy>
+                    <copy>
+                      <from>'199'</from>
+                      <to>$input_FaultNotification.body/errorMappingID</to>
+                    </copy>
+                    <copy>
+                      <from>'177'</from>
+                      <to>$input_FaultNotification.body/serviceID</to>
+                    </copy>
+                    <copy>
+                      <from>'LogMUpdate'</from>
+                      <to>$input_FaultNotification.body/stageName</to>
+                    </copy>
+                  </assign>
+                  <invoke name="Invoke_FaultNotification"
+                          partnerLink="FaultNotificationService"
+                          portType="ns12:FaultNotification_Port"
+                          operation="CreateFault"
+                          inputVariable="input_FaultNotification"
+                          outputVariable="output_FaultNotification"
+                          bpelx:invokeAsDetail="no"/>
+                </sequence>
+              </scope>
+            </catchAll>
+          </faultHandlers>
+          <sequence name="LogMasterUpdate">
+            <assign name="AssignLogMasterUpdateReq">
+              <copy>
+                <from>ora:getECID()</from>
+                <to>$Invoke_LogMUpdate_Input.LogOrchestratorMCollection/ns9:LogOrchestratorM/ns9:uti</to>
+              </copy>
+              <copy>
+                <from>ora:getECID()</from>
+                <to>$Invoke_LogMUpdate_Input.LogOrchestratorMCollection/ns9:LogOrchestratorM/ns9:utiReference</to>
+              </copy>
+              <copy>
+                <from>$ProcessStatus</from>
+                <to>$Invoke_LogMUpdate_Input.LogOrchestratorMCollection/ns9:LogOrchestratorM/ns9:status</to>
+              </copy>
+            </assign>
+            <invoke name="Invoke_LogMUpdate"
+                    partnerLink="LOG_ORCHESTRATOR_M_UPDATE"
+                    portType="ns8:LOG_ORCHESTRATOR_M_UPDATE_ptt"
+                    operation="update" inputVariable="Invoke_LogMUpdate_Input"
+                    bpelx:invokeAsDetail="no"/>
+          </sequence>
+        </scope>
+      </sequence>
+      <else>
+        <documentation>Empty</documentation>
+        <sequence name="replyFault">
+          <assign name="Assign_LogMUpdate">
+            <copy>
+              <from>ora:getECID()</from>
+              <to>$Invoke_LogMUpdate_Input.LogOrchestratorMCollection/ns9:LogOrchestratorM/ns9:uti</to>
+            </copy>
+            <copy>
+              <from><literal>ERROR</literal></from>
+              <to>$Invoke_LogMUpdate_Input.LogOrchestratorMCollection/ns9:LogOrchestratorM/ns9:status</to>
+            </copy>
+          </assign>
+          <assign name="Assign_ReplyFault">
+            <copy>
+              <from>'ERROR'</from>
+              <to>$generalResponse.fault/status</to>
+            </copy>
+            <copy>
+              <from>'401'</from>
+              <to>$generalResponse.fault/code</to>
+            </copy>
+            <copy>
+              <from>ora:getECID()</from>
+              <to>$generalResponse.fault/uti</to>
+            </copy>
+            <copy>
+              <from>'ERROR: Wrong Parameters'</from>
+              <to>$generalResponse.fault/message</to>
+            </copy>
+          </assign>
+          <throw name="FaultNotification" faultName="ns12:fault"/>
+        </sequence>
+      </else>
+    </if>
+    <sequence name="Reply">
+      <assign name="AssignResponse">
+        <copy>
+          <from>ora:getECID()</from>
+          <to>$outputVariable.body/generalResponse/uti</to>
+        </copy>
+        <copy>
+          <from>'OK'</from>
+          <to>$outputVariable.body/generalResponse/status</to>
+        </copy>
+        <copy>
+          <from>'01'</from>
+          <to>$outputVariable.body/generalResponse/code</to>
+        </copy>
+        <copy>
+          <from>'Service has been completed'</from>
+          <to>$outputVariable.body/generalResponse/message</to>
+        </copy>
+      </assign>
+      <reply name="replyOutput" partnerLink="continueorderprocess_client"
+             portType="client:BasicContinueOrderPort" operation="ContinueOrder"
+             variable="outputVariable"/>
+    </sequence>
+  </sequence>
+</process>

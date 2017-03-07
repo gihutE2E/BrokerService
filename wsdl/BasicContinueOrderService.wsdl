@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="ContinueOrder" targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/continueOrder/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:cmn="http://tigo.com/commons/generalResponse/v1/schema" xmlns:tns="http://tigo.com/enterprise/serviceEntity/provisioning/continueOrder/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:sch="http://tigo.com/enterprise/serviceEntity/provisioning/orderContinueRequest/v1/schema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/">
+   <wsdl:types>
+      <xsd:schema targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/continueOrder/v1">
+         <xsd:import namespace="http://tigo.com/commons/generalResponse/v1/schema" schemaLocation="../xsd/commons/BasicGeneralResponse_schema.xsd"/>
+      </xsd:schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderContinueRequest/v1/schema" schemaLocation="../xsd/BasicContinueOrder_schema.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="GeneralResponse_msg">
+      <wsdl:part name="fault" element="cmn:GeneralResponse"/>
+   </wsdl:message>
+   <wsdl:message name="BasicContinueOrderRequest_msg">
+      <wsdl:part name="body" element="sch:BasicContinueOrderRequest"/>
+   </wsdl:message>
+   <wsdl:message name="BasicContinueOrderResponse_msg">
+      <wsdl:part name="body" element="sch:BasicContinueOrderResponse"/>
+   </wsdl:message>
+   <wsdl:portType name="BasicContinueOrderPort">
+      <wsdl:operation name="ContinueOrder">
+         <wsdl:input name="BasicContinueOrderPortRequest" message="tns:BasicContinueOrderRequest_msg"/>
+         <wsdl:output name="BasicContinueOrderPortResponse" message="tns:BasicContinueOrderResponse_msg"/>
+         <wsdl:fault name="fault" message="tns:GeneralResponse_msg"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="Order_wsSOAP" type="tns:BasicContinueOrderPort">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="ContinueOrder">
+         <soap:operation soapAction="ContinueOrder" soapActionRequired="false"/>
+         <wsdl:input name="BasicContinueOrderPortRequest">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="BasicContinueOrderPortResponse">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+</wsdl:definitions>

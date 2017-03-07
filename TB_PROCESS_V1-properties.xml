@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<properties>
+   <entry key="VALIDATOR.PROCESS_TB:db_column_3">DESCRIPTION</entry>
+   <entry key="VALIDATOR.PROCESS_TB:db_column_2">EXPIRATION</entry>
+   <entry key="VALIDATOR.PROCESS_TB:db_column_1">EXTERNAL_ID</entry>
+   <entry key="VALIDATOR.PROCESS_TB:db_column_0">ID</entry>
+   <entry key="VALIDATOR.PROCESS_TB.ID:db_column_precision">10</entry>
+   <entry key="VALIDATOR.PROCESS_TB.DESCRIPTION:db_column_type">VARCHAR2</entry>
+   <entry key="VALIDATOR.PROCESS_TB.EXPIRATION:db_column_not_null">true</entry>
+   <entry key="VALIDATOR.PROCESS_TB.EXTERNAL_ID:db_column_not_null">true</entry>
+   <entry key="VALIDATOR.PROCESS_TB.EXPIRATION:db_column_precision">10</entry>
+   <entry key="VALIDATOR.PROCESS_TB.ID:db_column_scale">0</entry>
+   <entry key="VALIDATOR.PROCESS_TB.COST:db_column_type">NUMBER</entry>
+   <entry key="VALIDATOR.PROCESS_TB.EXTERNAL_ID:db_column_size">50</entry>
+   <entry key="VALIDATOR.PROCESS_TB.EXPIRATION:db_column_scale">0</entry>
+   <entry key="VALIDATOR.PROCESS_TB.ID:db_column_not_null">true</entry>
+   <entry key="return_single_result_set">false</entry>
+   <entry key="VALIDATOR.PROCESS_TB.COST:db_column_scale">2</entry>
+   <entry key="VALIDATOR.PROCESS_TB.DESCRIPTION:db_column_size">50</entry>
+   <entry key="VALIDATOR.PROCESS_TB.COST:db_column_not_null">true</entry>
+   <entry key="root_descriptor_alias">VALIDATOR.PROCESS_TB</entry>
+   <entry key="VALIDATOR.PROCESS_TB:db_table_type">TABLE</entry>
+   <entry key="VALIDATOR.PROCESS_TB.DESCRIPTION:db_column_not_null">true</entry>
+   <entry key="VALIDATOR.PROCESS_TB.COST:db_column_precision">15</entry>
+   <entry key="VALIDATOR.PROCESS_TB.EXPIRATION:db_column_type">NUMBER</entry>
+   <entry key="VALIDATOR.PROCESS_TB.EXTERNAL_ID:db_column_type">VARCHAR2</entry>
+   <entry key="VALIDATOR.PROCESS_TB.ID:db_column_type">NUMBER</entry>
+   <entry key="VALIDATOR.PROCESS_TB:db_column_4">COST</entry>
+</properties>

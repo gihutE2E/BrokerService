@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="BrokerSendOrderProcess" targetNamespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/SendOrderProcess" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="http://tigo.com/enterprise/business/task/OrderBroker/v1/SendOrderProcess" xmlns:sch="http://tigo.com/enterprise/business/task/OrderBroker/v1/schema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:grs="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema">
+   <wsdl:types>
+      <xsd:schema targetNamespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/SendOrderProcess">
+         <xsd:import namespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/schema" schemaLocation="../../xsd/owner/OrderBroker_schema.xsd"/>
+         <xsd:import namespace="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema" schemaLocation="../../xsd/commons/resources/GeneralResponse.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="SubmitOrderRequest_msg">
+      <wsdl:part element="sch:SubmitOrder_Request" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="SubmitOrderResponse_msg">
+      <wsdl:part element="sch:SubmitOrder_Response" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="GeneralResponseMessage">
+      <wsdl:part element="grs:GeneralResponse" name="fault"/>
+   </wsdl:message>
+   <wsdl:portType name="OrderBrokerServicePortType">
+      <wsdl:operation name="SubmitOrder">
+         <wsdl:input name="SubmitOrder_RequestPort" message="tns:SubmitOrderRequest_msg"/>
+         <wsdl:output name="SubmitOrder_ResponsePort" message="tns:SubmitOrderResponse_msg"/>
+         <wsdl:fault message="tns:GeneralResponseMessage" name="fault"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="OrderBroker_SOAP" type="tns:OrderBrokerServicePortType">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="SubmitOrder">
+         <soap:operation soapAction="http://tigo.com/NotificationService/SubmitRequest" soapActionRequired="true"/>
+         <wsdl:input name="SubmitOrder_RequestPort">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="SubmitOrder_ResponsePort">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+</wsdl:definitions>

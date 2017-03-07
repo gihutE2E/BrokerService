@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://xmlns.tigo.com/ProcessValidator/RuleSchema/V1" xmlns:sta="http://xmlns.tigo.com/ProcessValidator/StatusSchema/V1" xmlns:rol="http://xmlns.tigo.com/ProcessValidator/RoleSchema/V1" targetNamespace="http://xmlns.tigo.com/ProcessValidator/RuleSchema/V1" elementFormDefault="qualified">
+   <xsd:import namespace="http://xmlns.tigo.com/ProcessValidator/StatusSchema/V1" schemaLocation="StatusSchemaV1.xsd"/>
+   <xsd:import namespace="http://xmlns.tigo.com/ProcessValidator/RoleSchema/V1" schemaLocation="RoleSchemaV1.xsd"/>
+   <xsd:element name="rule" type="RuleType"/>
+   <xsd:complexType name="RuleType">
+      <xsd:sequence>
+         <xsd:element name="ruleID" type="xsd:string"/>
+         <xsd:element name="description" type="xsd:string"/>
+         <xsd:element ref="sta:status"/>
+         <xsd:element name="exception" type="xsd:boolean"/>
+         <xsd:element name="responsible">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element ref="rol:role" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="target" type="xsd:string"/>
+         <xsd:element name="expirationDate" type="xsd:date"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+   <service name="continueprovisioningprocess_client" ui:wsdlLocation="BasicContinueProvideProcessWrapper.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/serviceEntity/provisioning/continueProvisioningProcess/v1#wsdl.interface(BasicContinueOrderPort)"/>
+   </service>
+   <reference name="LOG_ORCHESTRATOR_D_STATUS" ui:wsdlLocation="LOG_ORCHESTRATOR_D_STATUS.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/O2_Release/LOG_ORCHESTRATOR_D_STATUS#wsdl.interface(LOG_ORCHESTRATOR_D_STATUS_ptt)"/>
+   </reference>
+   <reference name="ContinueProvisioningMediator.ContinueProvisioningMediator" ui:wsdlLocation="BasicContinueProvisioningServiceWrapper.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/serviceEntity/provisioning/continueProvisioningOrder/v1#wsdl.interface(BasicContinueOrderPort)"/>
+   </reference>
+   <reference name="LOG_ORCHESTRATOR_PRODUCT_UPDATE" ui:wsdlLocation="LOG_ORCHESTRATOR_PRODUCT_UPDATE.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_PRODUCT_UPDATE#wsdl.interface(LOG_ORCHESTRATOR_PRODUCT_UPDATE_ptt)"/>
+   </reference>
+   <reference name="FaultNotificationService" ui:wsdlLocation="BasicFaultNotificationWrapper3.wsdl">
+      <interface.wsdl interface="http://tigo.hn/enterprise/faultNotificationService/createFault#wsdl.interface(FaultNotification_Port)"/>
+   </reference>
+   <reference name="PromotionQueue" ui:wsdlLocation="PromotionQueue.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/jms/OrchestratorOrders/O2/PromotionQueue#wsdl.interface(Produce_Message_ptt)"/>
+   </reference>
+</componentType>

@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://www.tigo.com/platform/productConfigurationO2Service/getConfigurationBaseProduct/v1/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:sch="http://www.tigo.com/platform/productConfigurationO2Service/getConfigurationBaseProduct/v1/schema" xmlns:bsc="http://tigo.com/commons/basicRequest/v1/schema" xmlns:pro="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema" xmlns:ads="http://tigo.com/commons/resources/additional/v1/schema" xmlns:ord="http://tigo.com/enterprise/serviceEntity/provisioning/order/v1/schema" xmlns:dcr="http://tigo.com/enterprise/serviceEntity/provisioning/dataChangeRequest/v1/schema" xmlns:fsr="http://tigo.com/enterprise/serviceEntity/provisioning/fieldService/v1/schema" xmlns:cmn="http://tigo.com/commons/generalResponse/v1/schema">
+   <xsd:import namespace="http://tigo.com/commons/generalResponse/v1/schema" schemaLocation="commons/BasicGeneralResponse_schema.xsd"/>
+   <xsd:import namespace="http://tigo.com/commons/basicRequest/v1/schema" schemaLocation="commons/BasicRequest_schema.xsd"/>
+   <xsd:import namespace="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema" schemaLocation="product/BasicProduct_schema.xsd"/>
+   <xsd:import namespace="http://tigo.com/commons/resources/additional/v1/schema" schemaLocation="commons/resources/BasicAdditional_schema.xsd"/>
+   <xsd:import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/order/v1/schema" schemaLocation="BasicOrder_schema.xsd"/>
+   <xsd:import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/dataChangeRequest/v1/schema" schemaLocation="BasicDataChangeRequest_schema.xsd"/>
+   <xsd:import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/fieldService/v1/schema" schemaLocation="BasicFieldService_schema.xsd"/>
+   <xsd:element name="GetConfigurationBaseProductRequest" type="sch:GetConfigurationBaseProductRequestType"/>
+   <xsd:complexType name="GetConfigurationBaseProductRequestType">
+      <xsd:sequence>
+         <xsd:element ref="bsc:basicRequest"/>
+         <xsd:element ref="pro:product"/>
+         <xsd:element ref="ads:additionals"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="GetConfigurationBaseProductResponse" type="sch:GetConfigurationBaseProductResponseType"/>
+   <xsd:complexType name="GetConfigurationBaseProductResponseType">
+      <xsd:sequence>
+         <xsd:element ref="cmn:GeneralResponse"/>
+         <xsd:element name="productOffering" type="sch:productOfferingType" minOccurs="0"/>
+         <xsd:element name="dataChangeRequest_orders" type="sch:dataChangeRequest_orders_Type" minOccurs="0"/>
+         <xsd:element name="field_orders" type="sch:field_orders_Type" minOccurs="0"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="productOfferingType">
+      <xsd:sequence>
+         <xsd:element ref="ord:order" maxOccurs="unbounded"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="dataChangeRequest_orders_Type">
+      <xsd:sequence>
+         <xsd:element ref="dcr:dataChangeRequest" maxOccurs="unbounded"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="field_orders_Type">
+      <xsd:sequence>
+         <xsd:element ref="fsr:fieldService" maxOccurs="unbounded"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://tigo.com/enterprise/business/task/ServiceRequestTrace/v1/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:prm="http://tigo.com/enterprise/resources/parameters/simple/v1/schema" xmlns:ord="http://tigo.com/enterprise/business/entities/order/v1/schema" xmlns:brk="http://tigo.com/enterprise/business/task/ServiceRequestTrace/v1/schema" xmlns:grq="http://tigo.com/enterprise/resources/GeneralRequest/v1/schema" xmlns:grs="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema">
+   <xsd:import namespace="http://tigo.com/enterprise/resources/parameters/simple/v1/schema" schemaLocation="../commons/resources/Parameters.xsd"/>
+   <xsd:import namespace="http://tigo.com/enterprise/business/entities/order/v1/schema" schemaLocation="../business/order/Order_schema.xsd"/>
+   <xsd:import namespace="http://tigo.com/enterprise/resources/GeneralRequest/v1/schema" schemaLocation="../commons/resources/GeneralRequest.xsd"/>
+   <xsd:import namespace="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema" schemaLocation="../commons/resources/GeneralResponse.xsd"/>
+   <xsd:element name="Set_Request" type="brk:Set_RequestType"/>
+   <xsd:complexType name="Set_RequestType">
+      <xsd:sequence>
+         <xsd:element name="GeneralRequest" type="grq:GeneralRequest_type" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="Order" type="ord:order_type" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="parameters" type="prm:parameter_array" minOccurs="0" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="Set_Response" type="brk:Set_ResponseType"/>
+   <xsd:complexType name="Set_ResponseType">
+      <xsd:sequence>
+         <xsd:element name="GeneralResponse" type="grs:GeneralResponse_type" minOccurs="1" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

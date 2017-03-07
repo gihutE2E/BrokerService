@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="CounterBPELProcess" targetNamespace="http://xmlns.oracle.com/Broker/Broker/CounterBPELProcess" xmlns:ns2="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema" xmlns:ns1="http://tigo.com/enterprise/business/task/OrderBroker/v1/schema" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns3="http://www.tigo.com/resource/masterStatusServices/masterStatus/v1/schema" xmlns:client="http://xmlns.oracle.com/Broker/Broker/CounterBPELProcess" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+   <plnk:partnerLinkType name="CounterBPELProcess">
+      <plnk:role name="CounterBPELProcessProvider" portType="client:CounterBPELProcess"/>
+   </plnk:partnerLinkType>
+   <wsdl:import namespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/schema" location="xsd/owner/OrderBroker_schema.xsd"/>
+   <wsdl:types>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema" xmlns:ns1="http://tigo.com/enterprise/business/task/OrderBroker/v1/schema" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:client="http://xmlns.oracle.com/Broker/Broker/CounterBPELProcess" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+         <xsd:import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema" schemaLocation="xsd/partner/BasicOrderRequest_schema.xsd"/>
+      </xsd:schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="http://www.tigo.com/resource/masterStatusServices/masterStatus/v1/schema" schemaLocation="xsd/partner/BasicMasterStatus_schema.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="CounterBPELProcessRequestMessage">
+      <wsdl:part name="payload" element="ns1:SubmitOrder_Request"/>
+   </wsdl:message>
+   <wsdl:portType name="CounterBPELProcess">
+      <wsdl:operation name="process">
+         <wsdl:input message="client:CounterBPELProcessRequestMessage"/>
+      </wsdl:operation>
+   </wsdl:portType>
+</wsdl:definitions>

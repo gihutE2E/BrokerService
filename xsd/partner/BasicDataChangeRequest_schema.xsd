@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/dataChangeRequest/v1/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://tigo.com/enterprise/serviceEntity/provisioning/dataChangeRequest/v1/schema">
+   <xsd:element name="dataChangeRequest" type="tns:dataChangeRequestType"/>
+   <xsd:complexType name="dataChangeRequestType">
+      <xsd:sequence>
+         <xsd:element name="dataReference" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="dataValue" type="xsd:string" minOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

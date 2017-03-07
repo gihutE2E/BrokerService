@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="NotificationService" targetNamespace="http://tigo.com/enterprise/business/task/Notification/v1" xmlns:tns="http://tigo.com/enterprise/business/task/Notification/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:sch="http://tigo.com/enterprise/business/task/Notification/v1/schema" xmlns:grs="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema">
+   <wsdl:types>
+      <xsd:schema targetNamespace="http://tigo.com/enterprise/business/task/Notification/v1">
+         <xsd:import namespace="http://tigo.com/enterprise/business/task/Notification/v1/schema" schemaLocation="../../xsd/partner/BasicNotification_schema.xsd"/>
+         <xsd:import namespace="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema" schemaLocation="../../xsd/partner/resources/GeneralResponse.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="NotifyRequest_msg">
+      <wsdl:part name="body" element="sch:Notify_Request"/>
+   </wsdl:message>
+   <wsdl:message name="NotifyResponse_msg">
+      <wsdl:part name="body" element="sch:Notify_Response"/>
+   </wsdl:message>
+   <wsdl:message name="GeneralResponseMessage">
+      <wsdl:part name="fault" element="grs:GeneralResponse"/>
+   </wsdl:message>
+   <wsdl:portType name="NotificationServicePortType">
+      <wsdl:operation name="Notify">
+         <wsdl:input name="Notify_RequestPort" message="tns:NotifyRequest_msg"/>
+         <wsdl:output name="Notify_ResponsePort" message="tns:NotifyResponse_msg"/>
+         <wsdl:fault name="fault" message="tns:GeneralResponseMessage"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="NotificationServiceBinding" type="tns:NotificationServicePortType">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="Notify">
+         <soap:operation soapAction="http://tigo.com/NotificationService/Notify" soapActionRequired="true"/>
+         <wsdl:input name="Notify_RequestPort">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="Notify_ResponsePort">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="notifyprocess_client_ep">
+      <wsdl:port name="NotificationServicePort" binding="tns:NotificationServiceBinding">
+         <soap:address location="http://soao2pvstst-srv.tigo.com.gt:8001/soa-infra/services/ffs/Notification_v2/notifyprocess_client_ep"/>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>

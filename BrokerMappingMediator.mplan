@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Mediator name="BrokerMappingMediator" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" wsdlTargetNamespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/SendOrderProcess" xmlns="http://xmlns.oracle.com/sca/1.0/mediator" xmlns:sch="http://tigo.com/enterprise/business/task/OrderBroker/v1/schema">
+   <operation name="SubmitOrder" deliveryPolicy="AllOrNothing" priority="4" validateSchema="false">
+      <switch>
+         <case executionType="direct" name="O2MappingProcess.o2mappingprocess_client.SubmitOrder">
+            <condition language="xpath">
+               <expression>$in.body/sch:SubmitOrder_Request/Order/orderSpecification/action = 'ADD' or $in.body/sch:SubmitOrder_Request/Order/orderSpecification/action = 'PROVISIONING' or $in.body/sch:SubmitOrder_Request/Order/orderSpecification/action = 'DELETE'</expression>
+            </condition>
+            <action>
+               <transform>
+                  <part name="$out.body" function="xslt(xsl/SubmitOrder_Request_To_SubmitOrder_Request_O2.xsl, $in.body)"/>
+               </transform>
+               <invoke reference="O2MappingProcess.o2mappingprocess_client" operation="SubmitOrder">
+                  <onReply>
+                     <transform>
+                        <part name="$out.body" function="xslt(xsl/SubmitOrder_Response_To_SubmitOrder_Response_O2.xsl, $in.body)"/>
+                     </transform>
+                     <reply/>
+                  </onReply>
+                  <onFault type="fault">
+                     <transform>
+                        <part name="$out.fault" function="xslt(xsl/GeneralResponse_To_GeneralResponse.xsl, $in.fault)"/>
+                     </transform>
+                     <fault type="fault"/>
+                  </onFault>
+               </invoke>
+            </action>
+         </case>
+         <case executionType="direct" name="PVSProcess.pvsprocess_client.SubmitOrder">
+            <condition language="xpath">
+               <expression>$in.body/sch:SubmitOrder_Request/Order/orderSpecification/action = 'VALIDATE' or  $in.body/sch:SubmitOrder_Request/Order/orderSpecification/action = 'VERIFY'</expression>
+            </condition>
+            <action>
+               <transform>
+                  <part name="$out.body" function="xslt(xsl/SubmitOrder_Request_To_SubmitOrder_Request_PVS.xsl, $in.body)"/>
+               </transform>
+               <invoke reference="PVSProcess.pvsprocess_client" operation="SubmitOrder">
+                  <onReply>
+                     <transform>
+                        <part name="$out.body" function="xslt(xsl/SubmitOrder_Response_To_SubmitOrder_Response_PVS.xsl, $in.body)"/>
+                     </transform>
+                     <reply/>
+                  </onReply>
+                  <onFault type="fault">
+                     <transform>
+                        <part name="$out.fault" function="xslt(xsl/GeneralResponse_To_GeneralResponse.xsl, $in.fault)"/>
+                     </transform>
+                     <fault type="fault"/>
+                  </onFault>
+               </invoke>
+            </action>
+         </case>
+      </switch>
+   </operation>
+</Mediator>

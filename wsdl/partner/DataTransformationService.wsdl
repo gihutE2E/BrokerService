@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<WL5G3N0:definitions name="DataTransformation" targetNamespace="http://tigo.com/enterprise/serviceEntity/DataTransformation/v1" xmlns:WL5G3N0="http://schemas.xmlsoap.org/wsdl/" xmlns:WL5G3N1="http://tigo.com/enterprise/serviceEntity/DataTransformation/v1/schema" xmlns:WL5G3N2="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema" xmlns:WL5G3N3="http://tigo.com/enterprise/serviceEntity/DataTransformation/v1" xmlns:WL5G3N4="http://schemas.xmlsoap.org/wsdl/soap12/">
+   <WL5G3N0:types>
+      <xsd:schema targetNamespace="http://tigo.com/enterprise/serviceEntity/DataTransformation/v1" xmlns:grs="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema" xmlns:sch="http://tigo.com/enterprise/serviceEntity/DataTransformation/v1/schema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="http://tigo.com/enterprise/serviceEntity/DataTransformation/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema" schemaLocation="../../xsd/commons/resources/GeneralResponse.xsd"/>
+         <xsd:import namespace="http://tigo.com/enterprise/serviceEntity/DataTransformation/v1/schema" schemaLocation="../../xsd/partner/BasicDataTransformation_schema.xsd"/>
+      </xsd:schema>
+   </WL5G3N0:types>
+   <WL5G3N0:message name="BasicTransform_msg">
+      <WL5G3N0:part element="WL5G3N1:BasicTransformRequest" name="body"/>
+   </WL5G3N0:message>
+   <WL5G3N0:message name="BasicTransformResponse_msg">
+      <WL5G3N0:part element="WL5G3N1:BasicTransformResponse" name="body"/>
+   </WL5G3N0:message>
+   <WL5G3N0:message name="GeneralResponse_msg">
+      <WL5G3N0:part element="WL5G3N2:GeneralResponse" name="fault"/>
+   </WL5G3N0:message>
+   <WL5G3N0:portType name="BasicDataTransformationPort">
+      <WL5G3N0:operation name="Transform">
+         <WL5G3N0:input message="WL5G3N3:BasicTransform_msg" name="BasicTransformPortRequest"/>
+         <WL5G3N0:output message="WL5G3N3:BasicTransformResponse_msg" name="BasicTransformPortResponse"/>
+         <WL5G3N0:fault message="WL5G3N3:GeneralResponse_msg" name="fault"/>
+      </WL5G3N0:operation>
+   </WL5G3N0:portType>
+   <WL5G3N0:binding name="DataTransformation_wsSOAP" type="WL5G3N3:BasicDataTransformationPort">
+      <WL5G3N4:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <WL5G3N0:operation name="Transform">
+         <WL5G3N4:operation/>
+         <WL5G3N0:input name="BasicTransformPortRequest">
+            <WL5G3N4:body use="literal"/>
+         </WL5G3N0:input>
+         <WL5G3N0:output name="BasicTransformPortResponse">
+            <WL5G3N4:body use="literal"/>
+         </WL5G3N0:output>
+         <WL5G3N0:fault name="fault">
+            <WL5G3N4:fault name="fault" use="literal"/>
+         </WL5G3N0:fault>
+      </WL5G3N0:operation>
+   </WL5G3N0:binding>
+   <WL5G3N0:service name="DataTransformation_wsSOAPQSService">
+      <WL5G3N0:port binding="WL5G3N3:DataTransformation_wsSOAP" name="DataTransformation_wsSOAPQSPort">
+         <WL5G3N4:address location="http://osbo2pvstst-srv.tigo.com.gt:8011/enterprise/serviceEntity/dataTransformation/v1"/>
+      </WL5G3N0:port>
+   </WL5G3N0:service>
+</WL5G3N0:definitions>

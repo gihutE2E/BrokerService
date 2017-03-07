@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+   <service name="pvsitemgroupprocess_client" ui:wsdlLocation="PVSItemGroupProcess.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/business/task/OrderBroker/v1/PVSItemGroupProcess#wsdl.interface(PVSItemGroupProcess)" callbackInterface="http://tigo.com/enterprise/business/task/OrderBroker/v1/PVSItemGroupProcess#wsdl.interface(PVSItemGroupProcessCallback)"/>
+   </service>
+</componentType>

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="ReverseProvideProcess" targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/reverseProvideProcess" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:sch="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema" xmlns:tns="http://tigo.com/enterprise/serviceEntity/provisioning/reverseProvideProcess" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cmn="http://tigo.com/commons/generalResponse/v1/schema">
+   <wsdl:types>
+      <xsd:schema targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/reverseProvideProcess">
+         <xsd:import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema" schemaLocation="../../xsd/BasicOrderRequest_schema.xsd"/>
+         <xsd:import namespace="http://tigo.com/commons/generalResponse/v1/schema" schemaLocation="../../xsd/commons/BasicGeneralResponse_schema.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="BasicVoidOrderRequest_msg">
+      <wsdl:part element="sch:BasicVoidOrderRequest" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="BasicVoidOrderResponse_msg">
+      <wsdl:part element="sch:BasicVoidOrderResponse" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="GeneralResponse_msg">
+      <wsdl:part element="cmn:GeneralResponse" name="fault"/>
+   </wsdl:message>
+   <wsdl:portType name="BasicOrderPort">
+      <wsdl:operation name="ReverseOrder">
+         <wsdl:input message="tns:BasicVoidOrderRequest_msg" name="BasicVoidOrderPortRequest"/>
+         <wsdl:output message="tns:BasicVoidOrderResponse_msg" name="BasicVoidOrderPortResponse"/>
+         <wsdl:fault message="tns:GeneralResponse_msg" name="fault"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="Order_wsSOAP" type="tns:BasicOrderPort">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="ReverseOrder">
+         <soap:operation soapAction=""/>
+         <wsdl:input name="BasicVoidOrderPortRequest">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="BasicVoidOrderPortResponse">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+</wsdl:definitions>

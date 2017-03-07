@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="OrderInterpreterService" targetNamespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/OrderInterpreterService" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://tigo.com/enterprise/business/task/OrderBroker/v1/OrderInterpreterService" xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <plnk:partnerLinkType name="OrderInterpreterService">
+      <plnk:role name="OrderInterpreterServicePortType" portType="tns:OrderInterpreterServicePortType"/>
+   </plnk:partnerLinkType>
+   <wsdl:import namespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/OrderInterpreterService" location="wsdl/partner/OrderInterpreterService.wsdl"/>
+</wsdl:definitions>

@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="LOG_PROVISIONING_PRODUCT_SELECT" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/O2/O2/LOG_PROVISIONING_PRODUCT_SELECT" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/O2/O2/LOG_PROVISIONING_PRODUCT_SELECT" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:top="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_PROVISIONING_PRODUCT_SELECT">
+   <plt:partnerLinkType name="LOG_PROVISIONING_PRODUCT_SELECT_plt">
+      <plt:role name="LOG_PROVISIONING_PRODUCT_SELECT_role">
+         <plt:portType name="tns:LOG_PROVISIONING_PRODUCT_SELECT_ptt"/>
+      </plt:role>
+   </plt:partnerLinkType>
+   <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema">
+         <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_PROVISIONING_PRODUCT_SELECT" schemaLocation="xsd/LOG_PROVISIONING_PRODUCT_SELECT_table.xsd"/>
+      </schema>
+   </wsdl:types>
+   <wsdl:message name="LOG_PROVISIONING_PRODUCT_SELECTSelect_inputParameters">
+      <wsdl:part name="LOG_PROVISIONING_PRODUCT_SELECTSelect_inputParameters" element="top:LOG_PROVISIONING_PRODUCT_SELECTSelect_utiInputParameters"/>
+   </wsdl:message>
+   <wsdl:message name="LogProvisioningProductCollection_msg">
+      <wsdl:part name="LogProvisioningProductCollection" element="top:LogProvisioningProductCollection"/>
+   </wsdl:message>
+   <wsdl:portType name="LOG_PROVISIONING_PRODUCT_SELECT_ptt">
+      <wsdl:operation name="LOG_PROVISIONING_PRODUCT_SELECTSelect">
+         <wsdl:input message="tns:LOG_PROVISIONING_PRODUCT_SELECTSelect_inputParameters"/>
+         <wsdl:output message="tns:LogProvisioningProductCollection_msg"/>
+      </wsdl:operation>
+   </wsdl:portType>
+</wsdl:definitions>

@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<sensors targetNamespace="http://xmlns.oracle.com/Broker/Broker/CounterBPELProcess" xmlns="http://xmlns.oracle.com/bpel/sensor" xmlns:tns="http://xmlns.oracle.com/Broker/Broker/CounterBPELProcess" xmlns:pc="http://xmlns.oracle.com/bpel/sensor">
+   <sensor sensorName="ActivitySensor1" classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="requestTransformation">
+      <activityConfig evalTime="all">
+         <variable outputDataType="BasicOrderRequest" outputNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema" target="$RequestAssign"/>
+      </activityConfig>
+   </sensor>
+</sensors>

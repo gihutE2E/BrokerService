@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://tigo.com/enterprise/serviceEntity/DataTransformation/v1/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:sch="http://tigo.com/enterprise/serviceEntity/DataTransformation/v1/schema" xmlns:grq="http://tigo.com/enterprise/resources/GeneralRequest/v1/schema" xmlns:grs="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema" xmlns:prm="http://tigo.com/enterprise/resources/parameters/simple/v1/schema">
+   <xsd:import namespace="http://tigo.com/enterprise/resources/GeneralRequest/v1/schema" schemaLocation="../commons/resources/GeneralRequest.xsd"/>
+   <xsd:import namespace="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema" schemaLocation="../commons/resources/GeneralResponse.xsd"/>
+   <xsd:import namespace="http://tigo.com/enterprise/resources/parameters/simple/v1/schema" schemaLocation="../commons/resources/Parameters.xsd"/>
+   <xsd:element name="BasicTransformRequest" type="sch:BasicTransformQuery"/>
+   <xsd:complexType name="BasicTransformQuery">
+      <xsd:sequence>
+         <xsd:element ref="grq:GeneralRequest" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="type" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="subtype" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="target" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="key" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="code" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="parameters" type="prm:parameter_array" minOccurs="0" nillable="true"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="BasicTransformResponse" type="sch:BasicTransformResponseQuery"/>
+   <xsd:complexType name="BasicTransformResponseQuery">
+      <xsd:sequence>
+         <xsd:element name="GeneralResponse" type="grs:GeneralResponse_type" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="data" type="xsd:anyType" minOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

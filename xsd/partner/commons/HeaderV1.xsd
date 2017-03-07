@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema targetNamespace="http://xmlns.tigo.com/Header/V1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cmn="http://xmlns.tigo.com/Header/V1">
+   <xsd:element name="generalHeader" type="cmn:Header"/>
+   <xsd:complexType name="Header">
+      <xsd:sequence>
+         <xsd:element name="correlationId" type="xsd:string" minOccurs="0"/>
+         <xsd:element name="status" type="xsd:string" minOccurs="0"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

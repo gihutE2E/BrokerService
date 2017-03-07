@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<GenerateOrder_Response xmlns="http://tigo.com/enterprise/business/task/CRMOrderManagement/v1/schema">
+   <GeneralResponse xmlns="">
+      <uti>uti1</uti>
+      <status>status2</status>
+      <code>code3</code>
+      <codeType>codeType4</codeType>
+      <message>message5</message>
+   </GeneralResponse>
+   <O2_Request xmlns="">
+      <basicRequest xmlns="http://tigo.com/commons/basicRequest/v1/schema">
+         <externalApplicationID xmlns="">externalApplicationID6</externalApplicationID>
+         <externalTransactionID xmlns="">externalTransactionID7</externalTransactionID>
+         <utiReference xmlns="">utiReference8</utiReference>
+      </basicRequest>
+      <ServiceOffer>
+         <order>
+            <client xmlns="http://tigo.com/enterprise/businessEntity/client/basic/v1/schema">
+               <ID xmlns="">ID9</ID>
+               <idType xmlns="">idType10</idType>
+            </client>
+         </order>
+         <order>
+            <client xmlns="http://tigo.com/enterprise/businessEntity/client/basic/v1/schema">
+               <ID xmlns="">ID11</ID>
+               <idType xmlns="">idType12</idType>
+            </client>
+         </order>
+         <order>
+            <client xmlns="http://tigo.com/enterprise/businessEntity/client/basic/v1/schema">
+               <ID xmlns="">ID13</ID>
+               <idType xmlns="">idType14</idType>
+            </client>
+         </order>
+      </ServiceOffer>
+   </O2_Request>
+</GenerateOrder_Response>

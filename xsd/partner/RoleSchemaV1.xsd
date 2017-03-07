@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://xmlns.tigo.com/ProcessValidator/RoleSchema/V1" targetNamespace="http://xmlns.tigo.com/ProcessValidator/RoleSchema/V1" elementFormDefault="qualified">
+   <xsd:element name="role" type="RoleType">
+      <xsd:annotation>
+         <xsd:documentation>A sample element</xsd:documentation>
+      </xsd:annotation>
+   </xsd:element>
+   <xsd:complexType name="RoleType">
+      <xsd:sequence>
+         <xsd:element name="roleID" type="xsd:string"/>
+         <xsd:element name="typeID" type="xsd:string"/>
+         <xsd:element name="name" minOccurs="0" type="xsd:string"/>
+         <xsd:element name="contactEmail" type="xsd:string" minOccurs="0"/>
+         <xsd:element name="contactPhone" type="xsd:string" minOccurs="0"/>
+         <xsd:element name="user" minOccurs="0" type="xsd:string"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

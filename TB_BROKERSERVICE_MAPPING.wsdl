@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="TB_BROKERSERVICE_MAPPING" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/Broker/BrokerService/TB_BROKERSERVICE_MAPPING" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/Broker/BrokerService/TB_BROKERSERVICE_MAPPING" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:top="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_BROKERSERVICE_MAPPING">
+   <plt:partnerLinkType name="TB_BROKERSERVICE_MAPPING_plt">
+      <plt:role name="TB_BROKERSERVICE_MAPPING_role">
+         <plt:portType name="tns:TB_BROKERSERVICE_MAPPING_ptt"/>
+      </plt:role>
+   </plt:partnerLinkType>
+   <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema">
+         <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_BROKERSERVICE_MAPPING" schemaLocation="xsd/TB_BROKERSERVICE_MAPPING_table.xsd"/>
+      </schema>
+   </wsdl:types>
+   <wsdl:message name="TB_BROKERSERVICE_MAPPINGSelect_inputParameters">
+      <wsdl:part name="TB_BROKERSERVICE_MAPPINGSelect_inputParameters" element="top:TB_BROKERSERVICE_MAPPINGSelect_action_event_serviceCodeInputParameters"/>
+   </wsdl:message>
+   <wsdl:message name="TbBrokerServiceMappingCollection_msg">
+      <wsdl:part name="TbBrokerServiceMappingCollection" element="top:TbBrokerServiceMappingCollection"/>
+   </wsdl:message>
+   <wsdl:portType name="TB_BROKERSERVICE_MAPPING_ptt">
+      <wsdl:operation name="TB_BROKERSERVICE_MAPPINGSelect">
+         <wsdl:input message="tns:TB_BROKERSERVICE_MAPPINGSelect_inputParameters"/>
+         <wsdl:output message="tns:TbBrokerServiceMappingCollection_msg"/>
+      </wsdl:operation>
+   </wsdl:portType>
+</wsdl:definitions>

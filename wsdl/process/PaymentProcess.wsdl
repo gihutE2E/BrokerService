@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="PaymentProces" targetNamespace="http://tigo.com/enterprise/serviceEntity/payment/paymentProcess" xmlns:ns1="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_CHARGE_UPDATE" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://tigo.com/enterprise/serviceEntity/payment/paymentProcess" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cmn="http://tigo.com/commons/generalResponse/v1/schema" xmlns:sch="http://tigo.com/enterprise/taskService/payment/v1/schema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/">
+   <wsdl:types>
+      <xsd:schema targetNamespace="http://tigo.com/enterprise/serviceEntity/payment/paymentProcess">
+         <xsd:import namespace="http://tigo.com/enterprise/taskService/payment/v1/schema" schemaLocation="../../xsd/BasicPayment_schema.xsd"/>
+         <xsd:import namespace="http://tigo.com/commons/generalResponse/v1/schema" schemaLocation="../../xsd/commons/BasicGeneralResponse_schema.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="BasicPaymentRequest_msg">
+      <wsdl:part name="body" element="sch:BasicPaymentRequest"/>
+   </wsdl:message>
+   <wsdl:message name="BasicPaymentResponse_msg">
+      <wsdl:part name="body" element="sch:BasicPaymentResponse"/>
+   </wsdl:message>
+   <wsdl:message name="GeneralResponse_msg">
+      <wsdl:part name="fault" element="cmn:GeneralResponse"/>
+   </wsdl:message>
+   <wsdl:portType name="BasicPaymentPort">
+      <wsdl:operation name="ExecuteOrder">
+         <wsdl:input name="BasicPaymentPortRequest" message="tns:BasicPaymentRequest_msg"/>
+         <wsdl:output name="BasicPaymentPortResponse" message="tns:BasicPaymentResponse_msg"/>
+         <wsdl:fault name="fault" message="tns:GeneralResponse_msg"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="Order_wsSOAP" type="tns:BasicPaymentPort">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="ExecuteOrder">
+         <soap:operation soapAction="" soapActionRequired="false"/>
+         <wsdl:input name="BasicPaymentPortRequest">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="BasicPaymentPortResponse">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+</wsdl:definitions>

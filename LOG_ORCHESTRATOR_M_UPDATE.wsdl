@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="LOG_ORCHESTRATOR_M_UPDATE" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_M_UPDATE" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_M_UPDATE" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:top="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_M_UPDATE">
+   <plt:partnerLinkType name="LOG_ORCHESTRATOR_M_UPDATE_plt">
+      <plt:role name="LOG_ORCHESTRATOR_M_UPDATE_role">
+         <plt:portType name="tns:LOG_ORCHESTRATOR_M_UPDATE_ptt"/>
+      </plt:role>
+   </plt:partnerLinkType>
+   <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema">
+         <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_M_UPDATE" schemaLocation="xsd/LOG_ORCHESTRATOR_M_UPDATE_table.xsd"/>
+      </schema>
+   </wsdl:types>
+   <wsdl:message name="LogOrchestratorMCollection_msg">
+      <wsdl:part name="LogOrchestratorMCollection" element="top:LogOrchestratorMCollection"/>
+   </wsdl:message>
+   <wsdl:portType name="LOG_ORCHESTRATOR_M_UPDATE_ptt">
+      <wsdl:operation name="update">
+         <wsdl:input message="tns:LogOrchestratorMCollection_msg"/>
+      </wsdl:operation>
+   </wsdl:portType>
+</wsdl:definitions>

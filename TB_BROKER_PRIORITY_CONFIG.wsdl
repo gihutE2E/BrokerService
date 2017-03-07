@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="TB_BROKER_PRIORITY_CONFIG" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/Broker/BrokerService/TB_BROKER_PRIORITY_CONFIG" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/Broker/BrokerService/TB_BROKER_PRIORITY_CONFIG" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:top="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_BROKER_PRIORITY_CONFIG">
+   <plt:partnerLinkType name="TB_BROKER_PRIORITY_CONFIG_plt">
+      <plt:role name="TB_BROKER_PRIORITY_CONFIG_role">
+         <plt:portType name="tns:TB_BROKER_PRIORITY_CONFIG_ptt"/>
+      </plt:role>
+   </plt:partnerLinkType>
+   <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema">
+         <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_BROKER_PRIORITY_CONFIG" schemaLocation="xsd/TB_BROKER_PRIORITY_CONFIG_table.xsd"/>
+      </schema>
+   </wsdl:types>
+   <wsdl:message name="TB_BROKER_PRIORITY_CONFIGSelect_inputParameters">
+      <wsdl:part name="TB_BROKER_PRIORITY_CONFIGSelect_inputParameters" element="top:TB_BROKER_PRIORITY_CONFIGSelect_product_actionInputParameters"/>
+   </wsdl:message>
+   <wsdl:message name="TbBrokerPriorityConfigCollection_msg">
+      <wsdl:part name="TbBrokerPriorityConfigCollection" element="top:TbBrokerPriorityConfigCollection"/>
+   </wsdl:message>
+   <wsdl:portType name="TB_BROKER_PRIORITY_CONFIG_ptt">
+      <wsdl:operation name="TB_BROKER_PRIORITY_CONFIGSelect">
+         <wsdl:input message="tns:TB_BROKER_PRIORITY_CONFIGSelect_inputParameters"/>
+         <wsdl:output message="tns:TbBrokerPriorityConfigCollection_msg"/>
+      </wsdl:operation>
+   </wsdl:portType>
+</wsdl:definitions>

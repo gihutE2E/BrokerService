@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="ProvideProces" targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess" xmlns:ns2="http://tigo.com/enterprise/business/task/Notification/v1" xmlns:ns1="http://tigo.hn/enterprise/faultNotificationService/createFault" xmlns:ns4="http://tigo.com/resources/util/productItem/v1/schema" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns3="http://tigo.com/enterprise/resources/statusArray" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess" xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns5="http://tigo.com/enterprise/business/entities/order/v1/schema">
+   <plnk:partnerLinkType name="BasicProvisioningPort_PL">
+      <plnk:role name="BasicProvisioningPort_Role" portType="tns:BasicProvisioningPort"/>
+   </plnk:partnerLinkType>
+   <wsdl:import namespace="http://tigo.hn/enterprise/faultNotificationService/createFault" location="wsdl/BasicFaultNotification.wsdl"/>
+   <wsdl:import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess" location="wsdl/process/ProvideProcess.wsdl"/>
+   <wsdl:import namespace="http://tigo.com/enterprise/business/task/Notification/v1" location="wsdl/partner/BasicNotificationServiceV2.wsdl"/>
+   <wsdl:types>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://tigo.com/enterprise/business/task/Notification/v1" xmlns:ns1="http://tigo.hn/enterprise/faultNotificationService/createFault" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns4="http://tigo.com/resources/util/productItem/v1/schema" xmlns:ns3="http://tigo.com/enterprise/resources/statusArray" xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:tns="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+         <xsd:import namespace="http://tigo.com/enterprise/resources/statusArray" schemaLocation="xsd/process/resources/statusResult.xsd"/>
+      </xsd:schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://tigo.com/enterprise/business/task/Notification/v1" xmlns:ns1="http://tigo.hn/enterprise/faultNotificationService/createFault" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns4="http://tigo.com/resources/util/productItem/v1/schema" xmlns:ns3="http://tigo.com/enterprise/resources/statusArray" xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:tns="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+         <xsd:import namespace="http://tigo.com/resources/util/productItem/v1/schema" schemaLocation="xsd/util/product_items_schema.xsd"/>
+      </xsd:schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="http://tigo.com/enterprise/business/entities/order/v1/schema" schemaLocation="xsd/util/item_type_schema.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+</wsdl:definitions>

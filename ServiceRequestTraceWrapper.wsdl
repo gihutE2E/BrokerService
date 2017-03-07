@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="ServiceRequestTrace" targetNamespace="http://tigo.com/enterprise/business/task/ServiceRequestTrace/v1" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:WL5G3N3="http://tigo.com/enterprise/business/task/ServiceRequestTrace/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <plnk:partnerLinkType name="ServiceRequestTrace">
+      <plnk:role name="ServiceRequestTracePortType" portType="WL5G3N3:ServiceRequestTracePortType"/>
+   </plnk:partnerLinkType>
+   <wsdl:import namespace="http://tigo.com/enterprise/business/task/ServiceRequestTrace/v1" location="wsdl/partner/ServiceRequestTrace.wsdl"/>
+</wsdl:definitions>

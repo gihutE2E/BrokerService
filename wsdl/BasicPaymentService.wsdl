@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="PaymentService" targetNamespace="http://tigo.com/enterprise/taskService/paymentService/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://tigo.com/enterprise/taskService/paymentService/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:rvs="http://tigo.com/enterprise/taskService/reversePayment/v1/schema" xmlns:cmn="http://tigo.com/commons/generalResponse/v1/schema" xmlns:sch="http://tigo.com/enterprise/taskService/payment/v1/schema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+   <wsdl:types>
+      <xsd:schema targetNamespace="http://tigo.com/enterprise/taskService/paymentService/v1">
+         <xsd:import namespace="http://tigo.com/enterprise/taskService/payment/v1/schema" schemaLocation="../xsd/BasicPayment_schema.xsd"/>
+         <xsd:import namespace="http://tigo.com/commons/generalResponse/v1/schema" schemaLocation="../xsd/commons/BasicGeneralResponse_schema.xsd"/>
+         <xsd:import namespace="http://tigo.com/enterprise/taskService/reversePayment/v1/schema" schemaLocation="../xsd/BasicReversePayment_schema.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="BasicPaymentRequest_msg">
+      <wsdl:part name="body" element="sch:BasicPaymentRequest"/>
+   </wsdl:message>
+   <wsdl:message name="BasicPaymentResponse_msg">
+      <wsdl:part name="body" element="sch:BasicPaymentResponse"/>
+   </wsdl:message>
+   <wsdl:message name="GeneralResponse_msg">
+      <wsdl:part name="fault" element="cmn:GeneralResponse"/>
+   </wsdl:message>
+   <wsdl:message name="BasicReversePaymentRequest_msg">
+      <wsdl:part name="body" element="rvs:BasicReversePaymentRequest"/>
+   </wsdl:message>
+   <wsdl:message name="BasicReversePaymentResponse_msg">
+      <wsdl:part name="body" element="rvs:BasicReversePaymentResponse"/>
+   </wsdl:message>
+   <wsdl:portType name="BasicPaymentPort">
+      <wsdl:operation name="ExecutePayment">
+         <wsdl:input name="BasicPaymentPortRequest" message="tns:BasicPaymentRequest_msg"/>
+         <wsdl:output name="BasicPaymentPortResponse" message="tns:BasicPaymentResponse_msg"/>
+         <wsdl:fault name="fault" message="tns:GeneralResponse_msg"/>
+      </wsdl:operation>
+      <wsdl:operation name="ReversePayment">
+         <wsdl:input name="BasicReversePaymentPortRequest" message="tns:BasicReversePaymentRequest_msg"/>
+         <wsdl:output name="BasicReversePaymentPortResponse" message="tns:BasicReversePaymentResponse_msg"/>
+         <wsdl:fault name="fault" message="tns:GeneralResponse_msg"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="Payment_wsSOAP" type="tns:BasicPaymentPort">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="ExecutePayment">
+         <soap:operation soapAction="ExecutePayment" soapActionRequired="false"/>
+         <wsdl:input name="BasicPaymentPortRequest">
+            <soap:body use="literal" namespace="http://tigo.com/enterprise/taskService/paymentService/v1" encodingStyle="http://www.w3.org/2001/12/soap-encoding"/>
+         </wsdl:input>
+         <wsdl:output name="BasicPaymentPortResponse">
+            <soap:body use="literal" namespace="http://tigo.com/enterprise/taskService/paymentService/v1" encodingStyle="http://www.w3.org/2001/12/soap-encoding"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" namespace="http://tigo.com/enterprise/taskService/paymentService/v1" use="literal" encodingStyle="http://www.w3.org/2001/12/soap-encoding"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="ReversePayment">
+         <soap:operation soapAction="ReversePayment" soapActionRequired="false"/>
+         <wsdl:input name="BasicReversePaymentPortRequest">
+            <soap:body use="literal" namespace="http://tigo.com/enterprise/taskService/paymentService/v1"/>
+         </wsdl:input>
+         <wsdl:output name="BasicReversePaymentPortResponse">
+            <soap:body use="literal" namespace="http://tigo.com/enterprise/taskService/paymentService/v1"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" namespace="http://tigo.com/enterprise/taskService/paymentService/v1" use="literal" encodingStyle="http://www.w3.org/2001/12/soap-encoding"/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="PaymentService">
+      <wsdl:port name="BasicPaymentPort_pt" binding="tns:Payment_wsSOAP">
+         <soap:address location="http://soao2pvstst-srv.tigo.com.gt:8001/soa-infra/services/ffs/Payment/PaymentService"/>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>

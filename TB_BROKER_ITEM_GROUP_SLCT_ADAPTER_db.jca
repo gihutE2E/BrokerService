@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<adapter-config name="TB_BROKER_ITEM_GROUP_SLCT_ADAPTER" adapter="Database Adapter" wsdlLocation="TB_BROKER_ITEM_GROUP_SLCT_ADAPTER.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+   <connection-factory location="eis/DB/DBConnection" UIConnectionName="mdwlab" adapterRef=""/>
+   <endpoint-interaction portType="TB_BROKER_ITEM_GROUP_SLCT_ADAPTER_ptt" operation="TB_BROKER_ITEM_GROUP_SLCT_ADAPTERSelect">
+      <interaction-spec className="oracle.tip.adapter.db.DBReadInteractionSpec">
+         <property name="DescriptorName" value="TB_BROKER_ITEM_GROUP_SLCT_ADAPTER.TbBrokerItemGroupConf"/>
+         <property name="QueryName" value="readObject"/>
+         <property name="MappingsMetaDataURL" value="TB_BROKER_ITEM_GROUP_SLCT_ADAPTER-or-mappings.xml"/>
+         <property name="GetActiveUnitOfWork" value="false"/>
+         <property name="ReturnSingleResultSet" value="false"/>
+      </interaction-spec>
+   </endpoint-interaction>
+</adapter-config>

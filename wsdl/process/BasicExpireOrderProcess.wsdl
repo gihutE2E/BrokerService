@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="OrderRequest" targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/expireOrderProcess" xmlns:ns2="http://tigo.com/enterprise/taskService/provisioning/v1/schema" xmlns:ns1="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess" xmlns:tns="http://tigo.com/enterprise/serviceEntity/provisioning/expireOrderProcess" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:cmn="http://tigo.com/commons/generalResponse/v1/schema" xmlns:sch="http://tigo.com/enterprise/serviceEntity/provisioning/expireOrder/v1/schema">
+   <wsdl:types>
+      <xsd:schema targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/expireOrderProcess">
+         <xsd:import namespace="http://tigo.com/commons/generalResponse/v1/schema" schemaLocation="../../xsd/commons/BasicGeneralResponse_schema.xsd"/>
+         <xsd:import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/expireOrder/v1/schema" schemaLocation="../../xsd/process/BasicExpireOrder_schema.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="BasicExpireOrderRequest_msg">
+      <wsdl:part name="body" element="sch:BasicExpireOrderRequest"/>
+   </wsdl:message>
+   <wsdl:message name="BasicExpireOrderResponse_msg">
+      <wsdl:part name="body" element="sch:BasicExpireOrderResponse"/>
+   </wsdl:message>
+   <wsdl:message name="GeneralResponse_msg">
+      <wsdl:part name="fault" element="cmn:GeneralResponse"/>
+   </wsdl:message>
+   <wsdl:portType name="BasicOrderPort">
+      <wsdl:operation name="ExpireOrder">
+         <wsdl:input name="BasicExpireOrderPortRequest" message="tns:BasicExpireOrderRequest_msg"/>
+         <wsdl:output name="BasicExpireOrderPortResponse" message="tns:BasicExpireOrderResponse_msg"/>
+         <wsdl:fault name="fault" message="tns:GeneralResponse_msg"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="Order_wsSOAP" type="tns:BasicOrderPort">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="ExpireOrder">
+         <soap:operation soapAction="" soapActionRequired="false"/>
+         <wsdl:input name="BasicExpireOrderPortRequest">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="BasicExpireOrderPortResponse">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+</wsdl:definitions>

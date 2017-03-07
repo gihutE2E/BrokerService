@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<adapter-config name="LOG_ORCHESTRATOR_PRODUCT_SELECT" adapter="Database Adapter" wsdlLocation="LOG_ORCHESTRATOR_PRODUCT_SELECT.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+   <connection-factory location="eis/DB/DBConnection" UIConnectionName="MDWDesa" adapterRef=""/>
+   <endpoint-interaction portType="LOG_ORCHESTRATOR_PRODUCT_SELECT_ptt" operation="LOG_ORCHESTRATOR_PRODUCT_SELECT">
+      <interaction-spec className="oracle.tip.adapter.db.DBPureSQLInteractionSpec">
+         <property name="SqlString" value="SELECT ID, CORRELATION_ID, CODE, &quot;NAME&quot;, &quot;VALUE&quot;, CURRENCY, EXPIRATION_DATE, START_DATE, DEFER, OFFER_ACTION, STATUS, ID_CLIENTE, ID_TYPE, UTI, UTI_REFERENCE, REFERENCETRANSACTIONDATE FROM LOG_ORCHESTRATOR_PRODUCT WHERE ((CORRELATION_ID = #correlationId) AND (STATUS = 'OK'))"/>
+         <property name="GetActiveUnitOfWork" value="false"/>
+      </interaction-spec>
+      <input/>
+      <output/>
+   </endpoint-interaction>
+</adapter-config>

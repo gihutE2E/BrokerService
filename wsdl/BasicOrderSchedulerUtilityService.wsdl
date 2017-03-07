@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="ScheduleOrderUtility" targetNamespace="http://tigo.com/enterprise/businessEntity/orderScheduler/orderSchedulerUtility/v1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:sch="http://tigo.com/enterprise/businessEntity/orderScheduler/orderSchedulerUtility/v1/schema" xmlns:tns="http://tigo.com/enterprise/businessEntity/orderScheduler/orderSchedulerUtility/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cmn="http://tigo.com/commons/generalResponse/v1/schema">
+   <wsdl:types>
+      <xsd:schema targetNamespace="http://tigo.com/enterprise/businessEntity/orderScheduler/orderSchedulerUtility/v1">
+         <xsd:import namespace="http://tigo.com/enterprise/businessEntity/orderScheduler/orderSchedulerUtility/v1/schema" schemaLocation="../xsd/BasicOrderSchedulerUtility_schema.xsd"/>
+         <xsd:import namespace="http://tigo.com/commons/generalResponse/v1/schema" schemaLocation="../xsd/commons/BasicGeneralResponse_schema.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="BasicOrderSchedulerUtilityRequest_msg">
+      <wsdl:part element="sch:BasicOrderSchedulerUtilityRequest" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="BasicOrderSchedulerUtilityResponse_msg">
+      <wsdl:part element="sch:BasicOrderSchedulerUtilityResponse" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="GeneralResponse_msg">
+      <wsdl:part element="cmn:GeneralResponse" name="fault"/>
+   </wsdl:message>
+   <wsdl:portType name="BasicOrderSchedulerUtilityPort">
+      <wsdl:operation name="OrderScheduler">
+         <wsdl:input message="tns:BasicOrderSchedulerUtilityRequest_msg" name="BasicOrderSchedulerUtilityPortRequest"/>
+         <wsdl:output message="tns:BasicOrderSchedulerUtilityResponse_msg" name="BasicOrderSchedulerUtilityPortResponse"/>
+         <wsdl:fault message="tns:GeneralResponse_msg" name="fault"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="OrderSchedulerUtility_wsSOAP" type="tns:BasicOrderSchedulerUtilityPort">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="OrderScheduler">
+         <soap:operation soapAction=""/>
+         <wsdl:input name="BasicOrderSchedulerUtilityPortRequest">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="BasicOrderSchedulerUtilityPortResponse">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="BasicOrderSchedulerUtilityService">
+      <wsdl:port binding="tns:OrderSchedulerUtility_wsSOAP" name="BasicOrderSchedulerUtilityPort">
+         <soap:address location="http://osbo2pvs-srv.tigo.com.gt:8011/osb/enterprise/businessEntity/orderScheduler/orderSchedulerUtility/v1"/>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>

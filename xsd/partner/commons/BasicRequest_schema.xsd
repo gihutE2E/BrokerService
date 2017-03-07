@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://tigo.com/commons/basicRequest/v1/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://tigo.com/commons/basicRequest/v1/schema" xmlns:sch="http://tigo.com/commons/basicRequest/v1/schema">
+   <xsd:element name="basicRequest" type="tns:basicRequestType"/>
+   <xsd:complexType name="basicRequestType">
+      <xsd:sequence>
+         <xsd:element name="externalApplicationID" type="xsd:string" minOccurs="0"/>
+         <xsd:element name="externalTransactionID" type="xsd:string" minOccurs="0"/>
+         <xsd:element name="utiReference" type="xsd:string" minOccurs="0"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

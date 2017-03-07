@@ -1,0 +1,771 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Wed Feb 06 18:20:53 COT 2013
+  Author:  Harcalejo
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="ExpireOrderProcess"
+         targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/expireOrderProcess"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="http://tigo.com/enterprise/serviceEntity/provisioning/expireOrderProcess"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_M_ADAPTER"
+         xmlns:ns2="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_M_ADAPTER"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns4="http://tigo.com/commons/basicRequest/v1/schema"
+         xmlns:ns3="http://tigo.com/enterprise/serviceEntity/provisioning/expireOrder/v1/schema"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns5="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_DETAIL"
+         xmlns:ns6="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_DETAIL"
+         xmlns:ns7="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess"
+         xmlns:ns14="http://tigo.com/enterprise/serviceEntity/provisioning/dataChangeRequest/v1/schema"
+         xmlns:ns13="http://tigo.com/commons/resources/additional/v1/schema"
+         xmlns:ns11="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema"
+         xmlns:ns12="http://tigo.com/serviceEntity/provisioning/offeringDetail/v1/schema"
+         xmlns:ns9="http://tigo.com/enterprise/businessEntity/client/basic/v1/schema"
+         xmlns:ns8="http://tigo.com/enterprise/taskService/provisioning/v1/schema"
+         xmlns:ns10="http://tigo.com/enterprise/serviceEntity/provisioning/order/v1/schema"
+         xmlns:ns15="http://tigo.com/commons/generalResponse/v1/schema"
+         xmlns:ns16="http://tigo.com/enterprise/taskService/provisioning/v1"
+         xmlns:ns17="http://tigo.hn/enterprise/faultNotificationService/createFault"
+         xmlns:ns18="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/O2_Release/LOG_ORCHESTRATOR_PRODUCT_SELECT"
+         xmlns:ns19="http://xmlns.oracle.com/pcbpel/adapter/db/LOG_ORCHESTRATOR_PRODUCT_SELECT"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:ns20="http://tigo.hn/commons/resources/faultNotificationService/createFaultSchema/schema">
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="expireorderprocess_client" partnerLinkType="client:ExpireOrderProcess"
+                 myRole="BasicOrderPort"/>
+    <partnerLink name="LOG_ORCHESTRATOR_M_ADAPTER"
+                 partnerLinkType="ns1:LOG_ORCHESTRATOR_M_ADAPTER_plt"
+                 partnerRole="LOG_ORCHESTRATOR_M_ADAPTER_role"/>
+    <partnerLink name="ExpireMediator.ExpireMediator"
+                 partnerLinkType="ns16:ExpireMediator.ExpireMediator"
+                 partnerRole="ProvisioningPort"/>
+    <partnerLink name="FaultNotificationService" partnerLinkType="ns17:FaultNotificationService"
+                 partnerRole="FaultNotification_Port"/>
+    <partnerLink name="LOG_ORCHESTRATOR_PRODUCT_SELECT"
+                 partnerLinkType="ns18:LOG_ORCHESTRATOR_PRODUCT_SELECT_plt"
+                 partnerRole="LOG_ORCHESTRATOR_PRODUCT_SELECT_role"/>
+  </partnerLinks>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:BasicExpireOrderRequest_msg"/>
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="client:BasicExpireOrderResponse_msg"/>
+    <variable name="Invoke_LogMSelect_Output" messageType="ns1:LogOrchestratorMCollection_msg"/>
+    <variable name="Invoke_LogMSelect_Input"
+              messageType="ns1:LOG_ORCHESTRATOR_M_ADAPTERSelect_inputParameters"/>
+    <variable name="Invoke_LogProductSelect_Output"
+              messageType="ns5:LogOrchestratorProductCollection_msg"/>
+    <variable name="Invoke_ProvideProcess_Input" messageType="ns7:BasicProvisioningRequest_msg"/>
+    <variable name="Invoke_ProvideProcess_Output" messageType="ns7:BasicProvisioningResponse_msg"/>
+    <variable name="generalResponse"
+              messageType="client:GeneralResponse_msg"/>
+    <variable name="Invoke_LogProductSelect_Input"
+              messageType="ns5:LOG_ORCHESTRATOR_DETAILSelect_inputParameters"/>
+    <variable name="Invoke_ProvisioningService_Input"
+              messageType="ns16:BasicProvisioningRequest_msg"/>
+    <variable name="Invoke_ProvisioningService_Output"
+              messageType="ns16:BasicProvisioningResponse_msg"/>
+    <variable name="Invoke_LOG_ORCHESTRATOR_PRODUCT_SELECT_Input"
+              messageType="ns18:LOG_ORCHESTRATOR_PRODUCT_SELECTInput_msg"/>
+    <variable name="Invoke_LOG_ORCHESTRATOR_PRODUCT_SELECT_Output"
+              messageType="ns18:LOG_ORCHESTRATOR_PRODUCT_SELECTOutputCollection_msg"/>
+    <variable name="Invoke_CreateFault_Input"
+              messageType="ns17:CreateFaultRequest_msg"/>
+    <variable name="Invoke_CreateFault_Output"
+              messageType="ns17:CreateFaultResponse_msg"/>
+    <variable name="uti" type="xsd:string"/>
+    <variable name="globalFaultVar"
+              element="ns15:GeneralResponse"/>
+  </variables>
+  <faultHandlers>
+    <catch faultName="ns17:fault">
+      <sequence name="FaultNotification">
+        <reply name="Reply_Fault" faultName="client:fault" variable="generalResponse"
+               partnerLink="expireorderprocess_client" portType="client:BasicOrderPort"
+               operation="ExpireOrder"/>
+        <exit name="Exit"/>
+      </sequence>
+    </catch>
+    <catchAll>
+      <scope name="faultNotificationProcessError" exitOnStandardFault="no">
+        <bpelx:annotation>
+          <bpelx:general>
+            <bpelx:property name="userImage">earth.png</bpelx:property>
+          </bpelx:general>
+        </bpelx:annotation>
+        <faultHandlers>
+          <catch faultName="ns17:fault" faultVariable="faultVariable"
+                 faultElement="ns15:GeneralResponse">
+            <sequence name="fault">
+              <assign name="AssignGeneralResponse">
+                <copy>
+                  <from>$uti</from>
+                  <to>$generalResponse.fault/uti</to>
+                </copy>
+                <copy>
+                  <from>$faultVariable/status</from>
+                  <to>$generalResponse.fault/status</to>
+                </copy>
+                <copy>
+                  <from>$faultVariable/code</from>
+                  <to>$generalResponse.fault/code</to>
+                </copy>
+                <copy>
+                  <from>$faultVariable/message</from>
+                  <to>$generalResponse.fault/message</to>
+                </copy>
+              </assign>
+              <reply name="ReplyFault" faultName="client:fault"
+                     variable="generalResponse"
+                     partnerLink="expireorderprocess_client"
+                     portType="client:BasicOrderPort" operation="ExpireOrder"/>
+              <exit name="Exit1"/>
+            </sequence>
+          </catch>
+        </faultHandlers>
+        <sequence name="faultNotificationProcessError">
+          <assign name="AssignFaultNotification">
+            <copy>
+              <from>$uti</from>
+              <to>$Invoke_CreateFault_Input.body/uti</to>
+            </copy>
+            <copy>
+              <from><literal>INS_O2_EXPIRE_ORDER_PROCESS</literal></from>
+              <to>$Invoke_CreateFault_Input.body/instanceID</to>
+            </copy>
+            <copy>
+              <from><literal>328</literal></from>
+              <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+            </copy>
+            <copy>
+              <from><literal>O2_TEC24</literal></from>
+              <to>$Invoke_CreateFault_Input.body/reasonID</to>
+            </copy>
+            <copy>
+              <from>ora:getFaultAsString()</from>
+              <to>$Invoke_CreateFault_Input.body/detailError</to>
+            </copy>
+            <copy>
+              <from><literal>3</literal></from>
+              <to>$Invoke_CreateFault_Input.body/errorID</to>
+            </copy>
+            <copy>
+              <from><literal>177</literal></from>
+              <to>$Invoke_CreateFault_Input.body/serviceID</to>
+            </copy>
+            <copy>
+              <from><literal>O2Service_Bpel</literal></from>
+              <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+            </copy>
+            <copy>
+              <from><literal>SOA</literal></from>
+              <to>$Invoke_CreateFault_Input.body/userName</to>
+            </copy>
+            <copy>
+              <from><literal>faultNotificationProcessError - ExpireOrderProcess</literal></from>
+              <to>$Invoke_CreateFault_Input.body/stageName</to>
+            </copy>
+          </assign>
+          <invoke name="InvokeFaultNotification"
+                  partnerLink="FaultNotificationService"
+                  portType="ns17:FaultNotification_Port" operation="CreateFault"
+                  inputVariable="Invoke_CreateFault_Input"
+                  outputVariable="Invoke_CreateFault_Output"
+                  bpelx:invokeAsDetail="no"/>
+        </sequence>
+      </scope>
+    </catchAll>
+  </faultHandlers>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+    <!-- Receive input from requestor. (Note: This maps to operation defined in ExpireOrderProcess.wsdl) -->
+    <receive name="receiveInput" partnerLink="expireorderprocess_client"
+             portType="client:BasicOrderPort" operation="ExpireOrder" variable="inputVariable"
+             createInstance="yes"/>
+    <!-- Generate reply to synchronous request -->
+    <assign name="AssignUti">
+      <copy>
+        <from>ora:getECID()</from>
+        <to>$uti</to>
+      </copy>
+    </assign>
+    <scope name="ConsultarUTI" exitOnStandardFault="no">
+      <bpelx:annotation>
+        <bpelx:general>
+          <bpelx:property name="userDescription">ErrorParametrizado</bpelx:property>
+          <bpelx:property name="userImage">database_lg.png</bpelx:property>
+        </bpelx:general>
+      </bpelx:annotation>
+      <faultHandlers>
+        <catchAll>
+          <scope name="faultNotification" exitOnStandardFault="no">
+            <bpelx:annotation>
+              <bpelx:general>
+                <bpelx:property name="userImage">earth.png</bpelx:property>
+              </bpelx:general>
+            </bpelx:annotation>
+            <faultHandlers>
+              <catch faultName="ns17:fault" faultVariable="faultVariable"
+                     faultElement="ns15:GeneralResponse">
+                <sequence name="fault">
+                  <assign name="AssignGeneralResponse">
+                    <copy>
+                      <from>$uti</from>
+                      <to>$generalResponse.fault/uti</to>
+                    </copy>
+                    <copy>
+                      <from>$faultVariable/status</from>
+                      <to>$generalResponse.fault/status</to>
+                    </copy>
+                    <copy>
+                      <from>$faultVariable/code</from>
+                      <to>$generalResponse.fault/code</to>
+                    </copy>
+                    <copy>
+                      <from>$faultVariable/message</from>
+                      <to>$generalResponse.fault/message</to>
+                    </copy>
+                  </assign>
+                  <throw name="FaultNotification" faultName="ns17:fault"
+                         faultVariable="globalFaultVar"/>
+                </sequence>
+              </catch>
+            </faultHandlers>
+            <sequence name="faultNotification">
+              <assign name="AssignFaultNotification">
+                <copy>
+                  <from>$uti</from>
+                  <to>$Invoke_CreateFault_Input.body/uti</to>
+                </copy>
+                <copy>
+                  <from><literal>INS_ORCHESTRATOR_M_SLCT</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/instanceID</to>
+                </copy>
+                <copy>
+                  <from><literal>317</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+                </copy>
+                <copy>
+                  <from><literal>O2_TEC22</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/reasonID</to>
+                </copy>
+                <copy>
+                  <from><literal>5</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/errorID</to>
+                </copy>
+                <copy>
+                  <from><literal>177</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/serviceID</to>
+                </copy>
+                <copy>
+                  <from><literal>O2Service_Bpel</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+                </copy>
+                <copy>
+                  <from><literal>SOA</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/userName</to>
+                </copy>
+                <copy>
+                  <from><literal>ConsultarUTI - ExpireOrderProcess</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/stageName</to>
+                </copy>
+                <copy>
+                  <from>ora:getFaultAsString()</from>
+                  <to>$Invoke_CreateFault_Input.body/detailError</to>
+                </copy>
+              </assign>
+              <invoke name="InvokeFaultNotification"
+                      partnerLink="FaultNotificationService"
+                      portType="ns17:FaultNotification_Port"
+                      operation="CreateFault"
+                      inputVariable="Invoke_CreateFault_Input"
+                      outputVariable="Invoke_CreateFault_Output"
+                      bpelx:invokeAsDetail="no"/>
+            </sequence>
+          </scope>
+        </catchAll>
+      </faultHandlers>
+      <sequence name="ConsultarUTI">
+        <assign name="Assign_LogMSelectReq">
+          <copy>
+            <from>$inputVariable.body/ns4:basicRequest/utiReference</from>
+            <to>$Invoke_LogMSelect_Input.LOG_ORCHESTRATOR_M_ADAPTERSelect_inputParameters/ns2:uti</to>
+          </copy>
+        </assign>
+        <invoke name="Invoke_LogMSelect" partnerLink="LOG_ORCHESTRATOR_M_ADAPTER"
+                portType="ns1:LOG_ORCHESTRATOR_M_ADAPTER_ptt"
+                operation="LOG_ORCHESTRATOR_M_ADAPTERSelect" inputVariable="Invoke_LogMSelect_Input"
+                outputVariable="Invoke_LogMSelect_Output" bpelx:invokeAsDetail="no"/>
+      </sequence>
+    </scope>
+    <if name="UTI">
+      <documentation>Exist</documentation>
+      <condition>ora:countNodes('Invoke_LogMSelect_Output','LogOrchestratorMCollection','ns2:LogOrchestratorM') &gt; 0</condition>
+      <sequence name="ConsultarProductos">
+        <scope name="ConsultarProductos" exitOnStandardFault="no">
+          <bpelx:annotation>
+            <bpelx:general>
+              <bpelx:property name="userDescription">ErrorParametrizado</bpelx:property>
+              <bpelx:property name="userImage">database_lg.png</bpelx:property>
+            </bpelx:general>
+          </bpelx:annotation>
+          <faultHandlers>
+            <catchAll>
+              <scope name="FaultNotification" exitOnStandardFault="no">
+                <bpelx:annotation>
+                  <bpelx:general>
+                    <bpelx:property name="userImage">earth.png</bpelx:property>
+                  </bpelx:general>
+                </bpelx:annotation>
+                <faultHandlers>
+                  <catch faultName="ns17:fault" faultVariable="faultVariable"
+                         faultElement="ns15:GeneralResponse">
+                    <sequence name="fault">
+                      <assign name="AssignGeneralResponse">
+                        <copy>
+                          <from>$uti</from>
+                          <to>$generalResponse.fault/uti</to>
+                        </copy>
+                        <copy>
+                          <from>$faultVariable/status</from>
+                          <to>$generalResponse.fault/status</to>
+                        </copy>
+                        <copy>
+                          <from>$faultVariable/code</from>
+                          <to>$generalResponse.fault/code</to>
+                        </copy>
+                        <copy>
+                          <from>$faultVariable/message</from>
+                          <to>$generalResponse.fault/message</to>
+                        </copy>
+                      </assign>
+                      <throw name="FaultNotification" faultName="ns17:fault"
+                             faultVariable="globalFaultVar"/>
+                    </sequence>
+                  </catch>
+                </faultHandlers>
+                <sequence name="FaultNotification">
+                  <assign name="AssignFaultNotification">
+                    <copy>
+                      <from>$uti</from>
+                      <to>$Invoke_CreateFault_Input.body/uti</to>
+                    </copy>
+                    <copy>
+                      <from><literal>5</literal></from>
+                      <to>$Invoke_CreateFault_Input.body/errorID</to>
+                    </copy>
+                    <copy>
+                      <from><literal>177</literal></from>
+                      <to>$Invoke_CreateFault_Input.body/serviceID</to>
+                    </copy>
+                    <copy>
+                      <from><literal>O2Service_Bpel</literal></from>
+                      <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+                    </copy>
+                    <copy>
+                      <from><literal>SOA</literal></from>
+                      <to>$Invoke_CreateFault_Input.body/userName</to>
+                    </copy>
+                    <copy>
+                      <from><literal>ConsultarProductos - ExpireOrderProcess</literal></from>
+                      <to>$Invoke_CreateFault_Input.body/stageName</to>
+                    </copy>
+                    <copy>
+                      <from>ora:getFaultAsString()</from>
+                      <to>$Invoke_CreateFault_Input.body/detailError</to>
+                    </copy>
+                    <copy>
+                      <from><literal>INS_ORCHESTRATOR_PRODUCT_SLCT</literal></from>
+                      <to>$Invoke_CreateFault_Input.body/instanceID</to>
+                    </copy>
+                    <copy>
+                      <from><literal>O2_TEC23</literal></from>
+                      <to>$Invoke_CreateFault_Input.body/reasonID</to>
+                    </copy>
+                    <copy>
+                      <from><literal>318</literal></from>
+                      <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+                    </copy>
+                  </assign>
+                  <invoke name="InvokeFaultNotification"
+                          partnerLink="FaultNotificationService"
+                          portType="ns17:FaultNotification_Port"
+                          operation="CreateFault"
+                          inputVariable="Invoke_CreateFault_Input"
+                          outputVariable="Invoke_CreateFault_Output"
+                          bpelx:invokeAsDetail="no"/>
+                </sequence>
+              </scope>
+            </catchAll>
+          </faultHandlers>
+          <sequence name="ConsultarProductos">
+            <assign name="Assign_LogProductReq">
+              <copy>
+                <from>$inputVariable.body/ns4:basicRequest/utiReference</from>
+                <to>$Invoke_LOG_ORCHESTRATOR_PRODUCT_SELECT_Input.LOG_ORCHESTRATOR_PRODUCT_SELECTInput_msg/ns19:correlationId</to>
+              </copy>
+            </assign>
+            <invoke name="Invoke_LogProductSlect"
+                    partnerLink="LOG_ORCHESTRATOR_PRODUCT_SELECT"
+                    portType="ns18:LOG_ORCHESTRATOR_PRODUCT_SELECT_ptt"
+                    operation="LOG_ORCHESTRATOR_PRODUCT_SELECT"
+                    inputVariable="Invoke_LOG_ORCHESTRATOR_PRODUCT_SELECT_Input"
+                    outputVariable="Invoke_LOG_ORCHESTRATOR_PRODUCT_SELECT_Output"
+                    bpelx:invokeAsDetail="no"/>
+          </sequence>
+        </scope>
+        <forEach parallel="no" counterName="productCounter" name="Productos">
+          <startCounterValue>1</startCounterValue>
+          <finalCounterValue>ora:countNodes('Invoke_LOG_ORCHESTRATOR_PRODUCT_SELECT_Output','LOG_ORCHESTRATOR_PRODUCT_SELECTOutputCollection','ns19:LOG_ORCHESTRATOR_PRODUCT_SELECTOutput')</finalCounterValue>
+          <scope name="Productos" exitOnStandardFault="no">
+            <sequence name="Productos">
+              <scope name="ProvisioningService" exitOnStandardFault="no">
+                <bpelx:annotation>
+                  <bpelx:general>
+                    <bpelx:property name="userDescription">ErrorParametrizado</bpelx:property>
+                    <bpelx:property name="userImage">earth.png</bpelx:property>
+                  </bpelx:general>
+                </bpelx:annotation>
+                <faultHandlers>
+                  <catch faultName="ns16:fault" faultVariable="faulVariable"
+                         faultElement="ns15:GeneralResponse">
+                    <sequence name="ReplyFault">
+                      <assign name="Assign_Fault">
+                        <copy>
+                          <from>$faulVariable/status</from>
+                          <to>$generalResponse.fault/status</to>
+                        </copy>
+                        <copy>
+                          <from>$faulVariable/code</from>
+                          <to>$generalResponse.fault/code</to>
+                        </copy>
+                        <copy>
+                          <from>$faulVariable/message</from>
+                          <to>$generalResponse.fault/message</to>
+                        </copy>
+                        <copy>
+                          <from>ora:getConversationId()</from>
+                          <to>$generalResponse.fault/uti</to>
+                        </copy>
+                      </assign>
+                      <throw name="FaultNotification" faultName="ns17:fault"
+                             faultVariable="globalFaultVar"/>
+                    </sequence>
+                  </catch>
+                  <catchAll>
+                    <scope name="FaultNotification" exitOnStandardFault="no">
+                      <bpelx:annotation>
+                        <bpelx:general>
+                          <bpelx:property name="userImage">earth.png</bpelx:property>
+                        </bpelx:general>
+                      </bpelx:annotation>
+                      <faultHandlers>
+                        <catch faultName="ns17:fault"
+                               faultVariable="faultVariable"
+                               faultElement="ns15:GeneralResponse">
+                          <sequence name="fault">
+                            <assign name="AssignGeneralResponse">
+                              <copy>
+                                <from>$uti</from>
+                                <to>$generalResponse.fault/uti</to>
+                              </copy>
+                              <copy>
+                                <from>$faultVariable/status</from>
+                                <to>$generalResponse.fault/status</to>
+                              </copy>
+                              <copy>
+                                <from>$faultVariable/code</from>
+                                <to>$generalResponse.fault/code</to>
+                              </copy>
+                              <copy>
+                                <from>$faultVariable/message</from>
+                                <to>$generalResponse.fault/message</to>
+                              </copy>
+                            </assign>
+                            <throw name="FaultNotification"
+                                   faultName="ns17:fault"
+                                   faultVariable="globalFaultVar"/>
+                          </sequence>
+                        </catch>
+                      </faultHandlers>
+                      <sequence name="FaultNotification">
+                        <assign name="AssignFaultNotification">
+                          <copy>
+                            <from>$uti</from>
+                            <to>$Invoke_CreateFault_Input.body/uti</to>
+                          </copy>
+                          <copy>
+                            <from><literal>ProvisioningService - ExpireOrderProcess</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/stageName</to>
+                          </copy>
+                          <copy>
+                            <from>ora:getFaultAsString()</from>
+                            <to>$Invoke_CreateFault_Input.body/detailError</to>
+                          </copy>
+                          <copy>
+                            <from><literal>INS_O2_PROVISIONING</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/instanceID</to>
+                          </copy>
+                          <copy>
+                            <from><literal>265</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+                          </copy>
+                          <copy>
+                            <from><literal>O2_TEC15</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/reasonID</to>
+                          </copy>
+                          <copy>
+                            <from><literal>6</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/errorID</to>
+                          </copy>
+                          <copy>
+                            <from><literal>177</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/serviceID</to>
+                          </copy>
+                          <copy>
+                            <from><literal>O2Service_Bpel</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+                          </copy>
+                          <copy>
+                            <from><literal>SOA</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/userName</to>
+                          </copy>
+                        </assign>
+                        <invoke name="InvokeFaultNotification"
+                                partnerLink="FaultNotificationService"
+                                portType="ns17:FaultNotification_Port"
+                                operation="CreateFault"
+                                inputVariable="Invoke_CreateFault_Input"
+                                outputVariable="Invoke_CreateFault_Output"
+                                bpelx:invokeAsDetail="no"/>
+                      </sequence>
+                    </scope>
+                  </catchAll>
+                </faultHandlers>
+                <sequence name="ProvisioningService">
+                  <assign name="AssignProvisioningReq">
+                    <copy>
+                      <from>$Invoke_LOG_ORCHESTRATOR_PRODUCT_SELECT_Output.LOG_ORCHESTRATOR_PRODUCT_SELECTOutputCollection/ns19:LOG_ORCHESTRATOR_PRODUCT_SELECTOutput[$productCounter]/ns19:ID_CLIENTE</from>
+                      <to>$Invoke_ProvisioningService_Input.body/ns9:client/ID</to>
+                    </copy>
+                    <copy ignoreMissingFromData="yes">
+                      <from>$inputVariable.body/ns13:additionals</from>
+                      <to>$Invoke_ProvisioningService_Input.body/productOffering/ns10:order/ns13:additionals</to>
+                    </copy>
+                    <copy ignoreMissingFromData="yes">
+                      <from>$inputVariable.body/ns4:basicRequest</from>
+                      <to>$Invoke_ProvisioningService_Input.body/ns4:basicRequest</to>
+                    </copy>
+                    <copy>
+                      <from>$Invoke_LOG_ORCHESTRATOR_PRODUCT_SELECT_Output.LOG_ORCHESTRATOR_PRODUCT_SELECTOutputCollection/ns19:LOG_ORCHESTRATOR_PRODUCT_SELECTOutput[$productCounter]/ns19:ID_TYPE</from>
+                      <to>$Invoke_ProvisioningService_Input.body/ns9:client/idType</to>
+                    </copy>
+                    <copy>
+                      <from>$Invoke_LOG_ORCHESTRATOR_PRODUCT_SELECT_Output.LOG_ORCHESTRATOR_PRODUCT_SELECTOutputCollection/ns19:LOG_ORCHESTRATOR_PRODUCT_SELECTOutput[$productCounter]/ns19:CODE</from>
+                      <to>$Invoke_ProvisioningService_Input.body/productOffering/ns10:order/ns11:product/CODE</to>
+                    </copy>
+                    <copy>
+                      <from>$Invoke_LOG_ORCHESTRATOR_PRODUCT_SELECT_Output.LOG_ORCHESTRATOR_PRODUCT_SELECTOutputCollection/ns19:LOG_ORCHESTRATOR_PRODUCT_SELECTOutput[$productCounter]/ns19:NAME</from>
+                      <to>$Invoke_ProvisioningService_Input.body/productOffering/ns10:order/ns11:product/name</to>
+                    </copy>
+                    <copy>
+                      <from>$Invoke_LOG_ORCHESTRATOR_PRODUCT_SELECT_Output.LOG_ORCHESTRATOR_PRODUCT_SELECTOutputCollection/ns19:LOG_ORCHESTRATOR_PRODUCT_SELECTOutput[$productCounter]/ns19:VALUE</from>
+                      <to>$Invoke_ProvisioningService_Input.body/productOffering/ns10:order/ns12:offeringDetail/value</to>
+                    </copy>
+                    <copy ignoreMissingFromData="yes">
+                      <from>$Invoke_LOG_ORCHESTRATOR_PRODUCT_SELECT_Output.LOG_ORCHESTRATOR_PRODUCT_SELECTOutputCollection/ns19:LOG_ORCHESTRATOR_PRODUCT_SELECTOutput[$productCounter]/ns19:CURRENCY</from>
+                      <to>$Invoke_ProvisioningService_Input.body/productOffering/ns10:order/ns12:offeringDetail/currency</to>
+                    </copy>
+                    <copy ignoreMissingFromData="yes">
+                      <from>$Invoke_LOG_ORCHESTRATOR_PRODUCT_SELECT_Output.LOG_ORCHESTRATOR_PRODUCT_SELECTOutputCollection/ns19:LOG_ORCHESTRATOR_PRODUCT_SELECTOutput[$productCounter]/ns19:EXPIRATION_DATE</from>
+                      <to>$Invoke_ProvisioningService_Input.body/productOffering/ns10:order/ns12:offeringDetail/expirationDate</to>
+                    </copy>
+                    <copy ignoreMissingFromData="yes">
+                      <from>$Invoke_LOG_ORCHESTRATOR_PRODUCT_SELECT_Output.LOG_ORCHESTRATOR_PRODUCT_SELECTOutputCollection/ns19:LOG_ORCHESTRATOR_PRODUCT_SELECTOutput[$productCounter]/ns19:START_DATE</from>
+                      <to>$Invoke_ProvisioningService_Input.body/productOffering/ns10:order/ns12:offeringDetail/startDate</to>
+                    </copy>
+                    <copy ignoreMissingFromData="yes">
+                      <from>$Invoke_LOG_ORCHESTRATOR_PRODUCT_SELECT_Output.LOG_ORCHESTRATOR_PRODUCT_SELECTOutputCollection/ns19:LOG_ORCHESTRATOR_PRODUCT_SELECTOutput[$productCounter]/ns19:DEFER</from>
+                      <to>$Invoke_ProvisioningService_Input.body/productOffering/ns10:order/ns12:offeringDetail/defer</to>
+                    </copy>
+                    <copy>
+                      <from>'EMPTY'</from>
+                      <to>$Invoke_ProvisioningService_Input.body/productOffering/ns10:order/ns12:offeringDetail/offerAction</to>
+                    </copy>
+                  </assign>
+                  <assign name="Transform_ExpireToProvisioningService">
+                    <bpelx:annotation>
+                      <bpelx:pattern patternName="bpelx:transformation"/>
+                    </bpelx:annotation>
+                    <copy>
+                      <from>ora:doXSLTransformForDoc("xsl/Transformation_ExpireToProvisioningService.xsl", $Invoke_ProvisioningService_Input.body)</from>
+                      <to variable="Invoke_ProvisioningService_Input" part="body"/>
+                    </copy>
+                  </assign>
+                  <invoke name="Invoke_ProvisioningService"
+                          partnerLink="ExpireMediator.ExpireMediator"
+                          portType="ns16:ProvisioningPort" operation="Provisioning"
+                          inputVariable="Invoke_ProvisioningService_Input"
+                          outputVariable="Invoke_ProvisioningService_Output"
+                          bpelx:invokeAsDetail="no"/>
+                </sequence>
+              </scope>
+            </sequence>
+          </scope>
+        </forEach>
+      </sequence>
+      <else>
+        <documentation>Empty</documentation>
+        <sequence name="EmptyTransaction">
+          <scope name="FaultNotification" exitOnStandardFault="no">
+            <bpelx:annotation>
+              <bpelx:general>
+                <bpelx:property name="userImage">earth.png</bpelx:property>
+              </bpelx:general>
+            </bpelx:annotation>
+            <faultHandlers>
+              <catch faultName="ns17:fault" faultVariable="faultVariable"
+                     faultElement="ns15:GeneralResponse">
+                <sequence name="fault">
+                  <assign name="Assign_Fault">
+                    <copy>
+                      <from>$uti</from>
+                      <to>$generalResponse.fault/uti</to>
+                    </copy>
+                    <copy>
+                      <from>$faultVariable/status</from>
+                      <to>$generalResponse.fault/status</to>
+                    </copy>
+                    <copy>
+                      <from>$faultVariable/code</from>
+                      <to>$generalResponse.fault/code</to>
+                    </copy>
+                    <copy>
+                      <from>$faultVariable/message</from>
+                      <to>$generalResponse.fault/message</to>
+                    </copy>
+                  </assign>
+                  <throw name="FaultNotification" faultName="ns17:fault"
+                         faultVariable="globalFaultVar"/>
+                </sequence>
+              </catch>
+            </faultHandlers>
+            <sequence name="FaultNotification">
+              <assign name="AssignFaultNotification">
+                <copy>
+                  <from>$uti</from>
+                  <to>$Invoke_CreateFault_Input.body/uti</to>
+                </copy>
+                <copy>
+                  <from><literal>7</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/errorID</to>
+                </copy>
+                <copy>
+                  <from><literal>INS_ORCHESTRATOR_M_SLCT</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/instanceID</to>
+                </copy>
+                <copy>
+                  <from><literal>322</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+                </copy>
+                <copy>
+                  <from><literal>O2_BIZ02</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/reasonID</to>
+                </copy>
+                <copy>
+                  <from><literal>177</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/serviceID</to>
+                </copy>
+                <copy>
+                  <from><literal>O2Service_Bpel</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+                </copy>
+                <copy>
+                  <from><literal>SOA</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/userName</to>
+                </copy>
+                <copy>
+                  <from><literal>EmptyTransaction - ExpireOrderProcess</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/stageName</to>
+                </copy>
+                <copy>
+                  <from><literal>No se encontro transacción asociada al UtiReference especificado</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/detailError</to>
+                </copy>
+              </assign>
+              <invoke name="InvokeFaultNotification"
+                      partnerLink="FaultNotificationService"
+                      portType="ns17:FaultNotification_Port"
+                      operation="CreateFault"
+                      inputVariable="Invoke_CreateFault_Input"
+                      outputVariable="Invoke_CreateFault_Output"
+                      bpelx:invokeAsDetail="no"/>
+            </sequence>
+          </scope>
+        </sequence>
+      </else>
+    </if>
+    <sequence name="Reply">
+      <assign name="Assign_Reply">
+        <copy>
+          <from>$uti</from>
+          <to>$outputVariable.body/generalResponse/uti</to>
+        </copy>
+        <copy>
+          <from><literal>OK</literal></from>
+          <to>$outputVariable.body/generalResponse/status</to>
+        </copy>
+        <copy>
+          <from><literal>01</literal></from>
+          <to>$outputVariable.body/generalResponse/code</to>
+        </copy>
+        <copy>
+          <from><literal>Service has been completed</literal></from>
+          <to>$outputVariable.body/generalResponse/message</to>
+        </copy>
+      </assign>
+      <reply name="replyOutput" partnerLink="expireorderprocess_client"
+             portType="client:BasicOrderPort" operation="ExpireOrder" variable="outputVariable"/>
+    </sequence>
+  </sequence>
+</process>

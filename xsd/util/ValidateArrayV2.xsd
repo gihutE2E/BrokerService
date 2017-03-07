@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://tigo.com/util/pvs/validateArray/v1/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:sch="http://tigo.com/util/pvs/validateArray/v1/schema" xmlns:val="http://xmlns.tigo.com/ProcessValidator/ValidateRequest">
+   <xsd:import namespace="http://xmlns.tigo.com/ProcessValidator/ValidateRequest" schemaLocation="../partner/ValidateRequest.xsd"/>
+   <xsd:element name="ValidateArray" type="sch:ValidateArrayQuery"/>
+   <xsd:complexType name="ValidateArrayQuery">
+      <xsd:sequence>
+         <xsd:element ref="val:validateArrayRequest"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

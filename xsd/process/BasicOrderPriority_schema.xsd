@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/order/priority/v1/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://tigo.com/enterprise/serviceEntity/provisioning/order/priority/v1/schema" xmlns:add="http://tigo.com/commons/resources/additional/v1/schema" xmlns:prd="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema" xmlns:ord="http://tigo.com/serviceEntity/provisioning/offeringDetail/v1/schema">
+   <xsd:import namespace="http://tigo.com/commons/resources/additional/v1/schema" schemaLocation="../partner/commons/resources/BasicAdditional_schema.xsd"/>
+   <xsd:import namespace="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema" schemaLocation="../partner/product/BasicProduct_schema.xsd"/>
+   <xsd:import namespace="http://tigo.com/serviceEntity/provisioning/offeringDetail/v1/schema" schemaLocation="../partner/BasicOfferingDetail_schema.xsd"/>
+   <xsd:element name="order" type="tns:orderType"/>
+   <xsd:complexType name="orderType">
+      <xsd:sequence>
+         <xsd:element name="priority" type="xsd:int" minOccurs="0"/>
+         <xsd:element ref="prd:product"/>
+         <xsd:element ref="ord:offeringDetail"/>
+         <xsd:element ref="add:additionals" minOccurs="0"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

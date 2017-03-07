@@ -1,0 +1,710 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Tue Jan 22 21:34:38 COT 2013
+  Author:  Harcalejo
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="ReverseProvideProcess"
+               targetNamespace="http://xmlns.oracle.com/OrchestratorOrders/Orchestrator/ReverseProvideProcess"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/OrchestratorOrders/Orchestrator/ReverseProvideProcess"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+               xmlns:ns1="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns2="http://tigo.com/enterprise/taskService/provisioning/v1"
+         xmlns:ns3="http://tigo.com/enterprise/serviceEntity/provisioning/reverseProvideProcess"
+         xmlns:ns4="http://tigo.com/enterprise/taskService/provisioning/v1/schema"
+         xmlns:ns6="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema"
+         xmlns:ns5="http://tigo.com/commons/basicRequest/v1/schema"
+         xmlns:ns7="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_DETAIL"
+         xmlns:ns8="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_DETAIL"
+         xmlns:ns9="http://tigo.com/commons/generalResponse/v1/schema"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns10="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_PRODUCT_UPDATE"
+         xmlns:ns11="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_PRODUCT_UPDATE"
+         xmlns:ns12="http://tigo.hn/enterprise/faultNotificationService/createFault"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:ns13="http://tigo.hn/commons/resources/faultNotificationService/createFaultSchema/schema">
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <import namespace="http://tigo.hn/enterprise/faultNotificationService/createFault"
+          location="wsdl/BasicFaultNotification.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="reverseprovideprocess_client" partnerLinkType="ns3:BasicOrderPort_PL"
+                 myRole="BasicOrderPort_Role"/>
+    <partnerLink name="LOG_ORCHESTRATOR_DETAIL" partnerLinkType="ns7:LOG_ORCHESTRATOR_DETAIL_plt"
+                 partnerRole="LOG_ORCHESTRATOR_DETAIL_role"/>
+    <partnerLink name="LOG_ORCHESTRATOR_PRODUCT_UPDATE"
+                 partnerLinkType="ns10:LOG_ORCHESTRATOR_PRODUCT_UPDATE_plt"
+                 partnerRole="LOG_ORCHESTRATOR_PRODUCT_UPDATE_role"/>
+    <partnerLink name="ProvisioningMediator.ProvisioningMediator"
+                 partnerLinkType="ns2:ProvisioningMediator.ProvisioningMediator"
+                 partnerRole="ProvisioningPort"/>
+    <partnerLink name="FaultNotificationService" partnerLinkType="ns12:FaultNotificationService"
+                 partnerRole="FaultNotification_Port"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="inputVariable" messageType="ns3:BasicVoidOrderRequest_msg"/>
+    <variable name="outputVariable" messageType="ns3:BasicVoidOrderResponse_msg"/>
+    <variable name="Invoke_Reverse_Input" messageType="ns2:BasicReverseRequest_msg"/>
+    <variable name="Invoke_Reverse_Output" messageType="ns2:BasicReverseResponse_msg"/>
+    <variable name="generalResponse" messageType="ns3:GeneralResponse_msg"/>
+    <variable name="Invoke_LogProductUpdate_Input"
+              messageType="ns10:LogOrchestratorProductCollection_msg"/>
+    <variable name="Invoke_LogProductSelect_Input"
+              messageType="ns7:LOG_ORCHESTRATOR_DETAILSelect_inputParameters"/>
+    <variable name="Invoke_LogProductSelect_Output"
+              messageType="ns7:LogOrchestratorProductCollection_msg"/>
+    <variable name="Invoke_CreateFault_Input"
+              messageType="ns12:CreateFaultRequest_msg"/>
+    <variable name="Invoke_CreateFault_Output"
+              messageType="ns12:CreateFaultResponse_msg"/>
+    <variable name="globalFaultVar" messageType="ns12:generalResponseMsg"/>
+    <variable name="uti" type="xsd:string"/>
+  </variables>
+  <faultHandlers>
+    <catch faultName="ns12:fault">
+      <sequence name="FaultNotification">
+        <reply name="Reply_Fault" faultName="ns3:fault" partnerLink="reverseprovideprocess_client"
+               portType="ns3:BasicOrderPort" operation="ReverseOrder" variable="generalResponse"/>
+        <exit name="Exit1"/>
+      </sequence>
+    </catch>
+    <catchAll>
+      <scope name="faultNotification" exitOnStandardFault="no">
+        <bpelx:annotation>
+          <bpelx:general>
+            <bpelx:property name="userImage">earth.png</bpelx:property>
+          </bpelx:general>
+        </bpelx:annotation>
+        <faultHandlers>
+          <catch faultName="ns12:fault" faultVariable="faultVariable"
+                 faultElement="ns9:GeneralResponse">
+            <sequence name="fault">
+              <assign name="AssignGeneralResponse">
+                <copy>
+                  <from>$uti</from>
+                  <to>$generalResponse.fault/uti</to>
+                </copy>
+                <copy>
+                  <from>$faultVariable/status</from>
+                  <to>$generalResponse.fault/status</to>
+                </copy>
+                <copy>
+                  <from>$faultVariable/code</from>
+                  <to>$generalResponse.fault/code</to>
+                </copy>
+                <copy>
+                  <from>$faultVariable/message</from>
+                  <to>$generalResponse.fault/message</to>
+                </copy>
+              </assign>
+              <reply name="Reply" faultName="ns12:fault"
+                     variable="generalResponse"
+                     partnerLink="reverseprovideprocess_client"
+                     portType="ns3:BasicOrderPort" operation="ReverseOrder"/>
+              <exit name="Exit2"/>
+            </sequence>
+          </catch>
+        </faultHandlers>
+        <sequence name="faultNotification">
+          <assign name="AssignFaultNotification">
+            <copy>
+              <from>$uti</from>
+              <to>$Invoke_CreateFault_Input.body/uti</to>
+            </copy>
+            <copy>
+              <from><literal>3</literal></from>
+              <to>$Invoke_CreateFault_Input.body/errorID</to>
+            </copy>
+            <copy>
+              <from>ora:getFaultAsString()</from>
+              <to>$Invoke_CreateFault_Input.body/detailError</to>
+            </copy>
+            <copy>
+              <from><literal>ReverseProvideProcess</literal></from>
+              <to>$Invoke_CreateFault_Input.body/stageName</to>
+            </copy>
+            <copy>
+              <from><literal>SOA</literal></from>
+              <to>$Invoke_CreateFault_Input.body/userName</to>
+            </copy>
+            <copy>
+              <from><literal>O2Service_Bpel</literal></from>
+              <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+            </copy>
+            <copy>
+              <from><literal>177</literal></from>
+              <to>$Invoke_CreateFault_Input.body/serviceID</to>
+            </copy>
+            <copy>
+              <from><literal>INS_O2_REVERSE_PROVIDE_PROCESS</literal></from>
+              <to>$Invoke_CreateFault_Input.body/instanceID</to>
+            </copy>
+            <copy>
+              <from><literal>O2_TEC27</literal></from>
+              <to>$Invoke_CreateFault_Input.body/reasonID</to>
+            </copy>
+            <copy>
+              <from><literal>391</literal></from>
+              <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+            </copy>
+          </assign>
+          <invoke name="InvokeFaultNotification"
+                  partnerLink="FaultNotificationService"
+                  portType="ns12:FaultNotification_Port" operation="CreateFault"
+                  inputVariable="Invoke_CreateFault_Input"
+                  outputVariable="Invoke_CreateFault_Output"
+                  bpelx:invokeAsDetail="no"/>
+        </sequence>
+      </scope>
+    </catchAll>
+  </faultHandlers>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in ReverseProvideProcess.wsdl) -->
+    <receive name="receiveInput" partnerLink="reverseprovideprocess_client"
+             portType="ns3:BasicOrderPort" operation="ReverseOrder" variable="inputVariable" createInstance="yes"/>
+
+    <!-- Generate reply to synchronous request -->
+    <assign name="uti">
+      <copy>
+        <from>ora:getECID()</from>
+        <to>$uti</to>
+      </copy>
+    </assign>
+    <scope name="LogOrchestratorProductSelect" exitOnStandardFault="no">
+      <bpelx:annotation>
+        <bpelx:general>
+          <bpelx:property name="userDescription">ErrorParametrizado</bpelx:property>
+          <bpelx:property name="userImage">database_lg.png</bpelx:property>
+        </bpelx:general>
+      </bpelx:annotation>
+      <faultHandlers>
+        <catchAll>
+          <scope name="faultNotification" exitOnStandardFault="no">
+            <bpelx:annotation>
+              <bpelx:general>
+                <bpelx:property name="userImage">earth.png</bpelx:property>
+              </bpelx:general>
+            </bpelx:annotation>
+            <faultHandlers>
+              <catch faultName="ns12:fault" faultVariable="faultVariable"
+                     faultElement="ns9:GeneralResponse">
+                <sequence name="GeneralResponse">
+                  <assign name="AssignGeneralResponse">
+                    <copy>
+                      <from>$faultVariable/status</from>
+                      <to>$generalResponse.fault/status</to>
+                    </copy>
+                    <copy>
+                      <from>$uti</from>
+                      <to>$generalResponse.fault/uti</to>
+                    </copy>
+                    <copy>
+                      <from>$faultVariable/code</from>
+                      <to>$generalResponse.fault/code</to>
+                    </copy>
+                    <copy>
+                      <from>$faultVariable/message</from>
+                      <to>$generalResponse.fault/message</to>
+                    </copy>
+                  </assign>
+                  <throw name="FaultNotification" faultName="ns12:fault"
+                         faultVariable="globalFaultVar"/>
+                </sequence>
+              </catch>
+            </faultHandlers>
+            <sequence name="faultNotification">
+              <assign name="AssignFaultNotification">
+                <copy>
+                  <from>$uti</from>
+                  <to>$Invoke_CreateFault_Input.body/uti</to>
+                </copy>
+                <copy>
+                  <from><literal>LogOrchestratorProductSelect - ReverseProvideProcess</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/stageName</to>
+                </copy>
+                <copy>
+                  <from><literal>INS_ORCHESTRATOR_PRODUCT_SLCT</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/instanceID</to>
+                </copy>
+                <copy>
+                  <from><literal>O2_TEC23</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/reasonID</to>
+                </copy>
+                <copy>
+                  <from><literal>318</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+                </copy>
+                <copy>
+                  <from><literal>5</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/errorID</to>
+                </copy>
+                <copy>
+                  <from><literal>177</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/serviceID</to>
+                </copy>
+                <copy>
+                  <from><literal>O2Service_Bpel</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+                </copy>
+                <copy>
+                  <from><literal>SOA</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/userName</to>
+                </copy>
+                <copy>
+                  <from>$uti</from>
+                  <to>$Invoke_CreateFault_Input.body/detailError</to>
+                </copy>
+              </assign>
+              <invoke name="InvokeFaultNotification"
+                      partnerLink="FaultNotificationService"
+                      portType="ns12:FaultNotification_Port"
+                      operation="CreateFault"
+                      inputVariable="Invoke_CreateFault_Input"
+                      outputVariable="Invoke_CreateFault_Output"
+                      bpelx:invokeAsDetail="no"/>
+            </sequence>
+          </scope>
+        </catchAll>
+      </faultHandlers>
+      <sequence name="LogOrchestratorProductSelect">
+        <assign name="Assign_LogProductSelectReq">
+          <copy>
+            <from>$inputVariable.body/ns5:basicRequest/utiReference</from>
+            <to>$Invoke_LogProductSelect_Input.LOG_ORCHESTRATOR_DETAILSelect_inputParameters/ns8:correlationId</to>
+          </copy>
+        </assign>
+        <invoke name="Invoke_LogProductSelect" partnerLink="LOG_ORCHESTRATOR_DETAIL"
+                portType="ns7:LOG_ORCHESTRATOR_DETAIL_ptt" operation="LOG_ORCHESTRATOR_DETAILSelect"
+                inputVariable="Invoke_LogProductSelect_Input"
+                outputVariable="Invoke_LogProductSelect_Output" bpelx:invokeAsDetail="no"/>
+      </sequence>
+    </scope>
+    <if name="Products">
+      <documentation>NotEmpty</documentation>
+      <condition>ora:countNodes('Invoke_LogProductSelect_Output','LogOrchestratorProductCollection','ns8:LogOrchestratorProduct') &gt; 0</condition>
+      <forEach parallel="no" counterName="productCounter" name="Products">
+        <startCounterValue>1</startCounterValue>
+        <finalCounterValue>ora:countNodes('Invoke_LogProductSelect_Output','LogOrchestratorProductCollection','ns8:LogOrchestratorProduct')</finalCounterValue>
+        <scope name="ProductCounter" exitOnStandardFault="no">
+          <sequence>
+            <if name="UTI">
+              <documentation>Not Empty</documentation>
+              <condition>concat($Invoke_LogProductSelect_Output.LogOrchestratorProductCollection/ns8:LogOrchestratorProduct[$productCounter]/ns8:uti,'') != ''</condition>
+              <sequence name="NotEmpty">
+                <scope name="ProvisioningService" exitOnStandardFault="no">
+                  <bpelx:annotation>
+                    <bpelx:general>
+                      <bpelx:property name="userDescription">ErrorParametrizado</bpelx:property>
+                      <bpelx:property name="userImage">earth.png</bpelx:property>
+                    </bpelx:general>
+                  </bpelx:annotation>
+                  <faultHandlers>
+                    <catch faultName="ns2:fault" faultVariable="faultVariable"
+                           faultElement="ns9:GeneralResponse">
+                      <sequence name="ReplyFault">
+                        <assign name="Assign_Fault">
+                          <copy>
+                            <from>$faultVariable/status</from>
+                            <to>$generalResponse.fault/status</to>
+                          </copy>
+                          <copy>
+                            <from>$uti</from>
+                            <to>$generalResponse.fault/uti</to>
+                          </copy>
+                          <copy>
+                            <from>$faultVariable/code</from>
+                            <to>$generalResponse.fault/code</to>
+                          </copy>
+                          <copy>
+                            <from>$faultVariable/message</from>
+                            <to>$generalResponse.fault/message</to>
+                          </copy>
+                        </assign>
+                        <throw name="FaultNotification" faultName="ns12:fault"
+                               faultVariable="globalFaultVar"/>
+                      </sequence>
+                    </catch>
+                    <catchAll>
+                      <scope name="faultNotification" exitOnStandardFault="no">
+                        <bpelx:annotation>
+                          <bpelx:general>
+                            <bpelx:property name="userImage">earth.png</bpelx:property>
+                          </bpelx:general>
+                        </bpelx:annotation>
+                        <faultHandlers>
+                          <catch faultName="ns12:fault"
+                                 faultVariable="faultVariable"
+                                 faultElement="ns9:GeneralResponse">
+                            <sequence name="fault">
+                              <assign name="AssignGeneralResponse">
+                                <copy>
+                                  <from>$uti</from>
+                                  <to>$generalResponse.fault/uti</to>
+                                </copy>
+                                <copy>
+                                  <from>$faultVariable/status</from>
+                                  <to>$generalResponse.fault/status</to>
+                                </copy>
+                                <copy>
+                                  <from>$faultVariable/code</from>
+                                  <to>$generalResponse.fault/code</to>
+                                </copy>
+                                <copy>
+                                  <from>$faultVariable/message</from>
+                                  <to>$generalResponse.fault/message</to>
+                                </copy>
+                              </assign>
+                              <throw name="FaultNotification"
+                                     faultName="ns12:fault"
+                                     faultVariable="globalFaultVar"/>
+                            </sequence>
+                          </catch>
+                        </faultHandlers>
+                        <sequence name="faultNotification">
+                          <assign name="AssignFaultNotification">
+                            <copy>
+                              <from>$uti</from>
+                              <to>$Invoke_CreateFault_Input.body/uti</to>
+                            </copy>
+                            <copy>
+                              <from><literal>INS_O2_PROVISIONING_REVERSE</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/instanceID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>6</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/errorID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>O2_TEC30</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/reasonID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>405</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>ProvisioningService - ReverseProvideProcess</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/stageName</to>
+                            </copy>
+                            <copy>
+                              <from>ora:getFaultAsString()</from>
+                              <to>$Invoke_CreateFault_Input.body/detailError</to>
+                            </copy>
+                            <copy>
+                              <from><literal>177</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/serviceID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>O2Service_Bpel</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>SOA</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/userName</to>
+                            </copy>
+                          </assign>
+                          <invoke name="InvokeFaultNotification"
+                                  partnerLink="FaultNotificationService"
+                                  portType="ns12:FaultNotification_Port"
+                                  operation="CreateFault"
+                                  inputVariable="Invoke_CreateFault_Input"
+                                  outputVariable="Invoke_CreateFault_Output"
+                                  bpelx:invokeAsDetail="no"/>
+                        </sequence>
+                      </scope>
+                    </catchAll>
+                  </faultHandlers>
+                  <sequence name="ProvisioningService">
+                    <assign name="Assign_ReverseReq">
+                      <copy ignoreMissingFromData="yes">
+                        <from>$inputVariable.body/ns5:basicRequest/externalApplicationID</from>
+                        <to>$Invoke_Reverse_Input.body/ns5:basicRequest/externalApplicationID</to>
+                      </copy>
+                      <copy ignoreMissingFromData="yes">
+                        <from>$inputVariable.body/ns5:basicRequest/externalTransactionID</from>
+                        <to>$Invoke_Reverse_Input.body/ns5:basicRequest/externalTransactionID</to>
+                      </copy>
+                      <copy>
+                        <from>$Invoke_LogProductSelect_Output.LogOrchestratorProductCollection/ns8:LogOrchestratorProduct[$productCounter]/ns8:uti</from>
+                        <to>$Invoke_Reverse_Input.body/ns5:basicRequest/utiReference</to>
+                      </copy>
+                    </assign>
+                    <assign name="TransformReverse">
+                      <bpelx:annotation>
+                        <bpelx:pattern patternName="bpelx:transformation"/>
+                      </bpelx:annotation>
+                      <copy>
+                        <from>ora:doXSLTransformForDoc("xsl/Transformation_ReverseToReverserProvisioning.xsl", $Invoke_Reverse_Input.body)</from>
+                        <to variable="Invoke_Reverse_Input" part="body"/>
+                      </copy>
+                    </assign>
+                    <invoke name="Invoke_ReverseService"
+                            partnerLink="ProvisioningMediator.ProvisioningMediator"
+                            portType="ns2:ProvisioningPort" operation="Reverse"
+                            inputVariable="Invoke_Reverse_Input"
+                            outputVariable="Invoke_Reverse_Output"
+                            bpelx:invokeAsDetail="no"/>
+                  </sequence>
+                </scope>
+                <scope name="LogOrchestratorProductUpdate"
+                       exitOnStandardFault="no">
+                  <bpelx:annotation>
+                    <bpelx:general>
+                      <bpelx:property name="userDescription">ErrorParametrizado</bpelx:property>
+                      <bpelx:property name="userImage">database_lg.png</bpelx:property>
+                    </bpelx:general>
+                  </bpelx:annotation>
+                  <faultHandlers>
+                    <catchAll>
+                      <scope name="faultNotification" exitOnStandardFault="no">
+                        <bpelx:annotation>
+                          <bpelx:general>
+                            <bpelx:property name="userImage">earth.png</bpelx:property>
+                          </bpelx:general>
+                        </bpelx:annotation>
+                        <faultHandlers>
+                          <catch faultName="ns12:fault"
+                                 faultVariable="faultVariable"
+                                 faultElement="ns9:GeneralResponse">
+                            <sequence name="fault">
+                              <assign name="AssignGeneralResponse">
+                                <copy>
+                                  <from>$uti</from>
+                                  <to>$generalResponse.fault/uti</to>
+                                </copy>
+                                <copy>
+                                  <from>$faultVariable/status</from>
+                                  <to>$generalResponse.fault/status</to>
+                                </copy>
+                                <copy>
+                                  <from>$faultVariable/code</from>
+                                  <to>$generalResponse.fault/code</to>
+                                </copy>
+                                <copy>
+                                  <from>$faultVariable/message</from>
+                                  <to>$generalResponse.fault/message</to>
+                                </copy>
+                              </assign>
+                              <throw name="FaultNotification"
+                                     faultName="ns12:fault"
+                                     faultVariable="globalFaultVar"/>
+                            </sequence>
+                          </catch>
+                        </faultHandlers>
+                        <sequence name="faultNotification">
+                          <assign name="AssignFaultNotification">
+                            <copy>
+                              <from>$uti</from>
+                              <to>$Invoke_CreateFault_Input.body/uti</to>
+                            </copy>
+                            <copy>
+                              <from><literal>INS_ORCHESTRATOR_PRODUCT_UP</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/instanceID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>O2_TEC16</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/reasonID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>266</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>5</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/errorID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>177</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/serviceID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>O2Service_Bpel</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>SOA</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/userName</to>
+                            </copy>
+                            <copy>
+                              <from><literal>LogOrchestratorProductUpdate - ReverseProvideProcess</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/stageName</to>
+                            </copy>
+                            <copy>
+                              <from>ora:getFaultAsString()</from>
+                              <to>$Invoke_CreateFault_Input.body/detailError</to>
+                            </copy>
+                          </assign>
+                          <invoke name="InvokeFaultNotification"
+                                  partnerLink="FaultNotificationService"
+                                  portType="ns12:FaultNotification_Port"
+                                  operation="CreateFault"
+                                  inputVariable="Invoke_CreateFault_Input"
+                                  outputVariable="Invoke_CreateFault_Output"
+                                  bpelx:invokeAsDetail="no"/>
+                        </sequence>
+                      </scope>
+                    </catchAll>
+                  </faultHandlers>
+                  <sequence name="LogOrchestratorProductUpdate">
+                    <assign name="Assign_LogProductUpdateReq">
+                      <copy>
+                        <from>$Invoke_LogProductSelect_Output.LogOrchestratorProductCollection/ns8:LogOrchestratorProduct[$productCounter]/ns8:id</from>
+                        <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns11:LogOrchestratorProduct/ns11:id</to>
+                      </copy>
+                      <copy>
+                        <from><literal>REVERSE</literal></from>
+                        <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns11:LogOrchestratorProduct/ns11:status</to>
+                      </copy>
+                    </assign>
+                    <invoke name="Invoke_LogProductUpdate"
+                            partnerLink="LOG_ORCHESTRATOR_PRODUCT_UPDATE"
+                            portType="ns10:LOG_ORCHESTRATOR_PRODUCT_UPDATE_ptt"
+                            operation="update"
+                            inputVariable="Invoke_LogProductUpdate_Input"
+                            bpelx:invokeAsDetail="no"/>
+                  </sequence>
+                </scope>
+              </sequence>
+            </if>
+          </sequence>
+        </scope>
+      </forEach>
+      <else>
+        <documentation>Empty</documentation>
+        <scope name="faultNotificationBiz" exitOnStandardFault="no">
+          <bpelx:annotation>
+            <bpelx:general>
+              <bpelx:property name="userImage">earth.png</bpelx:property>
+            </bpelx:general>
+          </bpelx:annotation>
+          <faultHandlers>
+            <catch faultName="ns12:fault" faultVariable="faultVariable"
+                   faultElement="ns9:GeneralResponse">
+              <sequence name="fault">
+                <assign name="AssignGeneralResponse">
+                  <copy>
+                    <from>$uti</from>
+                    <to>$generalResponse.fault/uti</to>
+                  </copy>
+                  <copy>
+                    <from>$faultVariable/status</from>
+                    <to>$generalResponse.fault/status</to>
+                  </copy>
+                  <copy>
+                    <from>$faultVariable/code</from>
+                    <to>$generalResponse.fault/code</to>
+                  </copy>
+                  <copy>
+                    <from>$faultVariable/message</from>
+                    <to>$generalResponse.fault/message</to>
+                  </copy>
+                </assign>
+                <throw name="FaultNotification" faultName="ns12:fault"
+                       faultVariable="globalFaultVar"/>
+              </sequence>
+            </catch>
+          </faultHandlers>
+          <sequence name="faultNotification">
+            <assign name="AssignFaultNotification">
+              <copy>
+                <from>$uti</from>
+                <to>$Invoke_CreateFault_Input.body/uti</to>
+              </copy>
+              <copy>
+                <from><literal>7</literal></from>
+                <to>$Invoke_CreateFault_Input.body/errorID</to>
+              </copy>
+              <copy>
+                <from><literal>INS_ORCHESTRATOR_PRODUCT_SLCT</literal></from>
+                <to>$Invoke_CreateFault_Input.body/instanceID</to>
+              </copy>
+              <copy>
+                <from><literal>O2_BIZ03</literal></from>
+                <to>$Invoke_CreateFault_Input.body/reasonID</to>
+              </copy>
+              <copy>
+                <from><literal>411</literal></from>
+                <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+              </copy>
+              <copy>
+                <from><literal>Empty - ReverseProvideProcess</literal></from>
+                <to>$Invoke_CreateFault_Input.body/stageName</to>
+              </copy>
+              <copy>
+                <from><literal>O2Service_Bpel</literal></from>
+                <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+              </copy>
+              <copy>
+                <from><literal>177</literal></from>
+                <to>$Invoke_CreateFault_Input.body/serviceID</to>
+              </copy>
+              <copy>
+                <from><literal>No existen aprovisionamientos relacionados al UtiReference </literal></from>
+                <to>$Invoke_CreateFault_Input.body/detailError</to>
+              </copy>
+              <copy>
+                <from><literal>SOA</literal></from>
+                <to>$Invoke_CreateFault_Input.body/userName</to>
+              </copy>
+            </assign>
+            <invoke name="InvokeFaultNotification"
+                    partnerLink="FaultNotificationService"
+                    portType="ns12:FaultNotification_Port"
+                    operation="CreateFault"
+                    inputVariable="Invoke_CreateFault_Input"
+                    outputVariable="Invoke_CreateFault_Output"
+                    bpelx:invokeAsDetail="no"/>
+          </sequence>
+        </scope>
+      </else>
+    </if>
+    <reply name="replyOutput" partnerLink="reverseprovideprocess_client"
+           portType="ns3:BasicOrderPort" operation="ReverseOrder" variable="outputVariable"/>
+  </sequence>
+</process>

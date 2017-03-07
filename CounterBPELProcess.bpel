@@ -1,0 +1,218 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Wed Jan 29 15:19:29 CST 2014
+  Author:  Karen Aguilar
+  Type: BPEL 2.0 Process
+  Purpose: One Way BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="CounterBPELProcess"
+               targetNamespace="http://xmlns.oracle.com/Broker/Broker/CounterBPELProcess"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/Broker/Broker/CounterBPELProcess"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:ns1="http://www.tigo.com/resource/masterStatusServices/masterStatus/v1"
+         xmlns:ns3="http://tigo.hn/commons/resources/parameters"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns2="http://www.tigo.com/resource/masterStatusServices/masterStatus/v1/schema"
+         xmlns:sch1="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema"
+         xmlns:ns4="http://tigo.com/enterprise/business/task/OrderBroker/v1/schema"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns12="http://tigo.com/enterprise/serviceEntity/provisioning/dataChangeRequest/v1/schema"
+         xmlns:ns7="http://tigo.com/enterprise/businessEntity/charge/v1/schema"
+         xmlns:ns8="http://tigo.com/commons/resources/additional/v1/schema"
+         xmlns:ns10="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema"
+         xmlns:ns13="http://tigo.com/enterprise/serviceEntity/provisioning/fieldService/v1/schema"
+         xmlns:ns11="http://tigo.com/serviceEntity/provisioning/offeringDetail/v1/schema"
+         xmlns:ns6="http://tigo.com/enterprise/businessEntity/client/basic/v1/schema"
+         xmlns:ns5="http://tigo.com/commons/basicRequest/v1/schema"
+         xmlns:ns9="http://tigo.com/enterprise/serviceEntity/provisioning/order/v1/schema"
+         xmlns:ns14="http://tigo.hn/commons/resources/generalResponse">
+  <import namespace="http://www.tigo.com/resource/masterStatusServices/masterStatus/v1/schema"
+          location="xsd/partner/BasicMasterStatus_schema.xsd"
+          importType="http://www.w3.org/2001/XMLSchema"/>
+  <import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema"
+          location="xsd/partner/BasicOrderRequest_schema.xsd"
+          importType="http://www.w3.org/2001/XMLSchema"/>
+  <import namespace="http://xmlns.oracle.com/Broker/Broker/CounterBPELProcess" location="CounterBPELProcess.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  --> 
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="counterbpelprocess_client" partnerLinkType="client:CounterBPELProcess" myRole="CounterBPELProcessProvider"/>
+    <partnerLink name="MasterStatusService"
+                 partnerLinkType="ns1:MasterStatusService"
+                 partnerRole="MasterStatusService_Port"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:CounterBPELProcessRequestMessage"/>
+    <variable name="RequestAssign" element="sch1:BasicOrderRequest"/>
+    <variable name="InvokeMasterData_GetMasterStatus_InputVariable"
+              messageType="ns1:GetMasterStatusRequest_msg"/>
+    <variable name="InvokeMasterData_GetMasterStatus_OutputVariable"
+              messageType="ns1:GetMasterStatusResponse_msg"/>
+    <variable name="InvokeSetMasterStatus_SetMasterStatus_InputVariable"
+              messageType="ns1:SetMasterStatusRequest_msg"/>
+    <variable name="InvokeSetMasterStatus_SetMasterStatus_OutputVariable"
+              messageType="ns1:SetMasterStatusResponse_msg"/>
+  </variables>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in CounterBPELProcess.wsdl) -->
+    <receive name="receiveInput" partnerLink="counterbpelprocess_client" portType="client:CounterBPELProcess" operation="process" variable="inputVariable" createInstance="yes"/>
+    <scope name="GetParameters" exitOnStandardFault="no">
+      <faultHandlers>
+        <catchAll>
+          <empty name="EmptyGetParameters"/>
+        </catchAll>
+      </faultHandlers>
+      <sequence name="Sequence1">
+        <assign name="requestTransformation">
+          <copy>
+            <from>bpws:getVariableData('inputVariable','payload','Order/OrderContent/content[1]/payload')/sch1:BasicOrderRequest</from>
+            <to>$RequestAssign</to>
+          </copy>
+        </assign>
+        <if name="O2PVSV2_validation">
+          <documentation>
+            <![CDATA[Provisioning]]>
+          </documentation>
+          <condition>$inputVariable.payload/Order/orderSpecification/action="PROVISIONING"</condition>
+          <scope name="O2Iteration" exitOnStandardFault="no">
+            <forEach parallel="no" counterName="ForEachCounter" name="ForEach">
+              <startCounterValue>1</startCounterValue>
+              <finalCounterValue>ora:countNodes('RequestAssign','ServiceOffer/order[1]/productOffering/ns9:order')</finalCounterValue>
+              <scope name="MasterStatusScope" exitOnStandardFault="no">
+                <faultHandlers>
+                  <catchAll>
+                    <empty name="Empty3"/>
+                  </catchAll>
+                </faultHandlers>
+                <sequence name="ConsumoMasterStatus">
+                  <assign name="GetMasterDataReq">
+                    <copy>
+                      <from>concat($RequestAssign/ServiceOffer/order[1]/productOffering/ns9:order[$ForEachCounter]/ns10:product/name,'_',$RequestAssign/ServiceOffer/order[1]/productOffering/ns9:order[$ForEachCounter]/ns11:offeringDetail/offerAction)</from>
+                      <to>$InvokeMasterData_GetMasterStatus_InputVariable.body/entity_id</to>
+                    </copy>
+                    <copy>
+                      <from>$inputVariable.payload/Order/client/ID</from>
+                      <to>$InvokeMasterData_GetMasterStatus_InputVariable.body/entity_key</to>
+                    </copy>
+                  </assign>
+                  <invoke name="InvokeMasterData" bpelx:invokeAsDetail="no"
+                          partnerLink="MasterStatusService"
+                          portType="ns1:MasterStatusService_Port"
+                          operation="GetMasterStatus"
+                          inputVariable="InvokeMasterData_GetMasterStatus_InputVariable"
+                          outputVariable="InvokeMasterData_GetMasterStatus_OutputVariable"/>
+                  <if name="IfValueIsNotEmpty">
+                    <documentation>
+                      <![CDATA[isNotEmpty]]>
+                    </documentation>
+                    <condition>$InvokeMasterData_GetMasterStatus_OutputVariable.body/listMasterStatus/masterStatus/entity_value!=''
+</condition>
+                    <sequence name="SetMasterStatusSequence">
+                      <assign name="AssignEntityValue">
+                        <copy>
+                          <from>$inputVariable.payload/Order/client/ID</from>
+                          <to>$InvokeSetMasterStatus_SetMasterStatus_InputVariable.body/masterStatus/entity_key</to>
+                        </copy>
+                        <copy>
+                          <from><literal>REFERENCETRANSACTIONDATE</literal></from>
+                          <to>$InvokeSetMasterStatus_SetMasterStatus_InputVariable.body/ns3:parameters/parameter/name</to>
+                        </copy>
+                        <copy>
+                          <from>xp20:current-dateTime()</from>
+                          <to>$InvokeSetMasterStatus_SetMasterStatus_InputVariable.body/ns3:parameters/parameter/value</to>
+                        </copy>
+                        <copy>
+                          <from><literal>DEFAULT_TYPE</literal></from>
+                          <to>$InvokeSetMasterStatus_SetMasterStatus_InputVariable.body/entity_type</to>
+                        </copy>
+                        <copy>
+                          <from>string(number($InvokeMasterData_GetMasterStatus_OutputVariable.body/listMasterStatus/masterStatus/entity_value) +1)</from>
+                          <to>$InvokeSetMasterStatus_SetMasterStatus_InputVariable.body/masterStatus/entity_value</to>
+                        </copy>
+                        <copy>
+                          <from>concat($RequestAssign/ServiceOffer/order[1]/productOffering/ns9:order[$ForEachCounter]/ns10:product/name,'_',$RequestAssign/ServiceOffer/order[1]/productOffering/ns9:order[$ForEachCounter]/ns11:offeringDetail/offerAction)</from>
+                          <to>$InvokeSetMasterStatus_SetMasterStatus_InputVariable.body/masterStatus/entity_id</to>
+                        </copy>
+                        <copy>
+                          <from><literal>T</literal></from>
+                          <to>$InvokeSetMasterStatus_SetMasterStatus_InputVariable.body/masterStatus/enabled</to>
+                        </copy>
+                        <copy>
+                          <from>xp20:current-dateTime()</from>
+                          <to>$InvokeSetMasterStatus_SetMasterStatus_InputVariable.body/masterStatus/start_date</to>
+                        </copy>
+                        <copy>
+                          <from>xp20:current-dateTime()</from>
+                          <to>$InvokeSetMasterStatus_SetMasterStatus_InputVariable.body/masterStatus/end_date</to>
+                        </copy>
+                      </assign>
+                      <invoke name="InvokeSetMasterStatus" bpelx:invokeAsDetail="no"
+                              partnerLink="MasterStatusService"
+                              portType="ns1:MasterStatusService_Port"
+                              operation="SetMasterStatus"
+                              inputVariable="InvokeSetMasterStatus_SetMasterStatus_InputVariable"
+                              outputVariable="InvokeSetMasterStatus_SetMasterStatus_OutputVariable"/>
+                    </sequence>
+                    <else>
+                      <sequence>
+                        <empty name="EmptyOut"/>
+                      </sequence>
+                    </else>
+                  </if>
+                </sequence>
+              </scope>
+            </forEach>
+          </scope>
+          <else>
+            <documentation>
+              <![CDATA[Validate]]>
+            </documentation>
+            <empty name="Empty2"/>
+          </else>
+        </if>
+      </sequence>
+    </scope>
+  </sequence>
+</process>

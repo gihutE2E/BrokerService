@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_PROCESS_V1" xmlns="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_PROCESS_V1" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:element name="ProcessTbCollection" type="ProcessTbCollection"/>
+   <xs:complexType name="ProcessTbCollection">
+      <xs:sequence>
+         <xs:element name="ProcessTb" type="ProcessTb" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="ProcessTb">
+      <xs:sequence>
+         <xs:element name="id" type="xs:long"/>
+         <xs:element name="externalId" minOccurs="0">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="50"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="expiration" type="xs:long" minOccurs="0"/>
+         <xs:element name="description" minOccurs="0">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="50"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="cost" type="xs:decimal" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="TB_PROCESS_V1Select_processIdInputParameters" type="TB_PROCESS_V1Select_processId"/>
+   <xs:complexType name="TB_PROCESS_V1Select_processId">
+      <xs:sequence>
+         <xs:element name="processId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>

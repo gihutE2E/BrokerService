@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SOAConfigPlan xmlns:jca="http://platform.integration.oracle/blocks/adapter/fw/metadata" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:orawsp="http://schemas.oracle.com/ws/2006/01/policy" xmlns:edl="http://schemas.oracle.com/events/edl" xmlns="http://schemas.oracle.com/soa/configplan">
+   <composite name="BrokerService">
+      <import>
+         <searchReplace>
+            <search/>
+            <replace/>
+         </searchReplace>
+      </import>
+      <service name="BrokerService">
+         <binding type="ws">
+            <attribute name="port">
+               <replace>http://tigo.com/enterprise/business/task/OrderBroker/v1#wsdl.endpoint(BrokerService/OrderBrokerServicePort)</replace>
+            </attribute>
+            <property name="weblogic.wsee.wsat.transaction.flowOption">
+               <replace>NEVER</replace>
+            </property>
+         </binding>
+      </service>
+      <property name="auditLevel">
+         <replace>Development</replace>
+      </property>
+      <property name="validateSchema">
+         <replace>false</replace>
+      </property>
+      <component name="BrokerMediator">
+         <property name="isResequencing">
+            <replace>false</replace>
+         </property>
+      </component>
+      <component name="BrokerMappingMediator">
+         <property name="isResequencing">
+            <replace>false</replace>
+         </property>
+      </component>
+      <component name="OrderInterpreterProcess">
+         <property name="bpel.config.transaction">
+            <replace>required</replace>
+         </property>
+         <property name="bpel.config.oneWayDeliveryPolicy">
+            <replace>async.persist</replace>
+         </property>
+      </component>
+      <component name="BrokerSendOrderProcess">
+         <property name="partnerLink.WORKING_MEMORY_INS.idempotent">
+            <replace>false</replace>
+         </property>
+      </component>
+      <reference name="ServiceRequestTrace">
+         <binding type="ws">
+            <attribute name="port">
+               <replace>http://tigo.com/enterprise/business/task/ServiceRequestTrace/v1#wsdl.endpoint(ServiceRequestTrace_SOAPQSService/ServiceRequestTrace_SOAPQSPort)</replace>
+            </attribute>
+            <attribute name="location">
+               <replace>wsdl/partner/ServiceRequestTrace.wsdl</replace>
+            </attribute>
+            <property name="weblogic.wsee.wsat.transaction.flowOption">
+               <replace>WSDLDriven</replace>
+            </property>
+         </binding>
+      </reference>
+      <reference name="WorkingMemoryService.wsdl">
+         <binding type="ws">
+            <attribute name="port">
+               <replace>http://tigo.com/enterprise/serviceEntity/WorkingMemory/v1#wsdl.endpoint(WorkingMemory_wsSOAPQSService/WorkingMemory_wsSOAPQSPort)</replace>
+            </attribute>
+            <attribute name="location">
+               <replace>wsdl/partner/WorkingMemoryService.wsdl</replace>
+            </attribute>
+            <property name="weblogic.wsee.wsat.transaction.flowOption">
+               <replace>WSDLDriven</replace>
+            </property>
+         </binding>
+      </reference>
+      <reference name="TB_BROKERSERVICE_MAPPING">
+         <property name="jca.retry.count">
+            <replace>4</replace>
+         </property>
+         <property name="jca.retry.backoff">
+            <replace>2</replace>
+         </property>
+         <property name="jca.retry.interval">
+            <replace>1</replace>
+         </property>
+         <property name="jca.retry.maxInterval">
+            <replace>120</replace>
+         </property>
+         <binding type="jca"/>
+      </reference>
+      <reference name="OrderInterpreterService">
+         <binding type="ws">
+            <attribute name="port">
+               <replace>http://tigo.com/enterprise/business/task/OrderBroker/v1/OrderInterpreterService#wsdl.endpoint(OrderInterpreterService_SOAP/OrderInterpreterService_Port)</replace>
+            </attribute>
+            <attribute name="location">
+               <replace>wsdl/partner/OrderInterpreterService.wsdl</replace>
+            </attribute>
+            <property name="weblogic.wsee.wsat.transaction.flowOption">
+               <replace>WSDLDriven</replace>
+            </property>
+         </binding>
+      </reference>
+      <reference name="DataTransformationService">
+         <binding type="ws">
+            <attribute name="port">
+               <replace>http://tigo.com/enterprise/serviceEntity/DataTransformation/v1#wsdl.endpoint(DataTransformation_wsSOAPQSService/DataTransformation_wsSOAPQSPort)</replace>
+            </attribute>
+            <attribute name="location">
+               <replace>wsdl/partner/DataTransformationService.wsdl</replace>
+            </attribute>
+            <property name="weblogic.wsee.wsat.transaction.flowOption">
+               <replace>WSDLDriven</replace>
+            </property>
+         </binding>
+      </reference>
+      <reference name="ProcessValidatorV2Service">
+         <binding type="ws">
+            <attribute name="port">
+               <replace>http://xmlns.tigo.com/ProcessValidator/ProcessValidatorService/v2#wsdl.endpoint(ProcessValidatorPartnerService/ProcessValidator_pt)</replace>
+            </attribute>
+            <attribute name="location">
+               <replace>wsdl/partner/v2/ProcessValidatorServiceV2.wsdl</replace>
+            </attribute>
+            <property name="weblogic.wsee.wsat.transaction.flowOption">
+               <replace>WSDLDriven</replace>
+            </property>
+         </binding>
+      </reference>
+      <reference name="TB_ORDER_INTERPRETER">
+         <property name="jca.retry.count">
+            <replace>4</replace>
+         </property>
+         <property name="jca.retry.backoff">
+            <replace>2</replace>
+         </property>
+         <property name="jca.retry.interval">
+            <replace>1</replace>
+         </property>
+         <property name="jca.retry.maxInterval">
+            <replace>120</replace>
+         </property>
+         <binding type="jca"/>
+      </reference>
+      <reference name="O2Service">
+         <binding type="ws">
+            <attribute name="port">
+               <replace>http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1#wsdl.endpoint(OrderOrchestratorService/BasicOrderPort_pt)</replace>
+            </attribute>
+            <attribute name="location">
+               <replace>wsdl/partner/OrderOrchestratorService.wsdl</replace>
+            </attribute>
+            <property name="weblogic.wsee.wsat.transaction.flowOption">
+               <replace>WSDLDriven</replace>
+            </property>
+         </binding>
+      </reference>
+   </composite>
+   <wsdlAndSchema name="BasicCompatibilityEngineServiceWrapper.wsdl|BasicContinueOrderServiceWrapper.wsdl|BasicContinueProvideProcessWrapper.wsdl|BasicContinueProvisioningServiceWrapper.wsdl|BasicExpireOrderProcessWrapper.wsdl|BasicFaultNotificationWrapper.wsdl|BasicFaultNotificationWrapper1.wsdl|BasicFaultNotificationWrapper2.wsdl|BasicFaultNotificationWrapper3.wsdl|BasicFaultNotificationWrapper4.wsdl|BasicFaultNotificationWrapper5.wsdl|BasicFaultNotificationWrapper6.wsdl|BasicFaultNotificationWrapper7.wsdl|BasicFaultNotificationWrapper8.wsdl|BasicMasterStatusServiceWrapper.wsdl|BasicNotificationServiceV2Wrapper.wsdl|BasicOrderSchedulerUtilityServiceWrapper.wsdl|BasicOrderStateManagementWrapper.wsdl|BasicPaymentServiceWrapper.wsdl|BasicPaymentServiceWrapper1.wsdl|BasicProductConfigurationO2ServiceWrapper.wsdl|BasicProvisioningService.wsdl|BasicProvisioningServiceWrapper.wsdl|BasicProvisioningServiceWrapper1.wsdl|BasicProvisioningServiceWrapper2.wsdl|BasicProvisioningServiceWrapper3.wsdl|BrokerMappingProcessWrapper.wsdl|BrokerSendOrderProcessWrapper.wsdl|CounterBPELProcess.wsdl|DataTransformationServiceWrapper.wsdl|LOG_ORCHESTRATOR_CHARGE.wsdl|LOG_ORCHESTRATOR_CHARGE_db.jca|LOG_ORCHESTRATOR_CHARGE_UPDATE.wsdl|LOG_ORCHESTRATOR_CHARGE_UPDATE_db.jca|LOG_ORCHESTRATOR_DATACHANGE.wsdl|LOG_ORCHESTRATOR_DATACHANGE_db.jca|LOG_ORCHESTRATOR_DETAIL.wsdl|LOG_ORCHESTRATOR_DETAIL_db.jca|LOG_ORCHESTRATOR_D_STATUS.wsdl|LOG_ORCHESTRATOR_D_STATUS_db.jca|LOG_ORCHESTRATOR_FIELDSERVICE.wsdl|LOG_ORCHESTRATOR_FIELDSERVICE_db.jca|LOG_ORCHESTRATOR_M_ADAPTER.wsdl|LOG_ORCHESTRATOR_M_ADAPTER_db.jca|LOG_ORCHESTRATOR_M_UPDATE.wsdl|LOG_ORCHESTRATOR_M_UPDATE_db.jca|LOG_ORCHESTRATOR_PRODUCT_AD_ADAPTER.wsdl|LOG_ORCHESTRATOR_PRODUCT_AD_ADAPTER_db.jca|LOG_ORCHESTRATOR_PRODUCT_SELECT.wsdl|LOG_ORCHESTRATOR_PRODUCT_SELECT_db.jca|LOG_ORCHESTRATOR_PRODUCT_UPDATE.wsdl|LOG_ORCHESTRATOR_PRODUCT_UPDATE_db.jca|LOG_PROVISIONING_PRODUCT_SELECT.wsdl|LOG_PROVISIONING_PRODUCT_SELECT_db.jca|monitor.config|O2MappingProcessWrapper.wsdl|OrderInterpreterFacade.wsdl|OrderInterpreterFacadeWrapper.wsdl|OrderInterpreterProcessWrapper.wsdl|OrderInterpreterServiceWrapper.wsdl|OrderOrchestratorServiceWrapper.wsdl|OrderProcessWrapper.wsdl|PaymentProcessWrapper.wsdl|PaymentServiceWrapper.wsdl|PaymentServiceWrapper1.wsdl|PreOrderProcessWrapper.wsdl|PriorityOrderFacade.wsdl|PriorityOrderFacadeWrapper.wsdl|ProcessValidatorServiceV2Wrapper.wsdl|ProductUtilServiceWrapper.wsdl|PromotionQueue.wsdl|PromotionQueue_jms.jca|ProvideProcessWrapper.wsdl|ProvideProcessWrapper1.wsdl|ProvisioningWrapper1.wsdl|PVSItemGroupProcess.wsdl|PVSProcessWrapper.wsdl|ReversePaymentProcessWrapper1.wsdl|ReverseProcessWrapper.wsdl|ReverseProvideProcessWrapper.wsdl|ReverseProvideProcessWrapper1.wsdl|SEQ_NEXT_VAL.wsdl|SEQ_NEXT_VAL_db.jca|ServiceRequestTraceWrapper.wsdl|SuspendOrderProcess.wsdl|TB_BROKERSERVICE_MAPPING.wsdl|TB_BROKERSERVICE_MAPPING_db.jca|TB_BROKER_ITEM_GROUP_SLCT_ADAPTER.wsdl|TB_BROKER_ITEM_GROUP_SLCT_ADAPTER_db.jca|TB_BROKER_PRIORITY_CONFIG.wsdl|TB_BROKER_PRIORITY_CONFIG_db.jca|TB_ORDER_INTERPRETER.wsdl|TB_ORDER_INTERPRETER_db.jca|TB_PROCESS.wsdl|TB_PROCESS_db.jca|TB_PROCESS_V1.wsdl|TB_PROCESS_V1_db.jca|WorkingMemoryServiceWrapper.wsdl|wsdl/BasicCompatibilityEngineService.wsdl|wsdl/BasicContinueOrderService.wsdl|wsdl/BasicContinueProvisioningService.wsdl|wsdl/BasicFaultNotification.wsdl|wsdl/BasicOrderRequestService.wsdl|wsdl/BasicOrderSchedulerUtilityService.wsdl|wsdl/BasicOrderStateManagement.wsdl|wsdl/BasicPaymentService.wsdl|wsdl/BasicProductConfigurationO2Service.wsdl|wsdl/BasicProvisioningService.wsdl|wsdl/owner/OrderBrokerService.wsdl|wsdl/partner/BasicMasterStatusService.wsdl|wsdl/partner/BasicNotificationServiceV2.wsdl|wsdl/partner/DataTransformationService.wsdl|wsdl/partner/OrderInterpreterService.wsdl|wsdl/partner/OrderOrchestratorService.wsdl|wsdl/partner/ProcessValidatorService.wsdl|wsdl/partner/ProductUtilService.wsdl|wsdl/partner/ServiceRequestTrace.wsdl|wsdl/partner/v2/ProcessValidatorServiceV2.wsdl|wsdl/partner/WorkingMemoryService.wsdl|wsdl/process/BasicContinueProvideProcess.wsdl|wsdl/process/BasicExpireOrderProcess.wsdl|wsdl/process/BrokerMappingProcess.wsdl|wsdl/process/BrokerSendOrderProcess.wsdl|wsdl/process/CounterProcess.wsdl|wsdl/process/O2MappingProcess.wsdl|wsdl/process/OrderInterpreterProcess.wsdl|wsdl/process/OrderProcess.wsdl|wsdl/process/PaymentProcess.wsdl|wsdl/process/PreOrderProcess.wsdl|wsdl/process/ProvideProcess.wsdl|wsdl/process/PVSItemGroupProcess.wsdl|wsdl/process/PVSProcess.wsdl|wsdl/process/PVSProcessV2.wsdl|wsdl/process/ReversePaymentProcess.wsdl|wsdl/process/ReverseProcess.wsdl|wsdl/process/ReverseProvideProcess.wsdl|wsdl/RuntimeFaults.wsdl|xsd/BasicCompatibilityEngine_schema.xsd|xsd/BasicConfigProductDetail_schema.xsd|xsd/BasicConfigProduct_schema.xsd|xsd/BasicContinueOrder_schema.xsd|xsd/BasicCreateFaultSchema_schema.xsd|xsd/BasicDataChangeRequest_schema.xsd|xsd/BasicFieldService_schema.xsd|xsd/BasicGetConditionsBaseProduct_schema.xsd|xsd/BasicGetConfigurationBaseFromPlatformProduct_schema.xsd|xsd/BasicGetConfigurationBaseProduct_schema.xsd|xsd/BasicGetConfigurationPlatformProductByConditions_schema.xsd|xsd/BasicGetConfigurationPlatformProduct_schema.xsd|xsd/BasicGetProductsByConditions_schema.xsd|xsd/BasicOfferingDetail_schema.xsd|xsd/BasicOrderRequest_schema.xsd|xsd/BasicOrderSchedulerUtility_schema.xsd|xsd/BasicOrderStateRequestService_schema.xsd|xsd/BasicOrder_schema.xsd|xsd/BasicPayment_schema.xsd|xsd/BasicProduct_schema.xsd|xsd/BasicProvisioning_schema.xsd|xsd/BasicReversePayment_schema.xsd|xsd/business/client/BasicClient_schema.xsd|xsd/business/order/NotificationBasic_schema.xsd|xsd/business/order/Order_schema.xsd|xsd/business/util/item_group_schema.xsd|xsd/charge/BasicCharge_schema.xsd|xsd/client/BasicClient_schema.xsd|xsd/commons/BasicGeneralResponse_schema.xsd|xsd/commons/BasicRequest_schema.xsd|xsd/commons/resources/BasicAdditional_schema.xsd|xsd/commons/resources/GeneralRequest.xsd|xsd/commons/resources/GeneralResponse.xsd|xsd/commons/resources/Parameters.xsd|xsd/commons/resources/ParametersType.xsd|xsd/dvm/ProductPriority_schema.xsd|xsd/LOG_ORCHESTRATOR_CHARGE_table.xsd|xsd/LOG_ORCHESTRATOR_CHARGE_UPDATE_table.xsd|xsd/LOG_ORCHESTRATOR_DATACHANGE_table.xsd|xsd/LOG_ORCHESTRATOR_DETAIL_table.xsd|xsd/LOG_ORCHESTRATOR_D_STATUS_table.xsd|xsd/LOG_ORCHESTRATOR_FIELDSERVICE_table.xsd|xsd/LOG_ORCHESTRATOR_M_ADAPTER_table.xsd|xsd/LOG_ORCHESTRATOR_M_UPDATE_table.xsd|xsd/LOG_ORCHESTRATOR_PRODUCT_AD_ADAPTER_table.xsd|xsd/LOG_ORCHESTRATOR_PRODUCT_SELECT.xsd|xsd/LOG_ORCHESTRATOR_PRODUCT_table.xsd|xsd/LOG_ORCHESTRATOR_PRODUCT_UPDATE_table.xsd|xsd/LOG_PROVISIONING_PRODUCT_SELECT_table.xsd|xsd/OSBUSR_GET_NEXT_ID.xsd|xsd/owner/OrderBroker_schema.xsd|xsd/partner/BasicDataChangeRequest_schema.xsd|xsd/partner/BasicDataTransformation_schema.xsd|xsd/partner/BasicFieldService_schema.xsd|xsd/partner/BasicMasterStatus_schema.xsd|xsd/partner/BasicNotification_schema.xsd|xsd/partner/BasicOfferingDetail_schema.xsd|xsd/partner/BasicOrderInterpreter_schema.xsd|xsd/partner/BasicOrderRequest_schema.xsd|xsd/partner/BasicOrder_schema.xsd|xsd/partner/BasicProvisioning_schema.xsd|xsd/partner/BasicRuntimeDataDelegation_schema.xsd|xsd/partner/BasicServiceRequestTrace_schema.xsd|xsd/partner/BasicWorkingMemory_schema.xsd|xsd/partner/charge/BasicCharge_schema.xsd|xsd/partner/client/BasicClient_schema.xsd|xsd/partner/commons/AdditionalSchemaV1.xsd|xsd/partner/commons/BasicGeneralResponse_schema.xsd|xsd/partner/commons/BasicRequest_schema.xsd|xsd/partner/commons/BillingAccountSchemaV1.xsd|xsd/partner/commons/ClientSchemaV1.xsd|xsd/partner/commons/GeneralResponse.xsd|xsd/partner/commons/HeaderV1.xsd|xsd/partner/commons/ParametersTypeV2.xsd|xsd/partner/commons/ProductSchemaV1.xsd|xsd/partner/commons/RequestHeaderV3.xsd|xsd/partner/commons/resources/BasicAdditional_schema.xsd|xsd/partner/commons/resources/ParametersType.xsd|xsd/partner/commons/ResponseHeaderV3.xsd|xsd/partner/commons/ServiceAccountSchemaV1.xsd|xsd/partner/ConfirmValidationRequest.xsd|xsd/partner/CRMOrderManagement_schema.xsd|xsd/partner/GetValidationRequest.xsd|xsd/partner/NotificationBasic_schema.xsd|xsd/partner/Order.xsd|xsd/partner/ProcessDetailsSchemaV1.xsd|xsd/partner/product/BasicProduct_schema.xsd|xsd/partner/resources/GeneralRequest.xsd|xsd/partner/resources/GeneralResponse.xsd|xsd/partner/resources/Parameters.xsd|xsd/partner/RoleSchemaV1.xsd|xsd/partner/RuleSchemaV1.xsd|xsd/partner/SimpleOrder_schema.xsd|xsd/partner/StatusSchemaV1.xsd|xsd/partner/StepSchemaV1.xsd|xsd/partner/Util_schema.xsd|xsd/partner/ValidateConditionalRequest.xsd|xsd/partner/ValidateRequest.xsd|xsd/partner/ValidateRequestV1.xsd|xsd/partner/ValidatorFaultResponse.xsd|xsd/partner/ValidatorGeneralResponse.xsd|xsd/process/BasicExpireOrder_schema.xsd|xsd/process/BasicOrderPriorityRequest_schema.xsd|xsd/process/BasicOrderPriority_schema.xsd|xsd/process/BasicProvideProcess_schema.xsd|xsd/process/PvsArrayResult_schema.xsd|xsd/process/resources/FaultNotifyGeneralResponse_schema.xsd|xsd/process/resources/statusResult.xsd|xsd/product/BasicProduct_schema.xsd|xsd/PVSItemGroupProcess.xsd|xsd/service/BasicOrderState_schema.xsd|xsd/TB_BROKERSERVICE_MAPPING_table.xsd|xsd/TB_BROKER_ITEM_GROUP_CONF_SELECT_table.xsd|xsd/TB_BROKER_ITEM_GROUP_SLCT_ADAPTER_table.xsd|xsd/TB_BROKER_PRIORITY_CONFIG_table.xsd|xsd/TB_BROKER_SERVICE_MAPPING_table.xsd|xsd/TB_ORDER_INTERPRETER_table.xsd|xsd/TB_PROCESS_table.xsd|xsd/TB_PROCESS_V1_table.xsd|xsd/util/item_type_schema.xsd|xsd/util/product_items_schema.xsd|xsd/util/ValidateArrayV2.xsd|xsd/WORKING_MEMORY_INS_table.xsd">
+      <searchReplace>
+         <search>osbo2pvs-srv.tigo.com.gt:8011</search>
+         <replace>osbo2pvs-srv.tigo.com.gt:8011</replace>
+      </searchReplace>
+      <searchReplace>
+         <search>soao2pvstst-srv.tigo.com.gt:8001</search>
+         <replace>soao2pvstst-srv.tigo.com.gt:8001</replace>
+      </searchReplace>
+   </wsdlAndSchema>
+</SOAConfigPlan>

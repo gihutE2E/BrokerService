@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="OrderRequest" targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderProcess" xmlns:ns1="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://tigo.com/enterprise/serviceEntity/provisioning/orderProcess" xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <plnk:partnerLinkType name="BasicOrderPort_PL">
+      <plnk:role name="BasicOrderPort_Role" portType="tns:BasicOrderPort"/>
+   </plnk:partnerLinkType>
+   <wsdl:import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess" location="wsdl/process/ProvideProcess.wsdl"/>
+   <wsdl:import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderProcess" location="wsdl/process/OrderProcess.wsdl"/>
+</wsdl:definitions>

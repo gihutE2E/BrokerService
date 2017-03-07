@@ -1,0 +1,818 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Fri Nov 15 11:42:53 COT 2013
+  Author:  Harcalejo
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="BrokerSendOrderProcess"
+         targetNamespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/SendOrderProcess"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="http://tigo.com/enterprise/business/task/OrderBroker/v1/SendOrderProcess"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1"
+         xmlns:ns2="http://tigo.com/enterprise/serviceEntity/RuntimeDataDelegation/v1"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:ns12="http://tigo.com/enterprise/serviceEntity/provisioning/dataChangeRequest/v1/schema"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:ns7="http://tigo.com/enterprise/businessEntity/charge/v1/schema"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:ns8="http://tigo.com/commons/resources/additional/v1/schema"
+         xmlns:ns4="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema"
+         xmlns:ns10="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema"
+         xmlns:ns13="http://tigo.com/enterprise/serviceEntity/provisioning/fieldService/v1/schema"
+         xmlns:ns11="http://tigo.com/serviceEntity/provisioning/offeringDetail/v1/schema"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:ns6="http://tigo.com/enterprise/businessEntity/client/basic/v1/schema"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ns5="http://tigo.com/commons/basicRequest/v1/schema"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:ns14="http://tigo.com/enterprise/serviceEntity/RuntimeDataDelegation/v1/schema"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ns3="http://tigo.com/enterprise/business/task/OrderBroker/v1/schema"
+         xmlns:ns9="http://tigo.com/enterprise/serviceEntity/provisioning/order/v1/schema"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns15="http://xmlns.oracle.com/BrokerMappingRules/BrokerMappingRules_DecisionService_1"
+         xmlns:ns16="http://tigo.com/enterprise/business/task/OrderBroker/v1/DescomposeOrderProcess"
+         xmlns:ns17="http://xmlns.oracle.com/pcbpel/adapter/db/Broker/BrokerService/TB_BROKER_SERVICE_MAPPING"
+         xmlns:ns18="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_BROKER_SERVICE_MAPPING"
+         xmlns:ns19="http://tigo.com/enterprise/business/task/CRMOrderManagement/v1"
+         xmlns:ns20="http://tigo.com/enterprise/business/task/CRMOrderManagement/v1/schema"
+         xmlns:ns21="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema"
+         xmlns:ns22="http://tigo.com/enterprise/business/task/OrderBroker/v1"
+         xmlns:ns23="http://tigo.com/enterprise/serviceEntity/WorkingMemory/v1"
+         xmlns:ns24="http://tigo.com/enterprise/serviceEntity/DataTransformation/v1"
+         xmlns:ns25="http://tigo.com/enterprise/business/task/ServiceRequestTrace/v1"
+         xmlns:ns27="http://tigo.com/enterprise/serviceEntity/WorkingMemory/v1/schema"
+         xmlns:ns26="http://tigo.com/enterprise/serviceEntity/DataTransformation/v1/schema"
+         xmlns:ns28="http://xmlns.oracle.com/pcbpel/adapter/db/Broker/BrokerService/WORKING_MEMORY_INS"
+         xmlns:ns29="http://xmlns.oracle.com/pcbpel/adapter/db/top/WORKING_MEMORY_INS"
+         xmlns:ns30="http://tigo.com/enterprise/business/task/ServiceRequestTrace/v1/schema"
+         xmlns:ns31="http://tigo.com/enterprise/resources/GeneralRequest/v1/schema"
+         xmlns:ns32="http://xmlns.tigo.com/ProcessValidator/ProcessValidatorService"
+         xmlns:ns33="http://tigo.com/enterprise/business/entities/order/v1/schema"
+         xmlns:ns34="http://xmlns.oracle.com/pcbpel/adapter/db/Broker/BrokerService/TB_BROKERSERVICE_MAPPING"
+         xmlns:ns35="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_BROKERSERVICE_MAPPING"
+         xmlns:ns36="http://xmlns.oracle.com/Broker/Broker/CounterBPELProcess"
+         xmlns:aia="http://www.oracle.com/XSL/Transform/java/oracle.apps.aia.core.xpath.AIAFunctions"
+         xmlns:ns37="http://tigo.com/enterprise/business/task/OrderBroker/v1/PVSProcess"
+         xmlns:ns38="http://siebel.com/asi"
+         xmlns:ns39="http://siebel.com/OrderManagement/Order/Data">
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <import namespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/PVSProcess"
+          location="wsdl/process/PVSProcess.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <import namespace="http://tigo.com/enterprise/business/entities/order/v1/schema"
+          location="xsd/business/order/Order_schema.xsd"
+          importType="http://www.w3.org/2001/XMLSchema"/>
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="brokersendorderprocess_client"
+                 partnerLinkType="client:BrokerSendOrderProcess"
+                 myRole="OrderBrokerServicePortType"/>
+    <partnerLink name="BrokerMappingMediator.BrokerMappingMediator"
+                 partnerLinkType="client:BrokerMappingMediator.BrokerMappingMediator"
+                 partnerRole="OrderBrokerServicePortType"/>
+    <partnerLink name="WorkingMemoryService.wsdl"
+                 partnerLinkType="ns23:WorkingMemoryService.wsdl"
+                 partnerRole="BasicWorkingMemoryPort"/>
+    <partnerLink name="DataTransformationService"
+                 partnerLinkType="ns24:DataTransformationService"
+                 partnerRole="BasicDataTransformationPort"/>
+    <partnerLink name="ServiceRequestTrace"
+                 partnerLinkType="ns25:ServiceRequestTrace"
+                 partnerRole="ServiceRequestTracePortType"/>
+    <partnerLink name="TB_BROKERSERVICE_MAPPING"
+                 partnerLinkType="ns34:TB_BROKERSERVICE_MAPPING_plt"
+                 partnerRole="TB_BROKERSERVICE_MAPPING_role"/>
+  </partnerLinks>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:SubmitOrderRequest_msg"/>
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable"
+              messageType="client:SubmitOrderResponse_msg"/>
+    <variable name="InvokeO2ServiceInput"
+              messageType="ns1:BasicOrderRequest_msg"/>
+    <variable name="InvokeO2ServiceOutput"
+              messageType="ns1:BasicOrderResponse_msg"/>
+    <variable name="uti" type="xsd:string"/>
+    <variable name="InvokeTBBrokerMappingSelectInput"
+              messageType="ns34:TB_BROKERSERVICE_MAPPINGSelect_inputParameters"/>
+    <variable name="InvokeTBBrokerMappingSelectOutput"
+              messageType="ns34:TbBrokerServiceMappingCollection_msg"/>
+    <variable name="generalResponse"
+              messageType="client:GeneralResponseMessage"/>
+    <variable name="InvokeWorkingMemorySetInput"
+              messageType="ns23:BasicSet_msg"/>
+    <variable name="InvokeWorkingMemorySetOutput"
+              messageType="ns23:BasicSetResponse_msg"/>
+    <variable name="InvokeBrokerMappingMediatorSubmitOrderInput"
+              messageType="client:SubmitOrderRequest_msg"/>
+    <variable name="InvokeBrokerMappingMediatorSubmitOrderOutput"
+              messageType="client:SubmitOrderResponse_msg"/>
+    <variable name="InvokeDataTransformationTransformInput"
+              messageType="ns24:BasicTransform_msg"/>
+    <variable name="InvokeDataTransformationTransformOutput"
+              messageType="ns24:BasicTransformResponse_msg"/>
+    <variable name="InvokeServiceRequestTraceSetInput"
+              messageType="ns25:SetRequest_msg"/>
+    <variable name="InvokeServiceRequestTraceSetOutput"
+              messageType="ns25:SetResponse_msg"/>
+    <variable name="contenArray" element="ns33:OrderContent"/>
+    <variable name="ProcesTitle" type="xsd:string"/>
+    <variable name="nameProcess" messageType="ns37:SubmitOrderRequest_msg"/>
+    <variable name="countElements" type="xsd:int"/>
+  </variables>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+    <!-- Receive input from requestor. (Note: This maps to operation defined in BrokerSendOrderProcess.wsdl) -->
+    <receive name="receiveInput" partnerLink="brokersendorderprocess_client"
+             portType="client:OrderBrokerServicePortType"
+             operation="SubmitOrder" variable="inputVariable"
+             createInstance="yes"/>
+    <assign name="AssigncountElement">
+      <copy>
+        <from>ora:countNodes('inputVariable','body',"Order/OrderContent/content/payload//ns39:ListOfSWIOrderItem/ns39:SWIOrderItem/ns39:SubActionCode[./text() != '']")</from>
+        <to>$countElements</to>
+      </copy>
+    </assign>
+    <if name="SubActionCode">
+      <documentation>IsThereNoSubActionCode?</documentation>
+      <condition>$countElements = 0</condition>
+      <sequence name="Sequence6">
+        <assign name="AssignError">
+          <copy>
+            <from>$uti</from>
+            <to>$generalResponse.fault/uti</to>
+          </copy>
+          <copy>
+            <from>"701"</from>
+            <to>$generalResponse.fault/code</to>
+          </copy>
+          <copy>
+            <from>"ERROR"</from>
+            <to>$generalResponse.fault/status</to>
+          </copy>
+          <copy>
+            <from>"ERROR"</from>
+            <to>$generalResponse.fault/codeType</to>
+          </copy>
+          <copy>
+            <from>"Debe seleccionar una Subaccion para el Pedido de Ventas"</from>
+            <to>$generalResponse.fault/message</to>
+          </copy>
+        </assign>
+        <reply name="Reply1" variable="generalResponse"
+               partnerLink="brokersendorderprocess_client"
+               portType="client:OrderBrokerServicePortType"
+               operation="SubmitOrder" faultName="client:fault"/>
+        <exit name="Exit3"/>
+      </sequence>
+      <else>
+        <documentation>ThereIsSubActionCode</documentation>
+        <empty name="Empty1"/>
+      </else>
+    </if>
+    <assign name="Transform1">
+      <bpelx:annotation>
+        <bpelx:pattern patternName="bpelx:transformation"/>
+      </bpelx:annotation>
+      <copy>
+        <from>ora:doXSLTransformForDoc("xsl/GetNameProcesDVM.xsl", $inputVariable.body)</from>
+        <to variable="nameProcess" part="body"/>
+      </copy>
+    </assign>
+    <assign name="Assign_SetTitleNameInstances">
+      <copy>
+        <from>ora:setCompositeInstanceTitle(concat( $inputVariable.body/Order/orderSpecification/action,"-",$nameProcess.body/GeneralRequest/applicationID," :" ,$inputVariable.body/GeneralRequest/applicationTransactionID))</from>
+        <to>$ProcesTitle</to>
+      </copy>
+    </assign>
+    <if name="UtiReference">
+      <documentation>
+        <![CDATA[Hereda]]>
+      </documentation>
+      <condition>$inputVariable.body/GeneralRequest/utiReference != ''</condition>
+      <assign name="AssignUti">
+        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from>$inputVariable.body/GeneralRequest/utiReference</from>
+          <to>$uti</to>
+        </copy>
+      </assign>
+      <else>
+        <documentation>
+          <![CDATA[Genera]]>
+        </documentation>
+        <assign name="AssignUti">
+          <copy>
+            <from>ora:getECID()</from>
+            <to>$uti</to>
+          </copy>
+        </assign>
+      </else>
+    </if>
+    <!-- Generate reply to synchronous request -->
+    <scope name="BrokerMapping" exitOnStandardFault="no">
+      <faultHandlers>
+        <catchAll>
+          <sequence name="catchAll">
+            <assign name="AssignFault">
+              <copy>
+                <from>$uti</from>
+                <to>$generalResponse.fault/uti</to>
+              </copy>
+              <copy>
+                <from><literal>ERROR</literal></from>
+                <to>$generalResponse.fault/status</to>
+              </copy>
+              <copy>
+                <from><literal>701</literal></from>
+                <to>$generalResponse.fault/code</to>
+              </copy>
+              <copy>
+                <from><literal>ERROR</literal></from>
+                <to>$generalResponse.fault/codeType</to>
+              </copy>
+              <copy>
+                <from><literal>Unexpected Error in BrokerMapping</literal></from>
+                <to>$generalResponse.fault/message</to>
+              </copy>
+            </assign>
+            <reply name="ReplyFault" faultName="client:fault"
+                   variable="generalResponse"
+                   partnerLink="brokersendorderprocess_client"
+                   portType="client:OrderBrokerServicePortType"
+                   operation="SubmitOrder"/>
+            <exit name="Exit"/>
+          </sequence>
+        </catchAll>
+      </faultHandlers>
+      <sequence name="BrokerMapping">
+        <assign name="AssignBrokerMapping">
+          <copy ignoreMissingFromData="yes">
+            <from>$inputVariable.body/Order/orderSpecification/action</from>
+            <to>$InvokeTBBrokerMappingSelectInput.TB_BROKERSERVICE_MAPPINGSelect_inputParameters/ns35:action</to>
+          </copy>
+          <copy ignoreMissingFromData="yes">
+            <from>$inputVariable.body/Order/orderSpecification/eventReference</from>
+            <to>$InvokeTBBrokerMappingSelectInput.TB_BROKERSERVICE_MAPPINGSelect_inputParameters/ns35:event</to>
+          </copy>
+          <copy ignoreMissingFromData="yes">
+            <from>$inputVariable.body/Order/orderSpecification/serviceCode</from>
+            <to>$InvokeTBBrokerMappingSelectInput.TB_BROKERSERVICE_MAPPINGSelect_inputParameters/ns35:serviceCode</to>
+          </copy>
+        </assign>
+        <invoke name="InvokeTBBrokerMapping"
+                partnerLink="TB_BROKERSERVICE_MAPPING"
+                portType="ns34:TB_BROKERSERVICE_MAPPING_ptt"
+                operation="TB_BROKERSERVICE_MAPPINGSelect"
+                inputVariable="InvokeTBBrokerMappingSelectInput"
+                outputVariable="InvokeTBBrokerMappingSelectOutput"
+                bpelx:invokeAsDetail="no"/>
+      </sequence>
+    </scope>
+    <if name="DelegateData">
+      <documentation>
+        <![CDATA[Do]]>
+      </documentation>
+      <condition>$InvokeTBBrokerMappingSelectOutput.TbBrokerServiceMappingCollection/ns35:TbBrokerServiceMapping/ns35:delegateTask = '1'</condition>
+      <sequence name="WorkingMemory">
+        <forEach parallel="no" counterName="contentCounter" name="Content">
+          <startCounterValue>1</startCounterValue>
+          <finalCounterValue>ora:countNodes('inputVariable','body','Order/OrderContent/content')</finalCounterValue>
+          <scope name="saveContent" exitOnStandardFault="no">
+            <bpelx:annotation>
+              <bpelx:general>
+                <bpelx:property name="userLabel">SaveContent</bpelx:property>
+              </bpelx:general>
+            </bpelx:annotation>
+            <sequence name="saveContent">
+              <scope name="RuntimeDataDelegation" exitOnStandardFault="no">
+                <faultHandlers>
+                  <catch faultName="ns23:fault" faultVariable="faultResponse"
+                         faultElement="ns21:GeneralResponse">
+                    <sequence name="Error">
+                      <assign name="AssignGeneralResponse">
+                        <copy>
+                          <from>$faultResponse/status</from>
+                          <to>$generalResponse.fault/status</to>
+                        </copy>
+                        <copy>
+                          <from>$faultResponse/code</from>
+                          <to>$generalResponse.fault/code</to>
+                        </copy>
+                        <copy>
+                          <from>$faultResponse/codeType</from>
+                          <to>$generalResponse.fault/codeType</to>
+                        </copy>
+                        <copy>
+                          <from>$faultResponse/message</from>
+                          <to>$generalResponse.fault/message</to>
+                        </copy>
+                        <copy>
+                          <from>$uti</from>
+                          <to>$generalResponse.fault/uti</to>
+                        </copy>
+                      </assign>
+                      <reply name="ReplyError" faultName="client:fault"
+                             partnerLink="brokersendorderprocess_client"
+                             portType="client:OrderBrokerServicePortType"
+                             operation="SubmitOrder"
+                             variable="generalResponse"/>
+                      <exit name="Exit1"/>
+                    </sequence>
+                  </catch>
+                </faultHandlers>
+                <sequence name="RuntimeDataDelegation">
+                  <assign name="AssignWorkingMemory">
+                    <copy>
+                      <from>$inputVariable.body/Order/OrderContent/content[$contentCounter]/payload</from>
+                      <to>$InvokeWorkingMemorySetInput.body/data</to>
+                    </copy>
+                    <copy>
+                      <from>$uti</from>
+                      <to>$InvokeWorkingMemorySetInput.body/key</to>
+                    </copy>
+                    <copy>
+                      <from>$inputVariable.body/Order/OrderContent/content[$contentCounter]/contentType</from>
+                      <to>$InvokeWorkingMemorySetInput.body/code</to>
+                    </copy>
+                    <copy ignoreMissingFromData="yes"
+                          bpelx:insertMissingToData="yes">
+                      <from>$inputVariable.body/GeneralRequest</from>
+                      <to>$InvokeWorkingMemorySetInput.body/GeneralRequest</to>
+                    </copy>
+                  </assign>
+                  <invoke name="InvokeWorkingMemory"
+                          partnerLink="WorkingMemoryService.wsdl"
+                          portType="ns23:BasicWorkingMemoryPort" operation="Set"
+                          inputVariable="InvokeWorkingMemorySetInput"
+                          outputVariable="InvokeWorkingMemorySetOutput"
+                          bpelx:invokeAsDetail="no"/>
+                </sequence>
+              </scope>
+            </sequence>
+          </scope>
+        </forEach>
+      </sequence>
+    </if>
+    <if name="SRT">
+      <documentation>
+        <![CDATA[Do]]>
+      </documentation>
+      <condition>$InvokeTBBrokerMappingSelectOutput.TbBrokerServiceMappingCollection/ns35:TbBrokerServiceMapping/ns35:sendSrt = '1'</condition>
+      <scope name="ServiceRequestTrace" exitOnStandardFault="no">
+        <faultHandlers>
+          <catch faultName="ns25:fault" faultVariable="faultResponse"
+                 faultElement="ns21:GeneralResponse">
+            <sequence name="Error">
+              <assign name="AssignGeneralResponse">
+                <copy>
+                  <from>$faultResponse/status</from>
+                  <to>$generalResponse.fault/status</to>
+                </copy>
+                <copy>
+                  <from>$faultResponse/code</from>
+                  <to>$generalResponse.fault/code</to>
+                </copy>
+                <copy>
+                  <from>$faultResponse/codeType</from>
+                  <to>$generalResponse.fault/codeType</to>
+                </copy>
+                <copy>
+                  <from>$faultResponse/message</from>
+                  <to>$generalResponse.fault/message</to>
+                </copy>
+                <copy>
+                  <from>$uti</from>
+                  <to>$generalResponse.fault/uti</to>
+                </copy>
+              </assign>
+              <reply name="ReplyError" faultName="client:fault"
+                     partnerLink="brokersendorderprocess_client"
+                     portType="client:OrderBrokerServicePortType"
+                     operation="SubmitOrder" variable="generalResponse"/>
+              <exit name="Exit1"/>
+            </sequence>
+          </catch>
+          <catchAll>
+            <sequence name="catchAll">
+              <assign name="AssignFault">
+                <copy>
+                  <from>$uti</from>
+                  <to>$generalResponse.fault/uti</to>
+                </copy>
+                <copy>
+                  <from><literal>ERROR</literal></from>
+                  <to>$generalResponse.fault/status</to>
+                </copy>
+                <copy>
+                  <from><literal>701</literal></from>
+                  <to>$generalResponse.fault/code</to>
+                </copy>
+                <copy>
+                  <from><literal>ERROR</literal></from>
+                  <to>$generalResponse.fault/codeType</to>
+                </copy>
+                <copy>
+                  <from><literal>Unexpected Error in SRT Process</literal></from>
+                  <to>$generalResponse.fault/message</to>
+                </copy>
+              </assign>
+              <reply name="ReplyFault" faultName="client:fault"
+                     variable="generalResponse"
+                     partnerLink="brokersendorderprocess_client"
+                     portType="client:OrderBrokerServicePortType"
+                     operation="SubmitOrder"/>
+              <exit name="Exit"/>
+            </sequence>
+          </catchAll>
+        </faultHandlers>
+        <sequence name="ServiceRequestTrace">
+          <assign name="TransformToServiceRequestTrace">
+            <bpelx:annotation>
+              <bpelx:pattern patternName="bpelx:transformation"/>
+            </bpelx:annotation>
+            <copy>
+              <from>ora:doXSLTransformForDoc("xsl/Transformation_ToServiceRequestTrace.xsl", $inputVariable.body)</from>
+              <to variable="InvokeServiceRequestTraceSetInput" part="body"/>
+            </copy>
+          </assign>
+          <assign name="TransformToSRT">
+            <bpelx:annotation>
+              <bpelx:pattern patternName="bpelx:transformation"/>
+            </bpelx:annotation>
+            <copy>
+              <from>ora:doXSLTransformForDoc("xsl/Transformation_BrokerToSRT.xsl", $inputVariable.body)</from>
+              <to variable="InvokeServiceRequestTraceSetInput" part="body"/>
+            </copy>
+          </assign>
+          <invoke name="InvokeServiceRequestTrace"
+                  partnerLink="ServiceRequestTrace"
+                  portType="ns25:ServiceRequestTracePortType" operation="Set"
+                  inputVariable="InvokeServiceRequestTraceSetInput"
+                  outputVariable="InvokeServiceRequestTraceSetOutput"
+                  bpelx:invokeAsDetail="no"/>
+        </sequence>
+      </scope>
+    </if>
+    <sequence name="DataTransformation">
+      <forEach parallel="no" counterName="contentCounter" name="Content">
+        <startCounterValue>1</startCounterValue>
+        <finalCounterValue>ora:countNodes('inputVariable','body','Order/OrderContent/content')</finalCounterValue>
+        <scope name="Content" exitOnStandardFault="no">
+          <sequence name="content">
+            <scope name="DataTransformation" exitOnStandardFault="no">
+              <faultHandlers>
+                <catch faultName="ns24:fault" faultVariable="faultVariable"
+                       faultElement="ns21:GeneralResponse">
+                  <sequence name="Sequence5">
+                    <assign name="Assign">
+                      <copy>
+                        <from>$faultVariable/uti</from>
+                        <to>$generalResponse.fault/uti</to>
+                      </copy>
+                      <copy>
+                        <from>$faultVariable/status</from>
+                        <to>$generalResponse.fault/status</to>
+                      </copy>
+                      <copy>
+                        <from>$faultVariable/code</from>
+                        <to>$generalResponse.fault/code</to>
+                      </copy>
+                      <copy>
+                        <from>$faultVariable/codeType</from>
+                        <to>$generalResponse.fault/codeType</to>
+                      </copy>
+                      <copy>
+                        <from>$faultVariable/message</from>
+                        <to>$generalResponse.fault/message</to>
+                      </copy>
+                    </assign>
+                    <reply name="ReplyFault" faultName="client:fault"
+                           variable="generalResponse"
+                           partnerLink="brokersendorderprocess_client"
+                           portType="client:OrderBrokerServicePortType"
+                           operation="SubmitOrder"/>
+                    <exit name="Exit2"/>
+                  </sequence>
+                </catch>
+                <catchAll>
+                  <sequence name="catchAll">
+                    <assign name="AssignFault">
+                      <copy>
+                        <from>$uti</from>
+                        <to>$generalResponse.fault/uti</to>
+                      </copy>
+                      <copy>
+                        <from><literal>ERROR</literal></from>
+                        <to>$generalResponse.fault/status</to>
+                      </copy>
+                      <copy>
+                        <from><literal>701</literal></from>
+                        <to>$generalResponse.fault/code</to>
+                      </copy>
+                      <copy>
+                        <from><literal>ERROR</literal></from>
+                        <to>$generalResponse.fault/codeType</to>
+                      </copy>
+                      <copy>
+                        <from><literal>Unexpected Error in DataTransformation Process</literal></from>
+                        <to>$generalResponse.fault/message</to>
+                      </copy>
+                    </assign>
+                    <reply name="ReplyFault" faultName="client:fault"
+                           variable="generalResponse"
+                           partnerLink="brokersendorderprocess_client"
+                           portType="client:OrderBrokerServicePortType"
+                           operation="SubmitOrder"/>
+                    <exit name="Exit"/>
+                  </sequence>
+                </catchAll>
+              </faultHandlers>
+              <sequence name="DataTransformation">
+                <assign name="AssignDataTransformation">
+                  <copy>
+                    <from>$InvokeTBBrokerMappingSelectOutput.TbBrokerServiceMappingCollection/ns35:TbBrokerServiceMapping[1]/ns35:target</from>
+                    <to>$InvokeDataTransformationTransformInput.body/target</to>
+                  </copy>
+                  <copy ignoreMissingFromData="yes"
+                        bpelx:insertMissingToData="yes">
+                    <from>$inputVariable.body/GeneralRequest</from>
+                    <to>$InvokeDataTransformationTransformInput.body/ns31:GeneralRequest</to>
+                  </copy>
+                  <copy>
+                    <from>$inputVariable.body/Order/orderSpecification/eventReference</from>
+                    <to>$InvokeDataTransformationTransformInput.body/type</to>
+                  </copy>
+                  <copy>
+                    <from>$uti</from>
+                    <to>$InvokeDataTransformationTransformInput.body/key</to>
+                  </copy>
+                  <copy>
+                    <from>$inputVariable.body/Order/OrderContent/content[$contentCounter]/contentType</from>
+                    <to>$InvokeDataTransformationTransformInput.body/code</to>
+                  </copy>
+                  <copy bpelx:insertMissingToData="yes"
+                        ignoreMissingFromData="yes">
+                    <from><literal>ACTION</literal></from>
+                    <to>$InvokeDataTransformationTransformInput.body/parameters/parameter[1]/name</to>
+                  </copy>
+                  <copy bpelx:insertMissingToData="yes"
+                        ignoreMissingFromData="yes">
+                    <from>$inputVariable.body/Order/orderSpecification/action</from>
+                    <to>$InvokeDataTransformationTransformInput.body/parameters/parameter[1]/value</to>
+                  </copy>
+                  <copy bpelx:insertMissingToData="yes"
+                        ignoreMissingFromData="yes">
+                    <from><literal>EVENT_REFERENCE</literal></from>
+                    <to>$InvokeDataTransformationTransformInput.body/parameters/parameter[2]/name</to>
+                  </copy>
+                  <copy bpelx:insertMissingToData="yes"
+                        ignoreMissingFromData="yes">
+                    <from>$inputVariable.body/Order/orderSpecification/eventReference</from>
+                    <to>$InvokeDataTransformationTransformInput.body/parameters/parameter[2]/value</to>
+                  </copy>
+                  <copy bpelx:insertMissingToData="yes"
+                        ignoreMissingFromData="yes">
+                    <from><literal>ORDER_REFERENCE_TYPE</literal></from>
+                    <to>$InvokeDataTransformationTransformInput.body/parameters/parameter[3]/name</to>
+                  </copy>
+                  <copy bpelx:insertMissingToData="yes"
+                        ignoreMissingFromData="yes">
+                    <from>$inputVariable.body/Order/orderSpecification/orderReferenceType</from>
+                    <to>$InvokeDataTransformationTransformInput.body/parameters/parameter[3]/value</to>
+                  </copy>
+                  <copy bpelx:insertMissingToData="yes"
+                        ignoreMissingFromData="yes">
+                    <from><literal>SERVICE_CODE</literal></from>
+                    <to>$InvokeDataTransformationTransformInput.body/parameters/parameter[4]/name</to>
+                  </copy>
+                  <copy bpelx:insertMissingToData="yes"
+                        ignoreMissingFromData="yes">
+                    <from>$inputVariable.body/Order/orderSpecification/serviceCode</from>
+                    <to>$InvokeDataTransformationTransformInput.body/parameters/parameter[4]/value</to>
+                  </copy>
+                  <copy bpelx:insertMissingToData="yes"
+                        ignoreMissingFromData="yes">
+                    <from><literal>ORDER_REFERENCE_ID</literal></from>
+                    <to>$InvokeDataTransformationTransformInput.body/parameters/parameter[5]/name</to>
+                  </copy>
+                  <copy bpelx:insertMissingToData="yes"
+                        ignoreMissingFromData="yes">
+                    <from>$inputVariable.body/Order/orderSpecification/orderReferenceID</from>
+                    <to>$InvokeDataTransformationTransformInput.body/parameters/parameter[5]/value</to>
+                  </copy>
+                  <copy bpelx:insertMissingToData="yes"
+                        ignoreMissingFromData="yes">
+                    <from><literal>CONTENT_TYPE</literal></from>
+                    <to>$InvokeDataTransformationTransformInput.body/parameters/parameter[5]/name</to>
+                  </copy>
+                  <copy bpelx:insertMissingToData="yes"
+                        ignoreMissingFromData="yes">
+                    <from>$inputVariable.body/Order/OrderContent/content[1]/contentType</from>
+                    <to>$InvokeDataTransformationTransformInput.body/parameters/parameter[5]/value</to>
+                  </copy>
+                </assign>
+                <invoke name="InvokeDataTransformation"
+                        partnerLink="DataTransformationService"
+                        portType="ns24:BasicDataTransformationPort"
+                        operation="Transform"
+                        inputVariable="InvokeDataTransformationTransformInput"
+                        outputVariable="InvokeDataTransformationTransformOutput"
+                        bpelx:invokeAsDetail="no"/>
+              </sequence>
+            </scope>
+            <scope name="BrokerMappingMediator" exitOnStandardFault="no">
+              <faultHandlers>
+                <catch faultName="client:fault" faultVariable="faultVariable"
+                       faultElement="ns21:GeneralResponse">
+                  <sequence name="Sequence4">
+                    <assign name="AssignFault">
+                      <copy>
+                        <from>$faultVariable/uti</from>
+                        <to>$generalResponse.fault/uti</to>
+                      </copy>
+                      <copy>
+                        <from>$faultVariable/status</from>
+                        <to>$generalResponse.fault/status</to>
+                      </copy>
+                      <copy>
+                        <from>$faultVariable/code</from>
+                        <to>$generalResponse.fault/code</to>
+                      </copy>
+                      <copy>
+                        <from>$faultVariable/codeType</from>
+                        <to>$generalResponse.fault/codeType</to>
+                      </copy>
+                      <copy>
+                        <from>$faultVariable/message</from>
+                        <to>$generalResponse.fault/message</to>
+                      </copy>
+                    </assign>
+                    <reply name="ReplyFault" faultName="client:fault"
+                           variable="generalResponse"
+                           partnerLink="brokersendorderprocess_client"
+                           portType="client:OrderBrokerServicePortType"
+                           operation="SubmitOrder"/>
+                    <exit name="Exit"/>
+                  </sequence>
+                </catch>
+                <catchAll>
+                  <sequence name="catchAll">
+                    <assign name="AssignFault">
+                      <copy>
+                        <from>$uti</from>
+                        <to>$generalResponse.fault/uti</to>
+                      </copy>
+                      <copy>
+                        <from><literal>ERROR</literal></from>
+                        <to>$generalResponse.fault/status</to>
+                      </copy>
+                      <copy>
+                        <from><literal>701</literal></from>
+                        <to>$generalResponse.fault/code</to>
+                      </copy>
+                      <copy>
+                        <from><literal>ERROR</literal></from>
+                        <to>$generalResponse.fault/codeType</to>
+                      </copy>
+                      <copy>
+                        <from><literal>Service has not been completed</literal></from>
+                        <to>$generalResponse.fault/message</to>
+                      </copy>
+                    </assign>
+                    <reply name="ReplyFault" faultName="client:fault"
+                           variable="generalResponse"
+                           partnerLink="brokersendorderprocess_client"
+                           portType="client:OrderBrokerServicePortType"
+                           operation="SubmitOrder"/>
+                    <exit name="Exit"/>
+                  </sequence>
+                </catchAll>
+              </faultHandlers>
+              <sequence name="BrokerMappingMediator">
+                <assign name="TransformBrokerMappingMediator">
+                  <bpelx:annotation>
+                    <bpelx:pattern patternName="bpelx:transformation"/>
+                  </bpelx:annotation>
+                  <copy>
+                    <from>ora:doXSLTransformForDoc("xsl/Transformation_ToBrokerMappingMediatorSubmit.xsl", $inputVariable.body, "InvokeDataTransformationTransformOutput.body", $InvokeDataTransformationTransformOutput.body)</from>
+                    <to variable="InvokeBrokerMappingMediatorSubmitOrderInput"
+                        part="body"/>
+                  </copy>
+                </assign>
+                <assign name="AssignTransformBrokerMapping">
+                  <copy ignoreMissingFromData="yes"
+                        bpelx:insertMissingToData="yes">
+                    <from>$uti</from>
+                    <to>$InvokeBrokerMappingMediatorSubmitOrderInput.body/GeneralRequest/utiReference</to>
+                  </copy>
+                  <copy ignoreMissingFromData="yes"
+                        bpelx:insertMissingToData="yes">
+                    <from>$inputVariable.body/Order/orderID</from>
+                    <to>$InvokeBrokerMappingMediatorSubmitOrderInput.body/Order/items/item/itemID</to>
+                  </copy>
+                  <copy ignoreMissingFromData="yes"
+                        bpelx:insertMissingToData="yes">
+                    <from>$inputVariable.body/Order/OrderContent/content[$contentCounter]/contentType</from>
+                    <to>$InvokeBrokerMappingMediatorSubmitOrderInput.body/Order/items/item/itemContent/content/contentType</to>
+                  </copy>
+                  <copy ignoreMissingFromData="yes"
+                        bpelx:insertMissingToData="yes">
+                    <from>$inputVariable.body/Order/OrderContent/content[$contentCounter]/contentType</from>
+                    <to>$InvokeBrokerMappingMediatorSubmitOrderInput.body/Order/OrderContent/content/contentType</to>
+                  </copy>
+                  <copy ignoreMissingFromData="yes"
+                        bpelx:insertMissingToData="yes">
+                    <from>$InvokeDataTransformationTransformOutput.body/data</from>
+                    <to>$InvokeBrokerMappingMediatorSubmitOrderInput.body/Order/OrderContent/content[1]/payload</to>
+                  </copy>
+                </assign>
+                <invoke name="InvokeBrokerMappingMediator"
+                        partnerLink="BrokerMappingMediator.BrokerMappingMediator"
+                        portType="client:OrderBrokerServicePortType"
+                        operation="SubmitOrder"
+                        inputVariable="InvokeBrokerMappingMediatorSubmitOrderInput"
+                        outputVariable="InvokeBrokerMappingMediatorSubmitOrderOutput"
+                        bpelx:invokeAsDetail="no"/>
+              </sequence>
+            </scope>
+            <assign name="AssignContentArray">
+              <extensionAssignOperation>
+                <bpelx:append ignoreMissingFromData="yes">
+                  <bpelx:from>$InvokeBrokerMappingMediatorSubmitOrderOutput.body/Order/OrderContent/content[1]</bpelx:from>
+                  <bpelx:to>$contenArray</bpelx:to>
+                </bpelx:append>
+              </extensionAssignOperation>
+            </assign>
+          </sequence>
+        </scope>
+      </forEach>
+    </sequence>
+    <assign name="AssignResponse">
+      <copy>
+        <from>$uti</from>
+        <to>$outputVariable.body/GeneralResponse/uti</to>
+      </copy>
+      <copy>
+        <from>$InvokeBrokerMappingMediatorSubmitOrderOutput.body/GeneralResponse/status</from>
+        <to>$outputVariable.body/GeneralResponse/status</to>
+      </copy>
+      <copy>
+        <from>$InvokeBrokerMappingMediatorSubmitOrderOutput.body/GeneralResponse/code</from>
+        <to>$outputVariable.body/GeneralResponse/code</to>
+      </copy>
+      <copy>
+        <from>$InvokeBrokerMappingMediatorSubmitOrderOutput.body/GeneralResponse/codeType</from>
+        <to>$outputVariable.body/GeneralResponse/codeType</to>
+      </copy>
+      <copy>
+        <from>$InvokeBrokerMappingMediatorSubmitOrderOutput.body/GeneralResponse/message</from>
+        <to>$outputVariable.body/GeneralResponse/message</to>
+      </copy>
+      <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+        <from>$InvokeBrokerMappingMediatorSubmitOrderOutput.body/Order</from>
+        <to>$outputVariable.body/Order</to>
+      </copy>
+      <copy>
+        <from>$contenArray</from>
+        <to>$outputVariable.body/Order/OrderContent</to>
+      </copy>
+    </assign>
+    <reply name="replyOutput" partnerLink="brokersendorderprocess_client"
+           portType="client:OrderBrokerServicePortType" operation="SubmitOrder"
+           variable="outputVariable"/>
+  </sequence>
+</process>

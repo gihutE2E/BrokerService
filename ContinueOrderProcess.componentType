@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+   <service name="continueorderprocess_client" ui:wsdlLocation="BasicContinueOrderServiceWrapper.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/serviceEntity/provisioning/continueOrder/v1#wsdl.interface(BasicContinueOrderPort)"/>
+   </service>
+   <reference name="ContinueProvisioningProcess.continueprovisioningprocess_client" ui:wsdlLocation="BasicContinueProvideProcessWrapper.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/serviceEntity/provisioning/continueProvisioningProcess/v1#wsdl.interface(BasicContinueOrderPort)"/>
+   </reference>
+   <reference name="LOG_ORCHESTRATOR_M_ADAPTER" ui:wsdlLocation="LOG_ORCHESTRATOR_M_ADAPTER.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_M_ADAPTER#wsdl.interface(LOG_ORCHESTRATOR_M_ADAPTER_ptt)"/>
+   </reference>
+   <reference name="LOG_ORCHESTRATOR_M_UPDATE" ui:wsdlLocation="LOG_ORCHESTRATOR_M_UPDATE.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_M_UPDATE#wsdl.interface(LOG_ORCHESTRATOR_M_UPDATE_ptt)"/>
+   </reference>
+   <reference name="ReverseProcess.reverseprocess_client" ui:wsdlLocation="ReverseProcessWrapper.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/serviceEntity/provisioning/reverseProcess#wsdl.interface(BasicOrderPort)"/>
+   </reference>
+   <reference name="FaultNotificationService" ui:wsdlLocation="BasicFaultNotificationWrapper2.wsdl">
+      <interface.wsdl interface="http://tigo.hn/enterprise/faultNotificationService/createFault#wsdl.interface(FaultNotification_Port)"/>
+   </reference>
+   <reference name="PromotionQueue" ui:wsdlLocation="PromotionQueue.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/jms/OrchestratorOrders/O2/PromotionQueue#wsdl.interface(Produce_Message_ptt)"/>
+   </reference>
+   <reference name="LOG_PROVISIONING_PRODUCT_SELECT" ui:wsdlLocation="LOG_PROVISIONING_PRODUCT_SELECT.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/O2/O2/LOG_PROVISIONING_PRODUCT_SELECT#wsdl.interface(LOG_PROVISIONING_PRODUCT_SELECT_ptt)"/>
+   </reference>
+</componentType>

@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://xmlns.tigo.com/ProcessValidator/ValidatorGeneralResponse/array" xmlns:rul="http://xmlns.tigo.com/ProcessValidator/RuleSchema/V1" xmlns:stat="http://xmlns.tigo.com/ProcessValidator/StatusSchema/V1" xmlns:step="http://xmlns.tigo.com/ProcessValidator/StepSchema/V1" xmlns:responseHeader="http://xmlns.tigo.com/ResponseHeader/V3" xmlns:details="http:/xmlns.tigo.com/ProcessValidator/ProcessDetailsSchema/V1" targetNamespace="http://xmlns.tigo.com/ProcessValidator/ValidatorGeneralResponse/array" elementFormDefault="qualified">
+   <xsd:import namespace="http://xmlns.tigo.com/ProcessValidator/RuleSchema/V1" schemaLocation="../partner/RuleSchemaV1.xsd"/>
+   <xsd:import namespace="http://xmlns.tigo.com/ProcessValidator/StatusSchema/V1" schemaLocation="../partner/StatusSchemaV1.xsd"/>
+   <xsd:import namespace="http://xmlns.tigo.com/ProcessValidator/StepSchema/V1" schemaLocation="../partner/StepSchemaV1.xsd"/>
+   <xsd:import namespace="http://xmlns.tigo.com/ResponseHeader/V3" schemaLocation="../partner/commons/ResponseHeaderV3.xsd"/>
+   <xsd:import namespace="http:/xmlns.tigo.com/ProcessValidator/ProcessDetailsSchema/V1" schemaLocation="../partner/ProcessDetailsSchemaV1.xsd"/>
+   <xsd:element name="PVSResultArray" type="PVSResultRequestType" nillable="true"/>
+   <xsd:complexType name="PVSResultRequestType">
+      <xsd:sequence>
+         <xsd:element ref="ValidatorGeneralResponse" minOccurs="1" maxOccurs="unbounded"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="ValidatorGeneralResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="responseHeader:ResponseHeader"/>
+            <xsd:element name="responseBody">
+               <xsd:complexType>
+                  <xsd:sequence>
+                     <xsd:element name="token" type="xsd:string"/>
+                     <xsd:element name="processRules">
+                        <xsd:complexType>
+                           <xsd:sequence>
+                              <xsd:element ref="rul:rule" maxOccurs="unbounded"/>
+                           </xsd:sequence>
+                        </xsd:complexType>
+                     </xsd:element>
+                     <xsd:element name="result">
+                        <xsd:complexType>
+                           <xsd:sequence>
+                              <xsd:element ref="stat:status"/>
+                              <xsd:element name="actions" minOccurs="0">
+                                 <xsd:complexType>
+                                    <xsd:sequence>
+                                       <xsd:element ref="step:step" maxOccurs="unbounded"/>
+                                    </xsd:sequence>
+                                 </xsd:complexType>
+                              </xsd:element>
+                              <xsd:element name="expirationDate" type="xsd:date"/>
+                           </xsd:sequence>
+                        </xsd:complexType>
+                     </xsd:element>
+                     <xsd:element ref="details:processDetails"/>
+                  </xsd:sequence>
+               </xsd:complexType>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+</xsd:schema>

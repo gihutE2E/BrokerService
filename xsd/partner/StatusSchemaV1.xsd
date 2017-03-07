@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://xmlns.tigo.com/ProcessValidator/StatusSchema/V1" targetNamespace="http://xmlns.tigo.com/ProcessValidator/StatusSchema/V1" elementFormDefault="qualified">
+   <xsd:element name="status" type="StatusType"/>
+   <xsd:complexType name="StatusType">
+      <xsd:sequence>
+         <xsd:element name="status" type="xsd:string"/>
+         <xsd:element name="statusDetails" type="xsd:string"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

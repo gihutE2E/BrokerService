@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="BrokerSendOrderProcess" targetNamespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/O2MappingProcess" xmlns:ns2="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema" xmlns:ns1="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://tigo.com/enterprise/business/task/OrderBroker/v1/O2MappingProcess" xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <plnk:partnerLinkType name="O2MappingProcess">
+      <plnk:role name="OrderBrokerServicePortType" portType="tns:OrderBrokerServicePortType"/>
+   </plnk:partnerLinkType>
+   <wsdl:import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1" location="wsdl/partner/OrderOrchestratorService.wsdl"/>
+   <wsdl:import namespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/O2MappingProcess" location="wsdl/process/O2MappingProcess.wsdl"/>
+   <wsdl:types>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema" schemaLocation="xsd/partner/BasicOrderRequest_schema.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+</wsdl:definitions>

@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Mediator name="BrokerMediator" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" wsdlTargetNamespace="http://tigo.com/enterprise/business/task/OrderBroker/v1" xmlns="http://xmlns.oracle.com/sca/1.0/mediator">
+   <operation name="SubmitOrder" deliveryPolicy="AllOrNothing" priority="4" validateSchema="false">
+      <switch>
+         <case executionType="direct" name="BrokerSendOrderProcess.brokersendorderprocess_client.SubmitOrder">
+            <action>
+               <transform>
+                  <part name="$out.body" function="xslt(xsl/SubmitOrder_Request_To_SubmitOrder_Request.xsl, $in.body)"/>
+               </transform>
+               <invoke reference="BrokerSendOrderProcess.brokersendorderprocess_client" operation="SubmitOrder">
+                  <onReply>
+                     <transform>
+                        <part name="$out.body" function="xslt(xsl/SubmitOrder_Response_To_SubmitOrder_Response.xsl, $in.body)"/>
+                     </transform>
+                     <reply/>
+                  </onReply>
+                  <onFault type="fault">
+                     <transform>
+                        <part name="$out.fault" function="xslt(xsl/GeneralResponse_To_GeneralResponse.xsl, $in.fault)"/>
+                     </transform>
+                     <fault type="fault"/>
+                  </onFault>
+               </invoke>
+            </action>
+         </case>
+      </switch>
+   </operation>
+   <operation name="GetOrder" deliveryPolicy="AllOrNothing" priority="4" validateSchema="false"/>
+   <operation name="CancelOrder" deliveryPolicy="AllOrNothing" priority="4" validateSchema="false"/>
+   <operation name="ResumeOrder" deliveryPolicy="AllOrNothing" priority="4" validateSchema="false"/>
+   <operation name="UpdateOrder" deliveryPolicy="AllOrNothing" priority="4" validateSchema="false"/>
+</Mediator>

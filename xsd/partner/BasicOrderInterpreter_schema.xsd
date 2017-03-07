@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://tigo.com/enterprise/business/task/OrderInterpreter/v1/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ord="http://tigo.com/enterprise/business/entities/SimpleOrder/v1/schema" xmlns:brk="http://tigo.com/enterprise/business/task/OrderInterpreter/v1/schema" xmlns:grq="http://tigo.com/enterprise/resources/GeneralRequest/v1/schema" xmlns:grs="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema">
+   <xsd:import namespace="http://tigo.com/enterprise/business/entities/SimpleOrder/v1/schema" schemaLocation="SimpleOrder_schema.xsd"/>
+   <xsd:import namespace="http://tigo.com/enterprise/resources/GeneralRequest/v1/schema" schemaLocation="../commons/resources/GeneralRequest.xsd"/>
+   <xsd:import namespace="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema" schemaLocation="../commons/resources/GeneralResponse.xsd"/>
+   <xsd:element name="SubmitOrder_Request" type="brk:SubmitOrder_RequestType"/>
+   <xsd:complexType name="SubmitOrder_RequestType">
+      <xsd:sequence>
+         <xsd:element name="GeneralRequest" type="grq:GeneralRequest_type" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="SimpleOrder" type="ord:order_type" minOccurs="1" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="SubmitOrder_Response" type="brk:Order_ResponseType"/>
+   <xsd:complexType name="Order_ResponseType">
+      <xsd:sequence>
+         <xsd:element name="GeneralResponse" type="grs:GeneralResponse_type" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="SimpleOrder" type="brk:order_array" minOccurs="0" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="order_array">
+      <xsd:sequence>
+         <xsd:element name="order" type="ord:order_type" minOccurs="1" maxOccurs="unbounded"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

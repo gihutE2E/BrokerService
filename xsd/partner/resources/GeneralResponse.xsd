@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:grs="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema" xmlns:prm="http://tigo.com/enterprise/resources/parameters/simple/v1/schema">
+   <xsd:import namespace="http://tigo.com/enterprise/resources/parameters/simple/v1/schema" schemaLocation="Parameters.xsd"/>
+   <xsd:element name="GeneralResponse" type="grs:GeneralResponse_type"/>
+   <xsd:complexType name="GeneralResponse_type">
+      <xsd:sequence>
+         <xsd:element name="uti" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="status" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="code" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="codeType" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="message" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

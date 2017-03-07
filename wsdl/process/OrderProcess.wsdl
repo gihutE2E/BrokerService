@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="OrderProcess" targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderProcess" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:sch="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema" xmlns:tns="http://tigo.com/enterprise/serviceEntity/provisioning/orderProcess" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cmn="http://tigo.com/commons/generalResponse/v1/schema">
+   <wsdl:types>
+      <xsd:schema targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderProcess">
+         <xsd:import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema" schemaLocation="../../xsd/BasicOrderRequest_schema.xsd"/>
+         <xsd:import namespace="http://tigo.com/commons/generalResponse/v1/schema" schemaLocation="../../xsd/commons/BasicGeneralResponse_schema.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="BasicOrderRequest_msg">
+      <wsdl:part element="sch:BasicOrderRequest" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="BasicOrderResponse_msg">
+      <wsdl:part element="sch:BasicOrderResponse" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="GeneralResponse_msg">
+      <wsdl:part element="cmn:GeneralResponse" name="fault"/>
+   </wsdl:message>
+   <wsdl:portType name="BasicOrderPort">
+      <wsdl:operation name="ExecuteOrder">
+         <wsdl:input message="tns:BasicOrderRequest_msg" name="BasicOrderPortRequest"/>
+         <wsdl:output message="tns:BasicOrderResponse_msg" name="BasicOrderPortResponse"/>
+         <wsdl:fault message="tns:GeneralResponse_msg" name="fault"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="Order_wsSOAP" type="tns:BasicOrderPort">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="ExecuteOrder">
+         <soap:operation soapAction=""/>
+         <wsdl:input name="BasicOrderPortRequest">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="BasicOrderPortResponse">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+</wsdl:definitions>

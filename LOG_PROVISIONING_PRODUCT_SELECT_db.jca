@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<adapter-config name="LOG_PROVISIONING_PRODUCT_SELECT" adapter="Database Adapter" wsdlLocation="LOG_PROVISIONING_PRODUCT_SELECT.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+   <connection-factory location="eis/DB/DBConnection" UIConnectionName="OSBConnection" adapterRef=""/>
+   <endpoint-interaction portType="LOG_PROVISIONING_PRODUCT_SELECT_ptt" operation="LOG_PROVISIONING_PRODUCT_SELECTSelect">
+      <interaction-spec className="oracle.tip.adapter.db.DBReadInteractionSpec">
+         <property name="DescriptorName" value="LOG_PROVISIONING_PRODUCT_SELECT.LogProvisioningProduct"/>
+         <property name="QueryName" value="LOG_PROVISIONING_PRODUCT_SELECTSelect"/>
+         <property name="MappingsMetaDataURL" value="LOG_PROVISIONING_PRODUCT_SELECT-or-mappings.xml"/>
+         <property name="ReturnSingleResultSet" value="false"/>
+         <property name="GetActiveUnitOfWork" value="false"/>
+      </interaction-spec>
+   </endpoint-interaction>
+</adapter-config>

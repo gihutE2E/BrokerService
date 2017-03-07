@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+   <service name="pvsprocess_client" ui:wsdlLocation="PVSProcessWrapper.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/business/task/OrderBroker/v1/PVSProcess#wsdl.interface(PVSProcessPortType)"/>
+   </service>
+   <reference name="ProcessValidatorV2Service" ui:wsdlLocation="ProcessValidatorServiceV2Wrapper.wsdl">
+      <interface.wsdl interface="http://xmlns.tigo.com/ProcessValidator/ProcessValidatorService/v2#wsdl.interface(ProcessValidator)"/>
+   </reference>
+   <reference name="OrderInterpreterProcess.orderinterpreterprocess_client" ui:wsdlLocation="OrderInterpreterProcessWrapper.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/business/task/OrderBroker/v1/OrderInterpreterProcess#wsdl.interface(OrderInterpreterProcessPortType)"/>
+   </reference>
+</componentType>

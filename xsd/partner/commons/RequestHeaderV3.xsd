@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema targetNamespace="http://xmlns.tigo.com/RequestHeader/V3" xmlns:cmn="http://xmlns.tigo.com/RequestHeader/V3" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <xsd:element name="RequestHeader">
+      <xsd:complexType>
+         <xsd:all>
+            <xsd:element name="GeneralConsumerInformation" type="cmn:GeneralConsumerInfoType"/>
+         </xsd:all>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:complexType name="GeneralConsumerInfoType">
+      <xsd:sequence>
+         <xsd:element name="consumerID" type="xsd:string" minOccurs="0" nillable="true"/>
+         <xsd:element name="transactionID" type="xsd:string" minOccurs="0" nillable="true"/>
+         <xsd:element name="country" type="xsd:string" minOccurs="0" nillable="true"/>
+         <xsd:element name="correlationID" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

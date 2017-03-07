@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Mediator name="ProvideMediator" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" wsdlTargetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess" xmlns="http://xmlns.oracle.com/sca/1.0/mediator">
+   <operation name="ExecuteOrder" deliveryPolicy="AllOrNothing" priority="4" validateSchema="false">
+      <switch>
+         <case executionType="direct" name="ProvideProcess.provideprocess_client.ExecuteOrder">
+            <action>
+               <transform>
+                  <part name="$out.body" function="xslt(xsl/BasicProvisioningRequest_To_BasicProvisioningRequest.xsl, $in.body)"/>
+               </transform>
+               <invoke reference="ProvideProcess.provideprocess_client" operation="ExecuteOrder">
+                  <onReply>
+                     <transform>
+                        <part name="$out.body" function="xslt(xsl/BasicProvisioningResponse_To_BasicProvisioningResponse.xsl, $in.body)"/>
+                     </transform>
+                     <reply/>
+                  </onReply>
+                  <onFault type="fault">
+                     <transform>
+                        <part name="$out.fault" function="xslt(xsl/GeneralResponse_To_GeneralResponse.xsl, $in.fault)"/>
+                     </transform>
+                     <fault type="fault"/>
+                  </onFault>
+               </invoke>
+            </action>
+         </case>
+      </switch>
+   </operation>
+</Mediator>

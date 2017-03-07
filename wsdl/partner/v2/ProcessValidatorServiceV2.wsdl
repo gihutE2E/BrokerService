@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions targetNamespace="http://xmlns.tigo.com/ProcessValidator/ProcessValidatorService/v2" xmlns:xpc="http:/xmlns.tigo.com/ProcessValidator/ConfirmValidationRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://xmlns.tigo.com/ProcessValidator/ProcessValidatorService/v2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xtcpv1="http://xmlns.tigo.com/ProcessValidator/ValidatorFaultResponse" xmlns:xtcpg="http://xmlns.tigo.com/ProcessValidator/GetValidationRequest" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:xtcpx="http://xmlns.tigo.com/ProcessValidator/ValidateConditionalRequest" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:xtccv="http://xmlns.tigo.com/ProcessValidator/ValidatorGeneralResponse">
+   <wsdl:types>
+      <xsd:schema targetNamespace="http://xmlns.tigo.com/ProcessValidator/ProcessValidatorService" elementFormDefault="qualified">
+         <xsd:import schemaLocation="../../../xsd/partner/ValidateConditionalRequest.xsd" namespace="http://xmlns.tigo.com/ProcessValidator/ValidateConditionalRequest"/>
+         <xsd:import schemaLocation="../../../xsd/partner/ValidatorGeneralResponse.xsd" namespace="http://xmlns.tigo.com/ProcessValidator/ValidatorGeneralResponse"/>
+         <xsd:import schemaLocation="../../../xsd/partner/GetValidationRequest.xsd" namespace="http://xmlns.tigo.com/ProcessValidator/GetValidationRequest"/>
+         <xsd:import schemaLocation="../../../xsd/partner/ConfirmValidationRequest.xsd" namespace="http:/xmlns.tigo.com/ProcessValidator/ConfirmValidationRequest"/>
+         <xsd:import schemaLocation="../../../xsd/partner/ValidatorFaultResponse.xsd" namespace="http://xmlns.tigo.com/ProcessValidator/ValidatorFaultResponse"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="ValidateRequestMessage">
+      <wsdl:part name="part" element="xtcpx:ValidateRequest"/>
+   </wsdl:message>
+   <wsdl:message name="GeneralResponseMessage">
+      <wsdl:part name="part" element="xtccv:ValidatorGeneralResponse"/>
+   </wsdl:message>
+   <wsdl:message name="FaultResponseMessage">
+      <wsdl:part name="part" element="xtcpv1:ValidatorFaultResponse"/>
+   </wsdl:message>
+   <wsdl:message name="GetValidationRequestMessage">
+      <wsdl:part name="part" element="xtcpg:GetValidationRequest"/>
+   </wsdl:message>
+   <wsdl:message name="ConfirmValidationRequestMessage">
+      <wsdl:part name="part" element="xpc:ConfirmValidationRequest"/>
+   </wsdl:message>
+   <wsdl:portType name="ProcessValidator">
+      <wsdl:operation name="Validate">
+         <wsdl:input message="tns:ValidateRequestMessage"/>
+         <wsdl:output message="tns:GeneralResponseMessage"/>
+         <wsdl:fault name="FaultResponseMessage" message="tns:FaultResponseMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="GetValidation">
+         <wsdl:input message="tns:GetValidationRequestMessage"/>
+         <wsdl:output message="tns:GeneralResponseMessage"/>
+         <wsdl:fault name="FaultResponseMessage" message="tns:FaultResponseMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="ConfirmValidation">
+         <wsdl:input message="tns:ConfirmValidationRequestMessage"/>
+         <wsdl:output message="tns:GeneralResponseMessage"/>
+         <wsdl:fault name="FaultResponseMessage" message="tns:FaultResponseMessage"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="ProcessValidatorServiceBinding" type="tns:ProcessValidator">
+      <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="Validate">
+         <soap12:operation style="document" soapAction="http://xmlns.tigo.com/ProcessValidator/ProcessValidatorService/ProcessValidator/Validate" soapActionRequired="false"/>
+         <wsdl:input>
+            <soap12:body use="literal" parts="part"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap12:body use="literal" parts="part"/>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="GetValidation">
+         <soap12:operation style="document" soapAction="http://xmlns.tigo.com/ProcessValidator/ProcessValidatorService/ProcessValidator/GetValidation" soapActionRequired="false"/>
+         <wsdl:input>
+            <soap12:body use="literal" parts="part"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap12:body use="literal" parts="part"/>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="ConfirmValidation">
+         <soap12:operation style="document" soapAction="http://xmlns.tigo.com/ProcessValidator/ProcessValidatorService/ProcessValidator/ConfirmValidation" soapActionRequired="false"/>
+         <wsdl:input>
+            <soap12:body use="literal" parts="part"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap12:body use="literal" parts="part"/>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="ProcessValidatorPartnerService">
+      <wsdl:port name="ProcessValidator_pt" binding="tns:ProcessValidatorServiceBinding">
+         <soap12:address location="http://soao2pvstst-srv.tigo.com.gt:8001/soa-infra/services/ffs/ProcessValidatorV2/ProcessValidatorPartnerService"/>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>

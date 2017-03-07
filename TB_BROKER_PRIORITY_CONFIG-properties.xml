@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<properties>
+   <entry key="TB_BROKER_PRIORITY_CONFIG:db_column_2">ACTION</entry>
+   <entry key="TB_BROKER_PRIORITY_CONFIG:db_column_1">PRODUCT</entry>
+   <entry key="TB_BROKER_PRIORITY_CONFIG.ID:db_column_type">NUMBER</entry>
+   <entry key="TB_BROKER_PRIORITY_CONFIG.ID:db_column_precision">0</entry>
+   <entry key="TB_BROKER_PRIORITY_CONFIG.PRODUCT:db_column_type">VARCHAR2</entry>
+   <entry key="TB_BROKER_PRIORITY_CONFIG.ACTION:db_column_size">60</entry>
+   <entry key="TB_BROKER_PRIORITY_CONFIG:db_column_0">ID</entry>
+   <entry key="TB_BROKER_PRIORITY_CONFIG:db_table_type">TABLE</entry>
+   <entry key="TB_BROKER_PRIORITY_CONFIG.ACTION:db_column_not_null">false</entry>
+   <entry key="TB_BROKER_PRIORITY_CONFIG.PRODUCT:db_column_size">60</entry>
+   <entry key="return_single_result_set">false</entry>
+   <entry key="TB_BROKER_PRIORITY_CONFIG.ID:db_column_not_null">true</entry>
+   <entry key="TB_BROKER_PRIORITY_CONFIG.PRIORITY:db_column_precision">0</entry>
+   <entry key="TB_BROKER_PRIORITY_CONFIG.PRODUCT:db_column_not_null">false</entry>
+   <entry key="TB_BROKER_PRIORITY_CONFIG.ACTION:db_column_type">VARCHAR2</entry>
+   <entry key="TB_BROKER_PRIORITY_CONFIG.PRIORITY:db_column_type">NUMBER</entry>
+   <entry key="root_descriptor_alias">TB_BROKER_PRIORITY_CONFIG</entry>
+   <entry key="TB_BROKER_PRIORITY_CONFIG.PRIORITY:db_column_not_null">false</entry>
+   <entry key="TB_BROKER_PRIORITY_CONFIG:db_column_3">PRIORITY</entry>
+</properties>

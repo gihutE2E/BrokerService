@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ns14:productItemList xmlns:ns14="http://tigo.com/resources/util/productItem/v1/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://tigo.com/resources/util/productItem/v1/schema file:/D:/Development/soa_project/regional_ws/Broker/O2/xsd/util/product_items_schema.xsd">
+   <productItem>
+      <idItem>CODE6</idItem>
+      <action/>
+      <type>IN</type>
+   </productItem>
+   <productItem>
+      <idItem>CODE15</idItem>
+      <action/>
+      <type>IN</type>
+   </productItem>
+   <productItem>
+      <idItem>CODE24</idItem>
+      <action/>
+      <type>IN</type>
+   </productItem>
+</ns14:productItemList>

@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<adapter-config name="SEQ_NEXT_VAL" adapter="Database Adapter" wsdlLocation="SEQ_NEXT_VAL.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+   <connection-factory location="eis/DB/DBConnection" UIConnectionName="MDWDesa" adapterRef=""/>
+   <endpoint-interaction portType="SEQ_NEXT_VAL_ptt" operation="SEQ_NEXT_VAL">
+      <interaction-spec className="oracle.tip.adapter.db.DBStoredProcedureInteractionSpec">
+         <property name="SchemaName" value="OSBUSR"/>
+         <property name="ProcedureName" value="GET_NEXT_ID"/>
+         <property name="GetActiveUnitOfWork" value="false"/>
+      </interaction-spec>
+      <output/>
+   </endpoint-interaction>
+</adapter-config>

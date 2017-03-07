@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Mediator name="OrderOrchestratorMediator" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" wsdlTargetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1" xmlns="http://xmlns.oracle.com/sca/1.0/mediator">
+   <operation name="ExecuteOrder" deliveryPolicy="AllOrNothing" priority="4" validateSchema="false">
+      <switch>
+         <case executionType="direct" name="OrderProcess.orderprocess_client.ExecuteOrder">
+            <action>
+               <transform>
+                  <part name="$out.body" function="xslt(xsl/BasicOrderRequest_To_BasicOrderRequest.xsl, $in.body)"/>
+               </transform>
+               <invoke reference="OrderProcess.orderprocess_client" operation="ExecuteOrder">
+                  <onReply>
+                     <transform>
+                        <part name="$out.body" function="xslt(xsl/BasicOrderResponse_To_BasicOrderResponse.xsl, $in.body)"/>
+                     </transform>
+                     <reply/>
+                  </onReply>
+                  <onFault type="fault">
+                     <transform>
+                        <part name="$out.fault" function="xslt(xsl/GeneralResponse_To_GeneralResponse.xsl, $in.fault)"/>
+                     </transform>
+                     <fault type="fault"/>
+                  </onFault>
+               </invoke>
+            </action>
+         </case>
+      </switch>
+   </operation>
+   <operation name="ReverseOrder" deliveryPolicy="AllOrNothing" priority="4" validateSchema="false">
+      <switch>
+         <case executionType="direct" name="ReverseProcess.reverseprocess_client.ReverseOrder">
+            <action>
+               <transform>
+                  <part name="$out.body" function="xslt(xsl/BasicVoidOrderRequest_To_BasicVoidOrderRequest.xsl, $in.body)"/>
+               </transform>
+               <invoke reference="ReverseProcess.reverseprocess_client" operation="ReverseOrder">
+                  <onReply>
+                     <transform>
+                        <part name="$out.body" function="xslt(xsl/BasicVoidOrderResponse_To_BasicVoidOrderResponse.xsl, $in.body)"/>
+                     </transform>
+                     <reply/>
+                  </onReply>
+                  <onFault type="fault">
+                     <transform>
+                        <part name="$out.fault" function="xslt(xsl/GeneralResponse_To_GeneralResponse.xsl, $in.fault)"/>
+                     </transform>
+                     <fault type="fault"/>
+                  </onFault>
+               </invoke>
+            </action>
+         </case>
+      </switch>
+   </operation>
+</Mediator>

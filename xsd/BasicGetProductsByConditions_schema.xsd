@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<schema targetNamespace="http://www.tigo.com/platform/productConfigurationO2Service/getProductByConditions/v1/schema" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tigo.com/platform/productConfigurationO2Service/getProductByConditions/v1/schema" xmlns:pro="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema" xmlns:bsc="http://tigo.com/commons/basicRequest/v1/schema" xmlns:cmn="http://tigo.com/commons/generalResponse/v1/schema" xmlns:ads="http://tigo.com/commons/resources/additional/v1/schema">
+   <import namespace="http://tigo.com/commons/resources/additional/v1/schema" schemaLocation="commons/resources/BasicAdditional_schema.xsd"/>
+   <import namespace="http://tigo.com/commons/generalResponse/v1/schema" schemaLocation="commons/BasicGeneralResponse_schema.xsd"/>
+   <import namespace="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema" schemaLocation="product/BasicProduct_schema.xsd"/>
+   <import namespace="http://tigo.com/commons/basicRequest/v1/schema" schemaLocation="commons/BasicRequest_schema.xsd"/>
+   <element name="GetProductByConditionsRequest" type="tns:GetProductByConditionsType"/>
+   <complexType name="GetProductByConditionsType">
+      <sequence>
+         <element ref="bsc:basicRequest"/>
+         <element ref="ads:additionals"/>
+      </sequence>
+   </complexType>
+   <element name="GetProductByConditionsResponse" type="tns:GetProductByConditionsResponseType"/>
+   <complexType name="GetProductByConditionsResponseType">
+      <sequence>
+         <element ref="cmn:GeneralResponse"/>
+         <element name="products" type="tns:productsType"/>
+      </sequence>
+   </complexType>
+   <complexType name="productsType">
+      <sequence>
+         <element name="productDetail" type="tns:productDetailType" maxOccurs="unbounded"/>
+      </sequence>
+   </complexType>
+   <complexType name="productDetailType">
+      <sequence>
+         <element ref="pro:product"/>
+         <element ref="ads:additionals"/>
+      </sequence>
+   </complexType>
+</schema>

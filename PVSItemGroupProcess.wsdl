@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="PVSItemGroupProcess" targetNamespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/PVSItemGroupProcess" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:client="http://tigo.com/enterprise/business/task/OrderBroker/v1/PVSItemGroupProcess" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype">
+   <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema">
+         <import namespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/PVSItemGroupProcess" schemaLocation="xsd/PVSItemGroupProcess.xsd"/>
+      </schema>
+   </wsdl:types>
+   <wsdl:message name="PVSItemGroupProcessRequestMessage">
+      <wsdl:part name="payload" element="client:process"/>
+   </wsdl:message>
+   <wsdl:message name="PVSItemGroupProcessResponseMessage">
+      <wsdl:part name="payload" element="client:processResponse"/>
+   </wsdl:message>
+   <wsdl:portType name="PVSItemGroupProcess">
+      <wsdl:operation name="process">
+         <wsdl:input message="client:PVSItemGroupProcessRequestMessage"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:portType name="PVSItemGroupProcessCallback">
+      <wsdl:operation name="processResponse">
+         <wsdl:input message="client:PVSItemGroupProcessResponseMessage"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <plnk:partnerLinkType name="PVSItemGroupProcess">
+      <plnk:role name="PVSItemGroupProcessProvider" portType="client:PVSItemGroupProcess"/>
+      <plnk:role name="PVSItemGroupProcessRequester" portType="client:PVSItemGroupProcessCallback"/>
+   </plnk:partnerLinkType>
+</wsdl:definitions>

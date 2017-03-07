@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_D_PENDING" xmlns="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_D_PENDING" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:element name="LogOrchestratorProductCollection" type="LogOrchestratorProductCollection"/>
+   <xs:complexType name="LogOrchestratorProductCollection">
+      <xs:sequence>
+         <xs:element name="LogOrchestratorProduct" type="LogOrchestratorProduct" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="LogOrchestratorProduct">
+      <xs:sequence>
+         <xs:element name="id" type="xs:decimal"/>
+         <xs:element name="correlationId" minOccurs="0">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="100"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="code" minOccurs="0">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="30"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="name" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="value" type="xs:decimal" minOccurs="0" nillable="true"/>
+         <xs:element name="currency" minOccurs="0" nillable="true">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="30"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="expirationDate" type="xs:dateTime" minOccurs="0" nillable="true"/>
+         <xs:element name="startDate" type="xs:dateTime" minOccurs="0" nillable="true"/>
+         <xs:element name="defer" minOccurs="0" nillable="true">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="30"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="offerAction" minOccurs="0" nillable="true">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="30"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="status" minOccurs="0" nillable="true">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="30"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="idCliente" minOccurs="0">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="30"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="idType" minOccurs="0" nillable="true">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="30"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="uti" minOccurs="0" nillable="true">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="100"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="utiReference" minOccurs="0" nillable="true">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="100"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="LOG_ORCHESTRATOR_D_STATUSSelect_status_correlationIdInputParameters" type="LOG_ORCHESTRATOR_D_STATUSSelect_status_correlationId"/>
+   <xs:complexType name="LOG_ORCHESTRATOR_D_STATUSSelect_status_correlationId">
+      <xs:sequence>
+         <xs:element name="status" type="xs:string" minOccurs="1" maxOccurs="1"/>
+         <xs:element name="correlationId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>

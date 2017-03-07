@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Mediator name="PaymentMediator" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" wsdlTargetNamespace="http://tigo.com/enterprise/taskService/paymentService/v1" xmlns="http://xmlns.oracle.com/sca/1.0/mediator">
+   <operation name="ExecutePayment" deliveryPolicy="AllOrNothing" priority="4" validateSchema="false">
+      <switch>
+         <case executionType="direct" name="PaymentService.ExecutePayment">
+            <action>
+               <transform>
+                  <part name="$out.body" function="xslt(xsl/BasicPaymentRequest_To_BasicPaymentRequest.xsl, $in.body)"/>
+               </transform>
+               <invoke reference="PaymentService" operation="ExecutePayment">
+                  <onReply>
+                     <transform>
+                        <part name="$out.body" function="xslt(xsl/BasicPaymentResponse_To_BasicPaymentResponse.xsl, $in.body)"/>
+                     </transform>
+                     <reply/>
+                  </onReply>
+                  <onFault type="fault">
+                     <transform>
+                        <part name="$out.fault" function="xslt(xsl/GeneralResponse_To_GeneralResponse.xsl, $in.fault)"/>
+                     </transform>
+                     <fault type="fault"/>
+                  </onFault>
+               </invoke>
+            </action>
+         </case>
+      </switch>
+   </operation>
+   <operation name="ReversePayment" deliveryPolicy="AllOrNothing" priority="4" validateSchema="false">
+      <switch>
+         <case executionType="direct" name="PaymentService.ReversePayment">
+            <action>
+               <transform>
+                  <part name="$out.body" function="xslt(xsl/BasicReversePaymentRequest_To_BasicReversePaymentRequest.xsl, $in.body)"/>
+               </transform>
+               <invoke reference="PaymentService" operation="ReversePayment">
+                  <onReply>
+                     <transform>
+                        <part name="$out.body" function="xslt(xsl/BasicReversePaymentResponse_To_BasicReversePaymentResponse.xsl, $in.body)"/>
+                     </transform>
+                     <reply/>
+                  </onReply>
+                  <onFault type="fault">
+                     <transform>
+                        <part name="$out.fault" function="xslt(xsl/GeneralResponse_To_GeneralResponse.xsl, $in.fault)"/>
+                     </transform>
+                     <fault type="fault"/>
+                  </onFault>
+               </invoke>
+            </action>
+         </case>
+      </switch>
+   </operation>
+</Mediator>

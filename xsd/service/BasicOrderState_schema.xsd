@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://tigo.com/enterprise/basicOrderState/v1/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://tigo.com/enterprise/basicOrderState/v1/schema" xmlns:rsc="http://tigo.com/commons/resources/additional/v1/schema">
+   <xsd:import namespace="http://tigo.com/commons/resources/additional/v1/schema" schemaLocation="../commons/resources/BasicAdditional_schema.xsd"/>
+   <xsd:element name="orderState" type="tns:orderStateType"/>
+   <xsd:complexType name="orderStateType">
+      <xsd:sequence>
+         <xsd:element name="status" type="xsd:string" minOccurs="0"/>
+         <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+         <xsd:element name="action" type="xsd:string" minOccurs="0"/>
+         <xsd:element ref="rsc:additionals"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

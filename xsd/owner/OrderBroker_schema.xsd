@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:prm="http://tigo.com/enterprise/resources/parameters/simple/v1/schema" xmlns:cli="http://tigo.com/enterprise/business/entities/client/basic/v1/schema" xmlns:ord="http://tigo.com/enterprise/business/entities/order/v1/schema" xmlns:brk="http://tigo.com/enterprise/business/task/OrderBroker/v1/schema" xmlns:grq="http://tigo.com/enterprise/resources/GeneralRequest/v1/schema" xmlns:grs="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema">
+   <xsd:import namespace="http://tigo.com/enterprise/resources/parameters/simple/v1/schema" schemaLocation="../commons/resources/Parameters.xsd"/>
+   <xsd:import namespace="http://tigo.com/enterprise/business/entities/client/basic/v1/schema" schemaLocation="../business/client/BasicClient_schema.xsd"/>
+   <xsd:import namespace="http://tigo.com/enterprise/business/entities/order/v1/schema" schemaLocation="../business/order/Order_schema.xsd"/>
+   <xsd:import namespace="http://tigo.com/enterprise/resources/GeneralRequest/v1/schema" schemaLocation="../commons/resources/GeneralRequest.xsd"/>
+   <xsd:import namespace="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema" schemaLocation="../commons/resources/GeneralResponse.xsd"/>
+   <xsd:element name="SubmitOrder_Request" type="brk:SubmitOrder_RequestType"/>
+   <xsd:complexType name="SubmitOrder_RequestType">
+      <xsd:sequence>
+         <xsd:element name="GeneralRequest" type="grq:GeneralRequest_type" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="Order" type="ord:order_type" minOccurs="1" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="SubmitOrder_Response" type="brk:Order_ResponseType"/>
+   <xsd:complexType name="Order_ResponseType">
+      <xsd:sequence>
+         <xsd:element name="GeneralResponse" type="grs:GeneralResponse_type" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="Order" type="ord:order_type" minOccurs="1" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="GetOrder_Request" type="brk:GetOrder_RequestType"/>
+   <xsd:complexType name="GetOrder_RequestType">
+      <xsd:sequence>
+         <xsd:element name="GeneralRequest" type="grq:GeneralRequest_type" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="orderID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="itemID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="actionReference" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="parameters" type="prm:parameter_array" minOccurs="0" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="GetOrder_Response" type="brk:Order_ResponseType"/>
+   <xsd:element name="ResumeOrder_Request" type="brk:ResumeOrder_RequestType"/>
+   <xsd:complexType name="ResumeOrder_RequestType">
+      <xsd:sequence>
+         <xsd:element name="GeneralRequest" type="grq:GeneralRequest_type" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="orderID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="itemID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="actionReference" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="parameters" type="prm:parameter_array" minOccurs="0" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="ResumeOrder_Response" type="brk:Order_ResponseType"/>
+   <xsd:element name="CancelOrder_Request" type="brk:CancelOrder_RequestType"/>
+   <xsd:complexType name="CancelOrder_RequestType">
+      <xsd:sequence>
+         <xsd:element name="GeneralRequest" type="grq:GeneralRequest_type" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="orderID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="itemID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="actionReference" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="parameters" type="prm:parameter_array" minOccurs="0" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="CancelOrder_Response" type="brk:Order_ResponseType"/>
+   <xsd:element name="UpdateOrder_Request" type="brk:UpdateOrder_RequestType"/>
+   <xsd:complexType name="UpdateOrder_RequestType">
+      <xsd:sequence>
+         <xsd:element name="GeneralRequest" type="grq:GeneralRequest_type" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="Order" type="ord:order_type" minOccurs="1" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="UpdateOrder_Response" type="brk:Order_ResponseType"/>
+</xsd:schema>

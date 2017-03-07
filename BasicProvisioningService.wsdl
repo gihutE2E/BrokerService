@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="Provisioning" targetNamespace="http://tigo.com/enterprise/taskService/provisioning/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://tigo.com/enterprise/taskService/provisioning/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cmn="http://tigo.com/commons/generalResponse/v1/schema" xmlns:sch="http://tigo.com/enterprise/taskService/provisioning/v1/schema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/">
+   <wsdl:types>
+      <xsd:schema targetNamespace="http://tigo.com/enterprise/taskService/provisioning/v1">
+         <xsd:import namespace="http://tigo.com/enterprise/taskService/provisioning/v1/schema" schemaLocation="xsd/BasicProvisioning_schema.xsd"/>
+         <xsd:import namespace="http://tigo.com/commons/generalResponse/v1/schema"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="BasicProvisioningRequest_msg">
+      <wsdl:part name="body" element="sch:BasicProvisioningRequest"/>
+   </wsdl:message>
+   <wsdl:message name="BasicProvisioningResponse_msg">
+      <wsdl:part name="body" element="sch:BasicProvisioningResponse"/>
+   </wsdl:message>
+   <wsdl:message name="GeneralResponse_msg">
+      <wsdl:part name="fault" element="cmn:GeneralResponse"/>
+   </wsdl:message>
+   <wsdl:message name="BasicReverseRequest_msg">
+      <wsdl:part name="body" element="sch:BasicReverseRequest"/>
+   </wsdl:message>
+   <wsdl:message name="BasicReverseResponse_msg">
+      <wsdl:part name="body" element="sch:BasicReverseResponse"/>
+   </wsdl:message>
+   <wsdl:portType name="ProvisioningPort">
+      <wsdl:operation name="Provisioning">
+         <wsdl:input name="BasicProvisioningPortRequest" message="tns:BasicProvisioningRequest_msg"/>
+         <wsdl:output name="BasicProvisioningPortResponse" message="tns:BasicProvisioningResponse_msg"/>
+         <wsdl:fault name="fault" message="tns:GeneralResponse_msg"/>
+      </wsdl:operation>
+      <wsdl:operation name="Reverse">
+         <wsdl:input name="BasicReversePortRequest" message="tns:BasicReverseRequest_msg"/>
+         <wsdl:output name="BasicReversePortResponse" message="tns:BasicReverseResponse_msg"/>
+         <wsdl:fault name="fault" message="tns:GeneralResponse_msg"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="Provisioning_wsSOAP" type="tns:ProvisioningPort">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="Provisioning">
+         <soap:operation soapAction="" soapActionRequired="false"/>
+         <wsdl:input name="BasicProvisioningPortRequest">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="BasicProvisioningPortResponse">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="Reverse">
+         <soap:operation soapAction="" soapActionRequired="false"/>
+         <wsdl:input name="BasicReversePortRequest">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="BasicReversePortResponse">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="ProvisioningService">
+      <wsdl:port name="ProvisioningPort" binding="tns:Provisioning_wsSOAP">
+         <soap:address location="http://soao2pvstst-srv.tigo.com.gt:8001/soa-infra/services/ffs/Provisioning/ProvisioningService"/>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>

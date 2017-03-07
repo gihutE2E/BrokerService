@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="MasterStatusService" targetNamespace="http://www.tigo.com/resource/masterStatusServices/masterStatus/v1" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tigo.com/resource/masterStatusServices/masterStatus/v1" xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <plnk:partnerLinkType name="MasterStatusService">
+      <plnk:role name="MasterStatusService_Port" portType="tns:MasterStatusService_Port"/>
+   </plnk:partnerLinkType>
+   <wsdl:import namespace="http://www.tigo.com/resource/masterStatusServices/masterStatus/v1" location="wsdl/partner/BasicMasterStatusService.wsdl"/>
+</wsdl:definitions>

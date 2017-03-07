@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<order xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema file:/E:/Desarrollo/OrchestratorOrders/Orchestrator/xsd/BasicOrderRequest_schema.xsd" xmlns="http://tigo.com/enterprise/serviceEntity/provisioning/order/v1/schema">
+   <product xmlns="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema">
+      <CODE xmlns="">CODE1</CODE>
+      <name xmlns="">name2</name>
+   </product>
+   <offeringDetail xmlns="http://tigo.com/serviceEntity/provisioning/offeringDetail/v1/schema">
+      <value xmlns="">30.73</value>
+      <currency xmlns=""/>
+      <expirationDate xmlns="">2013-01-25T17:52:12.532</expirationDate>
+      <startDate xmlns="">2013-01-25T17:52:12.532</startDate>
+      <defer xmlns="">defer5</defer>
+      <offerAction xmlns="">offerAction6</offerAction>
+   </offeringDetail>
+   <additionals xmlns="http://tigo.com/commons/resources/additional/v1/schema">
+      <additional xmlns="">
+         <name>name7</name>
+         <value>value8</value>
+      </additional>
+      <additional xmlns="">
+         <name>name9</name>
+         <value>value10</value>
+      </additional>
+      <additional xmlns="">
+         <name>name11</name>
+         <value>value12</value>
+      </additional>
+   </additionals>
+</order>

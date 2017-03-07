@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="TB_PROCESS_V1" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/Broker/BrokerService/TB_PROCESS_V1" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/Broker/BrokerService/TB_PROCESS_V1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:top="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_PROCESS_V1">
+   <plt:partnerLinkType name="TB_PROCESS_V1_plt">
+      <plt:role name="TB_PROCESS_V1_role">
+         <plt:portType name="tns:TB_PROCESS_V1_ptt"/>
+      </plt:role>
+   </plt:partnerLinkType>
+   <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema">
+         <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_PROCESS_V1" schemaLocation="xsd/TB_PROCESS_V1_table.xsd"/>
+      </schema>
+   </wsdl:types>
+   <wsdl:message name="TB_PROCESS_V1Select_inputParameters">
+      <wsdl:part name="TB_PROCESS_V1Select_inputParameters" element="top:TB_PROCESS_V1Select_processIdInputParameters"/>
+   </wsdl:message>
+   <wsdl:message name="ProcessTbCollection_msg">
+      <wsdl:part name="ProcessTbCollection" element="top:ProcessTbCollection"/>
+   </wsdl:message>
+   <wsdl:portType name="TB_PROCESS_V1_ptt">
+      <wsdl:operation name="TB_PROCESS_V1Select">
+         <wsdl:input message="tns:TB_PROCESS_V1Select_inputParameters"/>
+         <wsdl:output message="tns:ProcessTbCollection_msg"/>
+      </wsdl:operation>
+   </wsdl:portType>
+</wsdl:definitions>

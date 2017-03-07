@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<sensors targetNamespace="http://xmlns.oracle.com/Broker/BrokerService/O2MappingProcess" xmlns="http://xmlns.oracle.com/bpel/sensor" xmlns:tns="http://xmlns.oracle.com/Broker/BrokerService/O2MappingProcess" xmlns:pc="http://xmlns.oracle.com/bpel/sensor">
+   <sensor sensorName="ActivitySensor1" classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="Assign1">
+      <activityConfig evalTime="all">
+         <variable outputDataType="BasicOrderRequest" outputNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema" target="$request"/>
+         <variable outputDataType="string" outputNamespace="http://www.w3.org/2001/XMLSchema" target="$reqString"/>
+      </activityConfig>
+   </sensor>
+   <sensor sensorName="VariableSensor1" classname="oracle.tip.pc.services.reports.dca.agents.BpelVariableSensorAgent" kind="variable" target="$reqString">
+      <variableConfig outputDataType="string" outputNamespace="http://www.w3.org/2001/XMLSchema"/>
+   </sensor>
+   <sensor sensorName="VariableSensor2" classname="oracle.tip.pc.services.reports.dca.agents.BpelVariableSensorAgent" kind="variable" target="$request">
+      <variableConfig outputDataType="BasicOrderRequest" outputNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema"/>
+   </sensor>
+</sensors>

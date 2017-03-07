@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<WL5G3N0:definitions name="WorkingMemory" targetNamespace="http://tigo.com/enterprise/serviceEntity/WorkingMemory/v1" xmlns:WL5G3N0="http://schemas.xmlsoap.org/wsdl/" xmlns:WL5G3N1="http://tigo.com/enterprise/serviceEntity/WorkingMemory/v1/schema" xmlns:WL5G3N2="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema" xmlns:WL5G3N3="http://tigo.com/enterprise/serviceEntity/WorkingMemory/v1" xmlns:WL5G3N4="http://schemas.xmlsoap.org/wsdl/soap12/">
+   <WL5G3N0:types>
+      <xsd:schema targetNamespace="http://tigo.com/enterprise/serviceEntity/WorkingMemory/v1" xmlns:grs="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema" xmlns:sch="http://tigo.com/enterprise/serviceEntity/WorkingMemory/v1/schema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="http://tigo.com/enterprise/serviceEntity/WorkingMemory/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema" schemaLocation="../../xsd/commons/resources/GeneralResponse.xsd"/>
+         <xsd:import namespace="http://tigo.com/enterprise/serviceEntity/WorkingMemory/v1/schema" schemaLocation="../../xsd/partner/BasicWorkingMemory_schema.xsd"/>
+      </xsd:schema>
+   </WL5G3N0:types>
+   <WL5G3N0:message name="BasicSet_msg">
+      <WL5G3N0:part element="WL5G3N1:BasicSetRequest" name="body"/>
+   </WL5G3N0:message>
+   <WL5G3N0:message name="BasicSetResponse_msg">
+      <WL5G3N0:part element="WL5G3N1:BasicSetResponse" name="body"/>
+   </WL5G3N0:message>
+   <WL5G3N0:message name="BasicGet_msg">
+      <WL5G3N0:part element="WL5G3N1:BasicGetRequest" name="body"/>
+   </WL5G3N0:message>
+   <WL5G3N0:message name="BasicGetResponse_msg">
+      <WL5G3N0:part element="WL5G3N1:BasicGetResponse" name="body"/>
+   </WL5G3N0:message>
+   <WL5G3N0:message name="GeneralResponse_msg">
+      <WL5G3N0:part element="WL5G3N2:GeneralResponse" name="fault"/>
+   </WL5G3N0:message>
+   <WL5G3N0:portType name="BasicWorkingMemoryPort">
+      <WL5G3N0:operation name="Set">
+         <WL5G3N0:input message="WL5G3N3:BasicSet_msg" name="BasicSetPortRequest"/>
+         <WL5G3N0:output message="WL5G3N3:BasicSetResponse_msg" name="BasicSetPortResponse"/>
+         <WL5G3N0:fault message="WL5G3N3:GeneralResponse_msg" name="fault"/>
+      </WL5G3N0:operation>
+      <WL5G3N0:operation name="Get">
+         <WL5G3N0:input message="WL5G3N3:BasicGet_msg" name="BasicGetPortRequest"/>
+         <WL5G3N0:output message="WL5G3N3:BasicGetResponse_msg" name="BasicGetPortResponse"/>
+         <WL5G3N0:fault message="WL5G3N3:GeneralResponse_msg" name="fault"/>
+      </WL5G3N0:operation>
+   </WL5G3N0:portType>
+   <WL5G3N0:binding name="WorkingMemory_wsSOAP" type="WL5G3N3:BasicWorkingMemoryPort">
+      <WL5G3N4:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <WL5G3N0:operation name="Set">
+         <WL5G3N4:operation/>
+         <WL5G3N0:input name="BasicSetPortRequest">
+            <WL5G3N4:body use="literal"/>
+         </WL5G3N0:input>
+         <WL5G3N0:output name="BasicSetPortResponse">
+            <WL5G3N4:body use="literal"/>
+         </WL5G3N0:output>
+         <WL5G3N0:fault name="fault">
+            <WL5G3N4:fault name="fault" use="literal"/>
+         </WL5G3N0:fault>
+      </WL5G3N0:operation>
+      <WL5G3N0:operation name="Get">
+         <WL5G3N4:operation/>
+         <WL5G3N0:input name="BasicGetPortRequest">
+            <WL5G3N4:body use="literal"/>
+         </WL5G3N0:input>
+         <WL5G3N0:output name="BasicGetPortResponse">
+            <WL5G3N4:body use="literal"/>
+         </WL5G3N0:output>
+         <WL5G3N0:fault name="fault">
+            <WL5G3N4:fault name="fault" use="literal"/>
+         </WL5G3N0:fault>
+      </WL5G3N0:operation>
+   </WL5G3N0:binding>
+   <WL5G3N0:service name="WorkingMemory_wsSOAPQSService">
+      <WL5G3N0:port binding="WL5G3N3:WorkingMemory_wsSOAP" name="WorkingMemory_wsSOAPQSPort">
+         <WL5G3N4:address location="http://osbo2pvstst-srv.tigo.com.gt:8011/enterprise/serviceEntity/workingMemory/v1"/>
+      </WL5G3N0:port>
+   </WL5G3N0:service>
+</WL5G3N0:definitions>

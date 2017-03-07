@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+   <service name="ExpireMediator" ui:wsdlLocation="wsdl/BasicProvisioningService.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/taskService/provisioning/v1#wsdl.interface(ProvisioningPort)"/>
+   </service>
+   <reference name="ProvisioningMediator.ProvisioningMediator" ui:wsdlLocation="wsdl/BasicProvisioningService.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/taskService/provisioning/v1#wsdl.interface(ProvisioningPort)"/>
+   </reference>
+</componentType>

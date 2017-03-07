@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="OrderRequest" targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderStateRequest/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:cmn="http://tigo.com/commons/generalResponse/v1/schema" xmlns:ns5="http://tigo.com/enterprise/serviceEntity/provisioning/reverseProvideProcess" xmlns:ns6="http://tigo.com/enterprise/taskService/paymentService/v1" xmlns:ns7="http://tigo.com/enterprise/serviceEntity/provisioning/reversePayProcess" xmlns:ns8="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_PRODUCT_UPDATE" xmlns:ns2="http://tigo.com/enterprise/taskService/provisioning/v1/schema" xmlns:ns1="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess" xmlns:ns4="http://tigo.com/enterprise/serviceEntity/provisioning/reverseProcess" xmlns:ns3="http://tigo.com/enterprise/taskService/provisioning/v1" xmlns:tns="http://tigo.com/enterprise/serviceEntity/provisioning/orderStateRequest/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:sch="http://tigo.com/enterprise/serviceEntity/provisioning/orderStateRequest/v1/schema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+   <wsdl:types>
+      <xsd:schema targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderStateRequest/v1">
+         <xsd:import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderStateRequest/v1/schema" schemaLocation="../xsd/BasicOrderStateRequestService_schema.xsd"/>
+         <xsd:import namespace="http://tigo.com/commons/generalResponse/v1/schema" schemaLocation="../xsd/commons/BasicGeneralResponse_schema.xsd"/>
+      </xsd:schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="http://tigo.com/enterprise/taskService/provisioning/v1/schema" schemaLocation="../xsd/BasicProvisioning_schema.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="BasicOrderStateRequest_msg">
+      <wsdl:part name="body" element="sch:BasicOrderStateRequest"/>
+   </wsdl:message>
+   <wsdl:message name="BasicOrderStateResponse_msg">
+      <wsdl:part name="body" element="sch:BasicOrderStateResponse"/>
+   </wsdl:message>
+   <wsdl:message name="GeneralResponse_msg">
+      <wsdl:part name="fault" element="cmn:GeneralResponse"/>
+   </wsdl:message>
+   <wsdl:message name="BasicExpireOrderStateRequest_msg">
+      <wsdl:part name="body" element="sch:BasicExpireOrderStateRequest"/>
+   </wsdl:message>
+   <wsdl:message name="BasicExpireOrderStateResponse_msg">
+      <wsdl:part name="body" element="sch:BasicExpireOrderStateResponse"/>
+   </wsdl:message>
+   <wsdl:message name="BasicContinueOrderRequest_msg">
+      <wsdl:part name="body" element="sch:BasicContinueOrderStateRequest"/>
+   </wsdl:message>
+   <wsdl:message name="BasicContinueOrderResponse_msg">
+      <wsdl:part name="body" element="sch:BasicContinueOrderStateResponse"/>
+   </wsdl:message>
+   <wsdl:portType name="BasicOrderStatePort">
+      <wsdl:operation name="CreateOrderState">
+         <wsdl:input name="BasicOrderStatePortRequest" message="tns:BasicOrderStateRequest_msg"/>
+         <wsdl:output name="BasicOrderStatePortResponse" message="tns:BasicOrderStateResponse_msg"/>
+         <wsdl:fault name="fault" message="tns:GeneralResponse_msg"/>
+      </wsdl:operation>
+      <wsdl:operation name="ExpireOrderState">
+         <wsdl:input name="BasicExpireOrderStatePortRequest" message="tns:BasicExpireOrderStateRequest_msg"/>
+         <wsdl:output name="BasicExpireOrderStatePortResponse" message="tns:BasicExpireOrderStateResponse_msg"/>
+         <wsdl:fault name="fault" message="tns:GeneralResponse_msg"/>
+      </wsdl:operation>
+      <wsdl:operation name="ContinueOrder">
+         <wsdl:input name="BasicContinueOrderPortRequest" message="tns:BasicContinueOrderRequest_msg"/>
+         <wsdl:output name="BasicContinueOrderPortResponse" message="tns:BasicContinueOrderResponse_msg"/>
+         <wsdl:fault name="fault" message="tns:GeneralResponse_msg"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="Order_wsSOAP" type="tns:BasicOrderStatePort">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="CreateOrderState">
+         <soap:operation soapAction="CreateOrderSate" soapActionRequired="false"/>
+         <wsdl:input name="BasicOrderStatePortRequest">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="BasicOrderStatePortResponse">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="ExpireOrderState">
+         <soap:operation soapAction="ExpireOrderState" soapActionRequired="false"/>
+         <wsdl:input name="BasicExpireOrderStatePortRequest">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="BasicExpireOrderStatePortResponse">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="ContinueOrder">
+         <soap:operation soapAction="ContinueOrder" soapActionRequired="false"/>
+         <wsdl:input name="BasicContinueOrderPortRequest">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="BasicContinueOrderPortResponse">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="OrderStateManagementService">
+      <wsdl:port name="BasicOrderStatePort_pt" binding="tns:Order_wsSOAP">
+         <soap:address location="http://soao2pvstst-srv.tigo.com.gt:8001/soa-infra/services/ffs/OrderStateManagement/OrderStateManagementService"/>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>

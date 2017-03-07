@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+   <service name="ContinueOrderMediator" ui:wsdlLocation="wsdl/BasicContinueOrderService.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/serviceEntity/provisioning/continueOrder/v1#wsdl.interface(BasicContinueOrderPort)"/>
+   </service>
+   <reference name="ContinueOrderProcess.continueorderprocess_client" ui:wsdlLocation="BasicContinueOrderServiceWrapper.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/serviceEntity/provisioning/continueOrder/v1#wsdl.interface(BasicContinueOrderPort)"/>
+   </reference>
+</componentType>

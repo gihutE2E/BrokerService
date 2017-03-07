@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://tigo.hn/commons/resources/parameters" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:rsc="http://tigo.hn/commons/resources/parameters">
+   <xsd:element name="parameters" type="rsc:parameter_array" nillable="true"/>
+   <xsd:complexType name="parameter_array">
+      <xsd:sequence>
+         <xsd:element name="parameter" type="rsc:parameter_type" minOccurs="1" maxOccurs="unbounded"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="parameter_type">
+      <xsd:sequence>
+         <xsd:element name="name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="value" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+         <xsd:element name="parameters" type="rsc:parameter_array" minOccurs="0" maxOccurs="1" nillable="true"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

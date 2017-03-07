@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+   <service name="preorderprocess_client" ui:wsdlLocation="PreOrderProcessWrapper.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/business/task/OrderBroker/v1/PreOrderProcess#wsdl.interface(PreOrderProcessPortType)"/>
+   </service>
+   <reference name="BrokerSpringComponent.priorityOrderService" ui:wsdlLocation="PriorityOrderFacadeWrapper.wsdl">
+      <interface.wsdl interface="http://facade.broker.osm.mic/#wsdl.interface(PriorityOrderFacade)"/>
+   </reference>
+</componentType>

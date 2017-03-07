@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://tigo.com/enterprise/resources/GeneralRequest/v1/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:grq="http://tigo.com/enterprise/resources/GeneralRequest/v1/schema" xmlns:prm="http://tigo.com/enterprise/resources/parameters/simple/v1/schema">
+   <xsd:import namespace="http://tigo.com/enterprise/resources/parameters/simple/v1/schema" schemaLocation="Parameters.xsd"/>
+   <xsd:element name="GeneralRequest" type="grq:GeneralRequest_type"/>
+   <xsd:complexType name="GeneralRequest_type">
+      <xsd:sequence>
+         <xsd:element name="applicationID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="applicationTransactionID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="utiReference" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="parameters" type="prm:parameter_array" minOccurs="0"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

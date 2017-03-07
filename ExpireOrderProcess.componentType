@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+   <service name="expireorderprocess_client" ui:wsdlLocation="BasicExpireOrderProcessWrapper.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/serviceEntity/provisioning/expireOrderProcess#wsdl.interface(BasicOrderPort)"/>
+   </service>
+   <reference name="LOG_ORCHESTRATOR_M_ADAPTER" ui:wsdlLocation="LOG_ORCHESTRATOR_M_ADAPTER.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_M_ADAPTER#wsdl.interface(LOG_ORCHESTRATOR_M_ADAPTER_ptt)"/>
+   </reference>
+   <reference name="ExpireMediator.ExpireMediator" ui:wsdlLocation="BasicProvisioningServiceWrapper1.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/taskService/provisioning/v1#wsdl.interface(ProvisioningPort)"/>
+   </reference>
+   <reference name="FaultNotificationService" ui:wsdlLocation="BasicFaultNotificationWrapper5.wsdl">
+      <interface.wsdl interface="http://tigo.hn/enterprise/faultNotificationService/createFault#wsdl.interface(FaultNotification_Port)"/>
+   </reference>
+   <reference name="LOG_ORCHESTRATOR_PRODUCT_SELECT" ui:wsdlLocation="LOG_ORCHESTRATOR_PRODUCT_SELECT.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/O2_Release/LOG_ORCHESTRATOR_PRODUCT_SELECT#wsdl.interface(LOG_ORCHESTRATOR_PRODUCT_SELECT_ptt)"/>
+   </reference>
+</componentType>

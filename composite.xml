@@ -1,0 +1,197 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<composite name="BrokerService" applicationName="ffs" revision="2.0" label="soa_1e2d1fe3-9a06-4b37-b29a-b70c0e7a4060" mode="active" state="on" home="/oracle/middleware/user_projects/domains/mdwdesa_domain/servers/soa_server1/dc/soa_1e2d1fe3-9a06-4b37-b29a-b70c0e7a4060" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ui="http://xmlns.oracle.com/soa/designer/" xmlns="http://xmlns.oracle.com/sca/1.0">
+   <import location="wsdl/owner/OrderBrokerService.wsdl" importType="wsdl" namespace="http://tigo.com/enterprise/business/task/OrderBroker/v1"/>
+   <import location="BrokerSendOrderProcessWrapper.wsdl" importType="wsdl" namespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/SendOrderProcess"/>
+   <import location="wsdl/partner/OrderOrchestratorService.wsdl" importType="wsdl" namespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1"/>
+   <import location="wsdl/process/BrokerMappingProcess.wsdl" importType="wsdl" namespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/SendOrderProcess"/>
+   <import location="O2MappingProcessWrapper.wsdl" importType="wsdl" namespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/O2MappingProcess"/>
+   <import location="BrokerMappingProcessWrapper.wsdl" importType="wsdl" namespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/SendOrderProcess"/>
+   <import location="OrderOrchestratorServiceWrapper.wsdl" importType="wsdl" namespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1"/>
+   <import location="wsdl/partner/WorkingMemoryService.wsdl" importType="wsdl" namespace="http://tigo.com/enterprise/serviceEntity/WorkingMemory/v1"/>
+   <import location="WorkingMemoryServiceWrapper.wsdl" importType="wsdl" namespace="http://tigo.com/enterprise/serviceEntity/WorkingMemory/v1"/>
+   <import location="wsdl/partner/DataTransformationService.wsdl" importType="wsdl" namespace="http://tigo.com/enterprise/serviceEntity/DataTransformation/v1"/>
+   <import location="DataTransformationServiceWrapper.wsdl" importType="wsdl" namespace="http://tigo.com/enterprise/serviceEntity/DataTransformation/v1"/>
+   <import location="wsdl/partner/ServiceRequestTrace.wsdl" importType="wsdl" namespace="http://tigo.com/enterprise/business/task/ServiceRequestTrace/v1"/>
+   <import location="ServiceRequestTraceWrapper.wsdl" importType="wsdl" namespace="http://tigo.com/enterprise/business/task/ServiceRequestTrace/v1"/>
+   <import location="PVSProcessWrapper.wsdl" importType="wsdl" namespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/PVSProcess"/>
+   <import location="TB_BROKERSERVICE_MAPPING.wsdl" importType="wsdl" namespace="http://xmlns.oracle.com/pcbpel/adapter/db/Broker/BrokerService/TB_BROKERSERVICE_MAPPING"/>
+   <import location="PreOrderProcessWrapper.wsdl" importType="wsdl" namespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/PreOrderProcess"/>
+   <import location="TB_PROCESS.wsdl" importType="wsdl" namespace="http://xmlns.oracle.com/pcbpel/adapter/db/Broker/BrokerService/TB_PROCESS"/>
+   <import location="wsdl/partner/v2/ProcessValidatorServiceV2.wsdl" importType="wsdl" namespace="http://xmlns.tigo.com/ProcessValidator/ProcessValidatorService/v2"/>
+   <import location="ProcessValidatorServiceV2Wrapper.wsdl" importType="wsdl" namespace="http://xmlns.tigo.com/ProcessValidator/ProcessValidatorService/v2"/>
+   <import location="PriorityOrderFacadeWrapper.wsdl" importType="wsdl" namespace="http://facade.broker.osm.mic/"/>
+   <import location="OrderInterpreterProcessWrapper.wsdl" importType="wsdl" namespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/OrderInterpreterProcess"/>
+   <import location="wsdl/partner/OrderInterpreterService.wsdl" importType="wsdl" namespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/OrderInterpreterService"/>
+   <import location="OrderInterpreterServiceWrapper.wsdl" importType="wsdl" namespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/OrderInterpreterService"/>
+   <import location="TB_ORDER_INTERPRETER.wsdl" importType="wsdl" namespace="http://xmlns.oracle.com/pcbpel/adapter/db/BrokerRegional/Broker/TB_ORDER_INTERPRETER"/>
+   <import location="OrderInterpreterFacadeWrapper.wsdl" importType="wsdl" namespace="http://facade.broker.osm.mic/"/>
+   <service name="BrokerService">
+      <interface.wsdl interface="http://tigo.com/enterprise/business/task/OrderBroker/v1#wsdl.interface(OrderBrokerServicePortType)"/>
+      <binding.ws port="http://tigo.com/enterprise/business/task/OrderBroker/v1#wsdl.endpoint(BrokerService/OrderBrokerServicePort)" soapVersion="1.2" streamIncomingAttachments="false" streamOutgoingAttachments="false">
+         <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">NEVER</property>
+      </binding.ws>
+   </service>
+   <property name="auditLevel" many="false">Development</property>
+   <property name="validateSchema" many="false">false</property>
+   <component name="BrokerMediator">
+      <implementation.mediator src="BrokerMediator.mplan"/>
+      <property name="isResequencing" many="false" override="may">false</property>
+      <business-events/>
+   </component>
+   <component name="O2MappingProcess" version="2.0">
+      <implementation.bpel src="O2MappingProcess.bpel"/>
+      <business-events/>
+   </component>
+   <component name="BrokerSpringComponent">
+      <implementation.spring src="BrokerSpringComponent.xml"/>
+      <business-events/>
+   </component>
+   <component name="BrokerMappingMediator">
+      <implementation.mediator src="BrokerMappingMediator.mplan"/>
+      <property name="isResequencing" many="false" override="may">false</property>
+      <business-events/>
+   </component>
+   <component name="PreOrderProcess" version="2.0">
+      <implementation.bpel src="PreOrderProcess.bpel"/>
+      <business-events/>
+   </component>
+   <component name="OrderInterpreterProcess" version="2.0">
+      <implementation.bpel src="OrderInterpreterProcess.bpel"/>
+      <property name="bpel.config.transaction" type="xs:string" many="false">required</property>
+      <property name="bpel.config.oneWayDeliveryPolicy" type="xs:string" many="false">async.persist</property>
+      <business-events/>
+   </component>
+   <component name="BrokerSendOrderProcess" version="2.0">
+      <implementation.bpel src="BrokerSendOrderProcess.bpel"/>
+      <property name="partnerLink.WORKING_MEMORY_INS.idempotent" type="xs:string" many="false">false</property>
+      <business-events/>
+   </component>
+   <component name="PVSProcess" version="2.0">
+      <implementation.bpel src="PVSProcess.bpel"/>
+      <business-events/>
+   </component>
+   <reference name="ServiceRequestTrace">
+      <interface.wsdl interface="http://tigo.com/enterprise/business/task/ServiceRequestTrace/v1#wsdl.interface(ServiceRequestTracePortType)"/>
+      <binding.ws port="http://tigo.com/enterprise/business/task/ServiceRequestTrace/v1#wsdl.endpoint(ServiceRequestTrace_SOAPQSService/ServiceRequestTrace_SOAPQSPort)" soapVersion="1.2" location="wsdl/partner/ServiceRequestTrace.wsdl" streamIncomingAttachments="false" streamOutgoingAttachments="false">
+         <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">WSDLDriven</property>
+      </binding.ws>
+   </reference>
+   <reference name="WorkingMemoryService.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/serviceEntity/WorkingMemory/v1#wsdl.interface(BasicWorkingMemoryPort)"/>
+      <binding.ws port="http://tigo.com/enterprise/serviceEntity/WorkingMemory/v1#wsdl.endpoint(WorkingMemory_wsSOAPQSService/WorkingMemory_wsSOAPQSPort)" soapVersion="1.2" location="wsdl/partner/WorkingMemoryService.wsdl" streamIncomingAttachments="false" streamOutgoingAttachments="false">
+         <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">WSDLDriven</property>
+      </binding.ws>
+   </reference>
+   <reference name="TB_BROKERSERVICE_MAPPING">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/Broker/BrokerService/TB_BROKERSERVICE_MAPPING#wsdl.interface(TB_BROKERSERVICE_MAPPING_ptt)"/>
+      <binding.jca config="TB_BROKERSERVICE_MAPPING_db.jca" portType="TB_BROKERSERVICE_MAPPING_ptt"/>
+      <property name="jca.retry.count" type="xs:int" many="false" override="may">4</property>
+      <property name="jca.retry.backoff" type="xs:int" many="false" override="may">2</property>
+      <property name="jca.retry.interval" type="xs:int" many="false" override="may">1</property>
+      <property name="jca.retry.maxInterval" type="xs:string" many="false" override="may">120</property>
+   </reference>
+   <reference name="OrderInterpreterService" ui:wsdlLocation="wsdl/partner/OrderInterpreterService.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/business/task/OrderBroker/v1/OrderInterpreterService#wsdl.interface(OrderInterpreterServicePortType)"/>
+      <binding.ws port="http://tigo.com/enterprise/business/task/OrderBroker/v1/OrderInterpreterService#wsdl.endpoint(OrderInterpreterService_SOAP/OrderInterpreterService_Port)" soapVersion="1.2" location="wsdl/partner/OrderInterpreterService.wsdl" streamIncomingAttachments="false" streamOutgoingAttachments="false">
+         <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">WSDLDriven</property>
+      </binding.ws>
+   </reference>
+   <reference name="DataTransformationService">
+      <interface.wsdl interface="http://tigo.com/enterprise/serviceEntity/DataTransformation/v1#wsdl.interface(BasicDataTransformationPort)"/>
+      <binding.ws port="http://tigo.com/enterprise/serviceEntity/DataTransformation/v1#wsdl.endpoint(DataTransformation_wsSOAPQSService/DataTransformation_wsSOAPQSPort)" soapVersion="1.2" location="wsdl/partner/DataTransformationService.wsdl" streamIncomingAttachments="false" streamOutgoingAttachments="false">
+         <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">WSDLDriven</property>
+      </binding.ws>
+   </reference>
+   <reference name="ProcessValidatorV2Service">
+      <interface.wsdl interface="http://xmlns.tigo.com/ProcessValidator/ProcessValidatorService/v2#wsdl.interface(ProcessValidator)"/>
+      <binding.ws port="http://xmlns.tigo.com/ProcessValidator/ProcessValidatorService/v2#wsdl.endpoint(ProcessValidatorPartnerService/ProcessValidator_pt)" soapVersion="1.2" location="wsdl/partner/v2/ProcessValidatorServiceV2.wsdl" streamIncomingAttachments="false" streamOutgoingAttachments="false">
+         <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">WSDLDriven</property>
+      </binding.ws>
+   </reference>
+   <reference name="TB_ORDER_INTERPRETER" ui:wsdlLocation="TB_ORDER_INTERPRETER.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/BrokerRegional/Broker/TB_ORDER_INTERPRETER#wsdl.interface(TB_ORDER_INTERPRETER_ptt)"/>
+      <binding.jca config="TB_ORDER_INTERPRETER_db.jca" portType="TB_ORDER_INTERPRETER_ptt"/>
+      <property name="jca.retry.count" type="xs:int" many="false" override="may">4</property>
+      <property name="jca.retry.backoff" type="xs:int" many="false" override="may">2</property>
+      <property name="jca.retry.interval" type="xs:int" many="false" override="may">1</property>
+      <property name="jca.retry.maxInterval" type="xs:string" many="false" override="may">120</property>
+   </reference>
+   <reference name="O2Service">
+      <interface.wsdl interface="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1#wsdl.interface(BasicOrderPort)"/>
+      <binding.ws port="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1#wsdl.endpoint(OrderOrchestratorService/BasicOrderPort_pt)" soapVersion="1.2" location="wsdl/partner/OrderOrchestratorService.wsdl" streamIncomingAttachments="false" streamOutgoingAttachments="false">
+         <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">WSDLDriven</property>
+      </binding.ws>
+   </reference>
+   <wire>
+      <source.uri>BrokerSendOrderProcess/TB_BROKERSERVICE_MAPPING</source.uri>
+      <target.uri>TB_BROKERSERVICE_MAPPING</target.uri>
+   </wire>
+   <wire>
+      <source.uri>O2MappingProcess/PreOrderProcess.preorderprocess_client</source.uri>
+      <target.uri>PreOrderProcess/preorderprocess_client</target.uri>
+   </wire>
+   <wire>
+      <source.uri>BrokerService</source.uri>
+      <target.uri>BrokerMediator/BrokerMediator</target.uri>
+   </wire>
+   <wire>
+      <source.uri>OrderInterpreterProcess/BrokerSpringComponent.orderInterpreterService</source.uri>
+      <target.uri>BrokerSpringComponent/orderInterpreterService</target.uri>
+   </wire>
+   <wire>
+      <source.uri>PVSProcess/OrderInterpreterProcess.orderinterpreterprocess_client</source.uri>
+      <target.uri>OrderInterpreterProcess/orderinterpreterprocess_client</target.uri>
+   </wire>
+   <wire>
+      <source.uri>BrokerSendOrderProcess/WorkingMemoryService.wsdl</source.uri>
+      <target.uri>WorkingMemoryService.wsdl</target.uri>
+   </wire>
+   <wire>
+      <source.uri>BrokerMediator/BrokerSendOrderProcess.brokersendorderprocess_client</source.uri>
+      <target.uri>BrokerSendOrderProcess/brokersendorderprocess_client</target.uri>
+   </wire>
+   <wire>
+      <source.uri>O2MappingProcess/O2Service</source.uri>
+      <target.uri>O2Service</target.uri>
+   </wire>
+   <wire>
+      <source.uri>OrderInterpreterProcess/TB_ORDER_INTERPRETER</source.uri>
+      <target.uri>TB_ORDER_INTERPRETER</target.uri>
+   </wire>
+   <wire>
+      <source.uri>BrokerSendOrderProcess/DataTransformationService</source.uri>
+      <target.uri>DataTransformationService</target.uri>
+   </wire>
+   <wire>
+      <source.uri>BrokerSendOrderProcess/BrokerMappingMediator.BrokerMappingMediator</source.uri>
+      <target.uri>BrokerMappingMediator/BrokerMappingMediator</target.uri>
+   </wire>
+   <wire>
+      <source.uri>OrderInterpreterProcess/OrderInterpreterService</source.uri>
+      <target.uri>OrderInterpreterService</target.uri>
+   </wire>
+   <wire>
+      <source.uri>O2MappingProcess/OrderInterpreterProcess.orderinterpreterprocess_client</source.uri>
+      <target.uri>OrderInterpreterProcess/orderinterpreterprocess_client</target.uri>
+   </wire>
+   <wire>
+      <source.uri>BrokerSendOrderProcess/ServiceRequestTrace</source.uri>
+      <target.uri>ServiceRequestTrace</target.uri>
+   </wire>
+   <wire>
+      <source.uri>BrokerMappingMediator/O2MappingProcess.o2mappingprocess_client</source.uri>
+      <target.uri>O2MappingProcess/o2mappingprocess_client</target.uri>
+   </wire>
+   <wire>
+      <source.uri>BrokerMappingMediator/PVSProcess.pvsprocess_client</source.uri>
+      <target.uri>PVSProcess/pvsprocess_client</target.uri>
+   </wire>
+   <wire>
+      <source.uri>PVSProcess/ProcessValidatorV2Service</source.uri>
+      <target.uri>ProcessValidatorV2Service</target.uri>
+   </wire>
+   <wire>
+      <source.uri>PreOrderProcess/BrokerSpringComponent.priorityOrderService</source.uri>
+      <target.uri>BrokerSpringComponent/priorityOrderService</target.uri>
+   </wire>
+</composite>

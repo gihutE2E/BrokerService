@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<adapter-config name="TB_BROKER_PRIORITY_CONFIG" adapter="Database Adapter" wsdlLocation="TB_BROKER_PRIORITY_CONFIG.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+   <connection-factory location="eis/DB/DBConnection" UIConnectionName="osblab" adapterRef=""/>
+   <endpoint-interaction portType="TB_BROKER_PRIORITY_CONFIG_ptt" operation="TB_BROKER_PRIORITY_CONFIGSelect">
+      <interaction-spec className="oracle.tip.adapter.db.DBReadInteractionSpec">
+         <property name="DescriptorName" value="TB_BROKER_PRIORITY_CONFIG.TbBrokerPriorityConfig"/>
+         <property name="QueryName" value="TB_BROKER_PRIORITY_CONFIGSelect"/>
+         <property name="MappingsMetaDataURL" value="TB_BROKER_PRIORITY_CONFIG-or-mappings.xml"/>
+         <property name="ReturnSingleResultSet" value="false"/>
+         <property name="GetActiveUnitOfWork" value="false"/>
+      </interaction-spec>
+   </endpoint-interaction>
+</adapter-config>

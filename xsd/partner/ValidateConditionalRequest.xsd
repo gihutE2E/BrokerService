@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xmlns.tigo.com/ProcessValidator/ValidateConditionalRequest" xmlns:requestHeader="http://xmlns.tigo.com/RequestHeader/V3" xmlns:client="http://xmlns.tigo.com/ClientSchema/V1" xmlns:product="http://xmlns.tigo.com/ProductSchema/V1" xmlns:additionals="http://xmlns.tigo.com/AdditionalSchema/V1" xmlns:parameters="http://xmlns.tigo.com/ParameterType/V2" xmlns:bill="http://xmlns.tigo.com/ProcessValidator/BillingAccountSchema/V1" xmlns:serv="http://xmlns.tigo.com/ProcessValidator/ServiceAccountSchema/V1" elementFormDefault="qualified">
+   <xsd:import schemaLocation="commons/RequestHeaderV3.xsd" namespace="http://xmlns.tigo.com/RequestHeader/V3"/>
+   <xsd:import schemaLocation="commons/ClientSchemaV1.xsd" namespace="http://xmlns.tigo.com/ClientSchema/V1"/>
+   <xsd:import schemaLocation="commons/ProductSchemaV1.xsd" namespace="http://xmlns.tigo.com/ProductSchema/V1"/>
+   <xsd:import namespace="http://xmlns.tigo.com/AdditionalSchema/V1" schemaLocation="commons/AdditionalSchemaV1.xsd"/>
+   <xsd:import namespace="http://xmlns.tigo.com/ProcessValidator/BillingAccountSchema/V1" schemaLocation="commons/BillingAccountSchemaV1.xsd"/>
+   <xsd:import namespace="http://xmlns.tigo.com/ProcessValidator/ServiceAccountSchema/V1" schemaLocation="commons/ServiceAccountSchemaV1.xsd"/>
+   <xsd:element name="ValidateRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="requestHeader:RequestHeader"/>
+            <xsd:element name="requestBody">
+               <xsd:complexType>
+                  <xsd:sequence>
+                     <xsd:element name="processID" type="xsd:string"/>
+                     <xsd:element name="condition" type="xsd:string"/>
+                     <xsd:element name="token" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+                     <xsd:element name="requestID" minOccurs="0">
+                        <xsd:complexType>
+                           <xsd:sequence>
+                              <xsd:element name="id" type="xsd:string"/>
+                              <xsd:element name="idType" type="xsd:string"/>
+                           </xsd:sequence>
+                        </xsd:complexType>
+                     </xsd:element>
+                     <xsd:element minOccurs="0" type="client:ClientSchemaType" name="client"/>
+                     <xsd:element minOccurs="0" ref="product:product"/>
+                     <xsd:element minOccurs="0" ref="bill:billingAccount"/>
+                     <xsd:element minOccurs="0" ref="serv:serviceAccount"/>
+                     <xsd:element ref="additionals:additionals" minOccurs="0"/>
+                  </xsd:sequence>
+               </xsd:complexType>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+</xsd:schema>

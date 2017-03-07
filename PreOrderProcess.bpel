@@ -1,0 +1,147 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Thu Jan 09 17:14:39 COT 2014
+  Author:  Harcalejo
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="PreOrderProcess"
+         targetNamespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/PreOrderProcess"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="http://tigo.com/enterprise/business/task/OrderBroker/v1/PreOrderProcess"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/priority/v1/schema"
+         xmlns:ns9="http://tigo.com/enterprise/serviceEntity/provisioning/dataChangeRequest/v1/schema"
+         xmlns:ns4="http://tigo.com/enterprise/businessEntity/charge/v1/schema"
+         xmlns:ns8="http://tigo.com/serviceEntity/provisioning/offeringDetail/v1/schema"
+         xmlns:ns3="http://tigo.com/enterprise/businessEntity/client/basic/v1/schema"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns2="http://tigo.com/commons/basicRequest/v1/schema"
+         xmlns:ns5="http://tigo.com/commons/resources/additional/v1/schema"
+         xmlns:ns7="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema"
+         xmlns:ns10="http://tigo.com/enterprise/serviceEntity/provisioning/fieldService/v1/schema"
+         xmlns:ns6="http://tigo.com/enterprise/serviceEntity/provisioning/order/v1/schema"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:sch1="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema"
+         xmlns:ns11="http://xmlns.oracle.com/pcbpel/adapter/db/Broker/BrokerService/TB_BROKER_PRIORITY_CONFIG"
+         xmlns:ns12="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_BROKER_PRIORITY_CONFIG"
+         xmlns:ns13="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/priority/v1/schema"
+         xmlns:ns14="http://tigo.com/enterprise/business/task/OrderBroker/v1/schema"
+         xmlns:ns15="http://tigo.com/enterprise/serviceEntity/provisioning/order/priority/v1/schema"
+         xmlns:ns16="http://facade.broker.osm.mic/">
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/priority/v1/schema"
+          location="xsd/process/BasicOrderPriorityRequest_schema.xsd"
+          importType="http://www.w3.org/2001/XMLSchema"/>
+  <import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema"
+          location="xsd/partner/BasicOrderRequest_schema.xsd"
+          importType="http://www.w3.org/2001/XMLSchema"/>
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="preorderprocess_client"
+                 partnerLinkType="client:PreOrderProcess"
+                 myRole="PreOrderProcessPortType"/>
+    <partnerLink name="BrokerSpringComponent.priorityOrderService"
+                 partnerLinkType="ns16:BrokerSpringComponent.priorityOrderService"
+                 partnerRole="PriorityOrderFacade"/>
+  </partnerLinks>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:SubmitOrderRequest_msg"/>
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable"
+              messageType="client:SubmitOrderResponse_msg"/>
+    <variable name="orderRequest" element="sch1:BasicOrderRequest"/>
+    <variable name="orderPriorityRequest" element="ns13:BasicOrderRequest"/>
+    <variable name="InvokePriorityOrder_determinePriorities_Input"
+              messageType="ns16:determinePrioritiesInput"/>
+    <variable name="InvokePriorityOrder_determinePriorities_Output"
+              messageType="ns16:determinePrioritiesOutput"/>
+  </variables>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+    <!-- Receive input from requestor. (Note: This maps to operation defined in PreOrderProcess.wsdl) -->
+    <receive name="receiveInput" partnerLink="preorderprocess_client"
+             portType="client:PreOrderProcessPortType" operation="SubmitOrder"
+             variable="inputVariable" createInstance="yes"/>
+    <assign name="AssignBasicOrder">
+      <copy>
+        <from>bpws:getVariableData('inputVariable','body','Order/OrderContent/content[1]/payload')/sch1:BasicOrderRequest</from>
+        <to>$orderRequest</to>
+      </copy>
+    </assign>
+    <scope name="PriorityOrderComponent" exitOnStandardFault="no">
+      <faultHandlers>
+        <catchAll>
+          <empty name="Empty1"/>
+        </catchAll>
+      </faultHandlers>
+      <sequence name="PriorityOrderComponent">
+        <assign name="TransformPreOrderToPriorityOrder">
+          <bpelx:annotation>
+            <bpelx:pattern patternName="bpelx:transformation"/>
+          </bpelx:annotation>
+          <copy>
+            <from>ora:doXSLTransformForDoc("xsl/Transformation_PreOrderToPriorityOrder.xsl", $orderRequest)</from>
+            <to variable="InvokePriorityOrder_determinePriorities_Input"
+                part="parameters"/>
+          </copy>
+        </assign>
+        <invoke name="InvokePriorityOrder"
+                partnerLink="BrokerSpringComponent.priorityOrderService"
+                portType="ns16:PriorityOrderFacade"
+                operation="determinePriorities"
+                inputVariable="InvokePriorityOrder_determinePriorities_Input"
+                outputVariable="InvokePriorityOrder_determinePriorities_Output"
+                bpelx:invokeAsDetail="no"/>
+      </sequence>
+    </scope>
+    <assign name="TransformResponse">
+      <bpelx:annotation>
+        <bpelx:pattern patternName="bpelx:transformation"/>
+      </bpelx:annotation>
+      <copy>
+        <from>ora:doXSLTransformForDoc("xsl/Transformation_ToResponse.xsl", $inputVariable.body, "orderRequest", $orderRequest)</from>
+        <to variable="outputVariable" part="body"/>
+      </copy>
+    </assign>
+    <reply name="replyOutput" partnerLink="preorderprocess_client"
+           portType="client:PreOrderProcessPortType" operation="SubmitOrder"
+           variable="outputVariable"/>
+  </sequence>
+</process>

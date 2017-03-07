@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/WORKING_MEMORY_INS" xmlns="http://xmlns.oracle.com/pcbpel/adapter/db/top/WORKING_MEMORY_INS" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:element name="WorkingMemoryCollection" type="WorkingMemoryCollection"/>
+   <xs:complexType name="WorkingMemoryCollection">
+      <xs:sequence>
+         <xs:element name="WorkingMemory" type="WorkingMemory" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="WorkingMemory">
+      <xs:sequence>
+         <xs:element name="key" type="xs:string" nillable="true"/>
+         <xs:element name="code">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="150"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="data" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="registrationdatetime" type="xs:dateTime" minOccurs="0" nillable="true"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="WORKING_MEMORY_INSSelect_code_utiInputParameters" type="WORKING_MEMORY_INSSelect_code_uti"/>
+   <xs:complexType name="WORKING_MEMORY_INSSelect_code_uti">
+      <xs:sequence>
+         <xs:element name="code" type="xs:string" minOccurs="1" maxOccurs="1"/>
+         <xs:element name="uti" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>

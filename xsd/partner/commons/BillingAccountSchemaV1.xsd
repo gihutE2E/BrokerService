@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://xmlns.tigo.com/ProcessValidator/BillingAccountSchema/V1" targetNamespace="http://xmlns.tigo.com/ProcessValidator/BillingAccountSchema/V1" elementFormDefault="qualified" xmlns:ref="http://xmlns.tigo.com/BasicReferenceSchema/V1" xmlns:inf="http://xmlns.tigo.com/BasicInformationSchema/V1" xmlns:par="http://xmlns.tigo.com/ParameterType/V2">
+   <xsd:import namespace="http://xmlns.tigo.com/ParameterType/V2" schemaLocation="ParametersTypeV2.xsd"/>
+   <xsd:element name="billingAccount" type="BillingType"/>
+   <xsd:complexType name="BillingType">
+      <xsd:sequence>
+         <xsd:element name="billingAccountID" minOccurs="1" type="xsd:string"/>
+         <xsd:element name="legacyBillingID" type="xsd:string"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

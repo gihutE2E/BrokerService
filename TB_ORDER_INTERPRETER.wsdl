@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="TB_ORDER_INTERPRETER" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/BrokerRegional/Broker/TB_ORDER_INTERPRETER" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/BrokerRegional/Broker/TB_ORDER_INTERPRETER" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:top="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_ORDER_INTERPRETER">
+   <plt:partnerLinkType name="TB_ORDER_INTERPRETER_plt">
+      <plt:role name="TB_ORDER_INTERPRETER_role">
+         <plt:portType name="tns:TB_ORDER_INTERPRETER_ptt"/>
+      </plt:role>
+   </plt:partnerLinkType>
+   <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema">
+         <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_ORDER_INTERPRETER" schemaLocation="xsd/TB_ORDER_INTERPRETER_table.xsd"/>
+      </schema>
+   </wsdl:types>
+   <wsdl:message name="TB_ORDER_INTERPRETERSelect_inputParameters">
+      <wsdl:part name="TB_ORDER_INTERPRETERSelect_inputParameters" element="top:TB_ORDER_INTERPRETERSelect_serviceCode_orderActionInputParameters"/>
+   </wsdl:message>
+   <wsdl:message name="TbOrderInterpreterMCollection_msg">
+      <wsdl:part name="TbOrderInterpreterMCollection" element="top:TbOrderInterpreterMCollection"/>
+   </wsdl:message>
+   <wsdl:portType name="TB_ORDER_INTERPRETER_ptt">
+      <wsdl:operation name="TB_ORDER_INTERPRETERSelect">
+         <wsdl:input message="tns:TB_ORDER_INTERPRETERSelect_inputParameters"/>
+         <wsdl:output message="tns:TbOrderInterpreterMCollection_msg"/>
+      </wsdl:operation>
+   </wsdl:portType>
+</wsdl:definitions>

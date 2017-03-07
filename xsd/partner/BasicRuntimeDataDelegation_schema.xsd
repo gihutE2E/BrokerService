@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://tigo.com/enterprise/serviceEntity/RuntimeDataDelegation/v1/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:sch="http://tigo.com/enterprise/serviceEntity/RuntimeDataDelegation/v1/schema" xmlns:cmn="http://tigo.com/commons/generalResponse/v1/schema">
+   <xsd:import namespace="http://tigo.com/commons/generalResponse/v1/schema" schemaLocation="commons/BasicGeneralResponse_schema.xsd"/>
+   <xsd:element name="BasicDelegateRequest" type="sch:BasicDelegateQuery"/>
+   <xsd:complexType name="BasicDelegateQuery">
+      <xsd:sequence>
+         <xsd:element name="uti" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="payload" type="xsd:anyType" minOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="BasicDelegateResponse" type="sch:BasicDelegateResponseQuery"/>
+   <xsd:complexType name="BasicDelegateResponseQuery">
+      <xsd:sequence>
+         <xsd:element name="generalResponse" type="cmn:GeneralResponse_type" minOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="BasicGetRequest" type="sch:BasicGetQuery"/>
+   <xsd:complexType name="BasicGetQuery">
+      <xsd:sequence>
+         <xsd:element name="uti" type="xsd:string" minOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="BasicGetResponse" type="sch:BasicGetResponseQuery"/>
+   <xsd:complexType name="BasicGetResponseQuery">
+      <xsd:sequence>
+         <xsd:element name="generalResponse" type="cmn:GeneralResponse_type" minOccurs="1"/>
+         <xsd:element name="payload" type="xsd:anyType"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="BasicModifyRequest" type="sch:BasicModifyQuery"/>
+   <xsd:complexType name="BasicModifyQuery">
+      <xsd:sequence>
+         <xsd:element name="uti" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="payload" type="xsd:anyType"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="BasicModifyResponse" type="sch:BasicModifyResponseQuery"/>
+   <xsd:complexType name="BasicModifyResponseQuery">
+      <xsd:sequence>
+         <xsd:element name="generalResponse" type="cmn:GeneralResponse_type" minOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

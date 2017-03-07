@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/expireOrder/v1/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:sch="http://tigo.com/enterprise/serviceEntity/provisioning/expireOrder/v1/schema" xmlns:bsc="http://tigo.com/commons/basicRequest/v1/schema" xmlns:cmn="http://tigo.com/commons/generalResponse/v1/schema" xmlns:rsc="http://tigo.com/commons/resources/additional/v1/schema">
+   <xsd:import namespace="http://tigo.com/commons/basicRequest/v1/schema" schemaLocation="../commons/BasicRequest_schema.xsd"/>
+   <xsd:import namespace="http://tigo.com/commons/generalResponse/v1/schema" schemaLocation="../commons/BasicGeneralResponse_schema.xsd"/>
+   <xsd:import namespace="http://tigo.com/commons/resources/additional/v1/schema" schemaLocation="../commons/resources/BasicAdditional_schema.xsd"/>
+   <xsd:element name="BasicExpireOrderRequest" type="sch:BasicExpireOrderQuery"/>
+   <xsd:complexType name="BasicExpireOrderQuery">
+      <xsd:sequence>
+         <xsd:element ref="bsc:basicRequest"/>
+         <xsd:element ref="rsc:additionals"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="BasicExpireOrderResponse" type="sch:BasicExpireOrderResult"/>
+   <xsd:complexType name="BasicExpireOrderResult">
+      <xsd:sequence>
+         <xsd:element name="generalResponse" type="cmn:GeneralResponse_type" minOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="BasicVoidOrderRequest" type="sch:BasicVoidOrderQuery"/>
+   <xsd:complexType name="BasicVoidOrderQuery">
+      <xsd:sequence>
+         <xsd:element ref="bsc:basicRequest"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="BasicVoidOrderResponse" type="sch:BasicVoidOrderResult"/>
+   <xsd:complexType name="BasicVoidOrderResult">
+      <xsd:sequence>
+         <xsd:element name="generalResponse" type="cmn:GeneralResponse_type" minOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,258 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="OrderInterpreterFacade" targetNamespace="http://facade.broker.osm.mic/" xmlns:tns="http://facade.broker.osm.mic/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+   <wsdl:types>
+      <xsd:schema xmlns:ns0="http://facade.broker.osm.mic/types" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://facade.broker.osm.mic/types">
+         <xsd:complexType name="requestBody">
+            <xsd:sequence>
+               <xsd:element name="additionals" type="ns0:additionalsType" minOccurs="0"/>
+               <xsd:element name="billingAccount" type="ns0:billingType" minOccurs="0"/>
+               <xsd:element name="client" type="ns0:clientSchemaType" minOccurs="0"/>
+               <xsd:element name="condition" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="processID" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="product" type="ns0:productType" minOccurs="0"/>
+               <xsd:element name="requestID" type="ns0:requestID" minOccurs="0"/>
+               <xsd:element name="serviceAccount" type="ns0:serviceAccountType" minOccurs="0"/>
+               <xsd:element name="token" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="tbOrderInterpreterM">
+            <xsd:sequence>
+               <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="id" type="xsd:long" minOccurs="0"/>
+               <xsd:element name="newObject" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="newObjectAction" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="orderAction" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="previousObject" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="previousObjectAction" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="serviceCode" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="serviceOwner" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="client">
+            <xsd:sequence>
+               <xsd:element name="id" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="type" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="dataChangeType">
+            <xsd:sequence>
+               <xsd:element name="dataReference" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="dataValue" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="additionalType">
+            <xsd:sequence>
+               <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="fieldOrder">
+            <xsd:sequence>
+               <xsd:element name="fieldOrders" type="ns0:fieldOrderType" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="productType">
+            <xsd:sequence>
+               <xsd:element name="code" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="dataChange">
+            <xsd:sequence>
+               <xsd:element name="dataChange" type="ns0:dataChangeType" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="chargeOrder">
+            <xsd:sequence>
+               <xsd:element name="charges" type="ns0:charge" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="order">
+            <xsd:sequence>
+               <xsd:element name="chargeOrder" type="ns0:chargeOrder" minOccurs="0"/>
+               <xsd:element name="client" type="ns0:client" minOccurs="0"/>
+               <xsd:element name="dataChange" type="ns0:dataChange" minOccurs="0"/>
+               <xsd:element name="fieldOrder" type="ns0:fieldOrder" minOccurs="0"/>
+               <xsd:element name="productOffering" type="ns0:productOffering" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="clientSchemaType">
+            <xsd:sequence>
+               <xsd:element name="id" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="idType" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="billingType">
+            <xsd:sequence>
+               <xsd:element name="billingAccountID" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="legacyBillingID" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="tbOrderInterpreterMCollection">
+            <xsd:sequence>
+               <xsd:element name="tbOrderInterpreterMCollection" type="ns0:tbOrderInterpreterM" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="additionalsType">
+            <xsd:sequence>
+               <xsd:element name="additional" type="ns0:additionalType" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="osmOrderRequest">
+            <xsd:sequence>
+               <xsd:element name="basicRequest" type="ns0:basicRequest" minOccurs="0"/>
+               <xsd:element name="offer" type="ns0:offer" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="productOfferingType">
+            <xsd:sequence>
+               <xsd:element name="additionals" type="ns0:additional" minOccurs="0"/>
+               <xsd:element name="offeringDetail" type="ns0:offeringDetail" minOccurs="0"/>
+               <xsd:element name="product" type="ns0:product" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="offer">
+            <xsd:sequence>
+               <xsd:element name="orders" type="ns0:order" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="product">
+            <xsd:sequence>
+               <xsd:element name="code" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="generalConsumerInfoType">
+            <xsd:sequence>
+               <xsd:element name="consumerID" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="correlationID" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="country" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="transactionID" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="serviceAccountType">
+            <xsd:sequence>
+               <xsd:element name="legacyServiceID" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="serviceAccountID" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="fieldOrderType">
+            <xsd:sequence>
+               <xsd:element name="additionals" type="ns0:additional" minOccurs="0"/>
+               <xsd:element name="executionDate" type="xsd:dateTime" minOccurs="0"/>
+               <xsd:element name="fieldServiceCode" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="priority" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="validateRequest">
+            <xsd:sequence>
+               <xsd:element name="requestBody" type="ns0:requestBody" minOccurs="0"/>
+               <xsd:element name="requestHeader" type="ns0:requestHeader" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="charge">
+            <xsd:sequence>
+               <xsd:element name="additionals" type="ns0:additional" minOccurs="0"/>
+               <xsd:element name="changeReference" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="value" type="xsd:double"/>
+               <xsd:element name="wallet" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="walletId" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="requestID">
+            <xsd:sequence>
+               <xsd:element name="id" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="idType" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="additional">
+            <xsd:sequence>
+               <xsd:element name="additional" type="ns0:additionalType" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="basicRequest">
+            <xsd:sequence>
+               <xsd:element name="externalApplicationId" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="externalTransactionId" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="uti" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="requestHeader">
+            <xsd:sequence>
+               <xsd:element name="generalConsumerInformation" type="ns0:generalConsumerInfoType" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="offeringDetail">
+            <xsd:sequence>
+               <xsd:element name="currency" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="defer" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="expirationDate" type="xsd:dateTime" minOccurs="0"/>
+               <xsd:element name="offerAction" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="startDate" type="xsd:dateTime" minOccurs="0"/>
+               <xsd:element name="value" type="xsd:double"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="productOffering">
+            <xsd:sequence>
+               <xsd:element name="provisioningOrder" type="ns0:productOfferingType" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="validateArrayRequest">
+            <xsd:sequence>
+               <xsd:element name="validateRequest" type="ns0:validateRequest" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+            </xsd:sequence>
+         </xsd:complexType>
+      </xsd:schema>
+      <xsd:schema targetNamespace="http://facade.broker.osm.mic/" xmlns:tns="http://facade.broker.osm.mic/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://facade.broker.osm.mic/types">
+         <xsd:import namespace="http://facade.broker.osm.mic/types"/>
+         <xsd:complexType name="processOSMOrder">
+            <xsd:sequence>
+               <xsd:element name="osmOrderRequest" type="ns1:osmOrderRequest"/>
+               <xsd:element name="tbOrderInterpreterMCollection" type="ns1:tbOrderInterpreterMCollection"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:element name="processOSMOrder" type="tns:processOSMOrder"/>
+         <xsd:complexType name="processOSMOrderResponse">
+            <xsd:sequence>
+               <xsd:element name="return" type="ns1:osmOrderRequest"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:element name="processOSMOrderResponse" type="tns:processOSMOrderResponse"/>
+         <xsd:complexType name="processPVSOrder">
+            <xsd:sequence>
+               <xsd:element name="validateArrayRequest" type="ns1:validateArrayRequest"/>
+               <xsd:element name="tbOrderInterpreterMCollection" type="ns1:tbOrderInterpreterMCollection"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:element name="processPVSOrder" type="tns:processPVSOrder"/>
+         <xsd:complexType name="processPVSOrderResponse">
+            <xsd:sequence>
+               <xsd:element name="return" type="ns1:validateArrayRequest"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:element name="processPVSOrderResponse" type="tns:processPVSOrderResponse"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="processOSMOrderInput">
+      <wsdl:part name="parameters" element="tns:processOSMOrder"/>
+   </wsdl:message>
+   <wsdl:message name="processOSMOrderOutput">
+      <wsdl:part name="parameters" element="tns:processOSMOrderResponse"/>
+   </wsdl:message>
+   <wsdl:message name="processPVSOrderInput">
+      <wsdl:part name="parameters" element="tns:processPVSOrder"/>
+   </wsdl:message>
+   <wsdl:message name="processPVSOrderOutput">
+      <wsdl:part name="parameters" element="tns:processPVSOrderResponse"/>
+   </wsdl:message>
+   <wsdl:portType name="OrderInterpreterFacade">
+      <wsdl:operation name="processOSMOrder">
+         <wsdl:input message="tns:processOSMOrderInput" xmlns:ns1="http://www.w3.org/2006/05/addressing/wsdl" ns1:Action=""/>
+         <wsdl:output message="tns:processOSMOrderOutput" xmlns:ns1="http://www.w3.org/2006/05/addressing/wsdl" ns1:Action=""/>
+      </wsdl:operation>
+      <wsdl:operation name="processPVSOrder">
+         <wsdl:input message="tns:processPVSOrderInput" xmlns:ns1="http://www.w3.org/2006/05/addressing/wsdl" ns1:Action=""/>
+         <wsdl:output message="tns:processPVSOrderOutput" xmlns:ns1="http://www.w3.org/2006/05/addressing/wsdl" ns1:Action=""/>
+      </wsdl:operation>
+   </wsdl:portType>
+</wsdl:definitions>

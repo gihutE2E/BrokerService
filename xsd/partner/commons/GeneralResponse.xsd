@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://tigo.hn/commons/resources/generalResponse" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cmn="http://tigo.hn/commons/resources/generalResponse" xmlns:rsc="http://tigo.hn/commons/resources/parameters">
+   <xsd:import namespace="http://tigo.hn/commons/resources/parameters" schemaLocation="resources/ParametersType.xsd"/>
+   <xsd:element name="GeneralResponse" type="cmn:GeneralResponse_type"/>
+   <xsd:complexType name="GeneralResponse_type">
+      <xsd:sequence>
+         <xsd:element name="uti" type="xsd:string" minOccurs="0" nillable="true"/>
+         <xsd:element name="status" type="xsd:string" minOccurs="0" nillable="true"/>
+         <xsd:element name="code" type="xsd:string" minOccurs="0" nillable="true"/>
+         <xsd:element name="message" type="xsd:string" minOccurs="0" nillable="true"/>
+         <xsd:element name="parameters" type="rsc:parameter_array" minOccurs="0" nillable="true"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

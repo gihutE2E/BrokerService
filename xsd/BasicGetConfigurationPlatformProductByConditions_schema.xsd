@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<schema targetNamespace="http://www.tigo.com/enterprise/productConfigurationO2Service/getconfigurationplatformproductbyconditions/v1/schema" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tigo.com/enterprise/productConfigurationO2Service/getconfigurationplatformproductbyconditions/v1/schema" xmlns:pro="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema" xmlns:bsc="http://tigo.com/commons/basicRequest/v1/schema" xmlns:cmn="http://tigo.com/commons/generalResponse/v1/schema" xmlns:cli="http://tigo.com/enterprise/businessEntity/client/basic/v1/schema">
+   <import namespace="http://tigo.com/enterprise/businessEntity/client/basic/v1/schema" schemaLocation="client/BasicClient_schema.xsd"/>
+   <import namespace="http://tigo.com/commons/generalResponse/v1/schema" schemaLocation="commons/BasicGeneralResponse_schema.xsd"/>
+   <import namespace="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema" schemaLocation="product/BasicProduct_schema.xsd"/>
+   <import namespace="http://tigo.com/commons/basicRequest/v1/schema" schemaLocation="commons/BasicRequest_schema.xsd"/>
+   <element name="GetConfigurationPlatformProductByConditionsRequest" type="tns:GetConfigurationPlatformProductByConditionsType"/>
+   <complexType name="GetConfigurationPlatformProductByConditionsType">
+      <sequence>
+         <element ref="bsc:basicRequest"/>
+         <element ref="pro:product"/>
+         <element ref="cli:client"/>
+      </sequence>
+   </complexType>
+   <element name="GetConfigurationPlatformProductByConditionsResponse" type="tns:GetConfigurationPlatformProductByConditionsResponsetType"/>
+   <complexType name="GetConfigurationPlatformProductByConditionsResponsetType">
+      <sequence>
+         <element ref="cmn:GeneralResponse"/>
+         <element ref="pro:product"/>
+      </sequence>
+   </complexType>
+</schema>

@@ -1,0 +1,242 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Tue Dec 03 15:22:53 COT 2013
+  Author:  Harcalejo
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="PVSProcess"
+         targetNamespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/PVSProcess"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="http://tigo.com/enterprise/business/task/OrderBroker/v1/PVSProcess"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.tigo.com/ProcessValidator/ValidateRequest"
+         xmlns:ns7="http://xmlns.tigo.com/AdditionalSchema/V1"
+         xmlns:ns6="http://xmlns.tigo.com/ProcessValidator/ServiceAccountSchema/V1"
+         xmlns:ns4="http://xmlns.tigo.com/ProductSchema/V1"
+         xmlns:ns2="http://xmlns.tigo.com/RequestHeader/V3"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns5="http://xmlns.tigo.com/ProcessValidator/BillingAccountSchema/V1"
+         xmlns:ns3="http://tigo.com/enterprise/business/task/OrderBroker/v1/schema"
+         xmlns:ns8="http://xmlns.tigo.com/ClientSchema/V1"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:val="http://xmlns.tigo.com/ProcessValidator/ValidateRequest"
+         xmlns:ns9="http://xmlns.tigo.com/ProcessValidator/ProcessValidatorService"
+         xmlns:ns14="http://xmlns.tigo.com/ProcessValidator/StepSchema/V1"
+         xmlns:ns10="http://xmlns.tigo.com/ProcessValidator/ValidatorGeneralResponse"
+         xmlns:ns11="http://xmlns.tigo.com/ResponseHeader/V3"
+         xmlns:ns12="http://xmlns.tigo.com/ProcessValidator/StatusSchema/V1"
+         xmlns:ns13="http://xmlns.tigo.com/ProcessValidator/RoleSchema/V1"
+         xmlns:ns15="http:/xmlns.tigo.com/ProcessValidator/ProcessDetailsSchema/V1"
+         xmlns:ns16="http://xmlns.tigo.com/ProcessValidator/RuleSchema/V1"
+         xmlns:ns17="http://xmlns.tigo.com/ProcessValidator/ValidatorGeneralResponse/array"
+         xmlns:ns18="http://xmlns.tigo.com/ProcessValidator/ValidateRequest"
+         xmlns:ns19="http://xmlns.tigo.com/ProcessValidator/ProcessValidatorPartner"
+         xmlns:ns20="http://xmlns.oracle.com/pcbpel/adapter/db/Broker/BrokerService/TB_PROCESS"
+         xmlns:ns21="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_PROCESS"
+         xmlns:ns22="http://xmlns.oracle.com/pcbpel/adapter/db/Broker/BrokerService/TB_PROCESS_V1"
+         xmlns:ns23="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_PROCESS_V1"
+         xmlns:ns24="http://xmlns.tigo.com/ProcessValidator/ProcessValidatorService/v2"
+         xmlns:ns25="http://xmlns.tigo.com/ProcessValidator/ValidateConditionalRequest"
+         xmlns:ns26="http://tigo.com/enterprise/business/task/OrderBroker/v1/PVSItemGroupProcess"
+         xmlns:ns27="http://xmlns.oracle.com/pcbpel/adapter/db/BrokerRegional/Broker/TB_PROCESS_V1"
+         xmlns:ns28="http://tigo.com/enterprise/business/task/OrderBroker/v1/OrderInterpreterProcess"
+         queryLanguage="http://www.w3.org/TR/1999/REC-xpath-19991116"
+         expressionLanguage="http://www.w3.org/TR/1999/REC-xpath-19991116"
+         suppressJoinFailure="no" exitOnStandardFault="no">
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <import namespace="http://xmlns.tigo.com/ProcessValidator/ValidateRequest"
+          location="xsd/partner/ValidateRequest.xsd"
+          importType="http://www.w3.org/2001/XMLSchema"/>
+  <import namespace="http://xmlns.tigo.com/ProcessValidator/ValidatorGeneralResponse/array"
+          location="xsd/process/PvsArrayResult_schema.xsd"
+          importType="http://www.w3.org/2001/XMLSchema"/>
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="pvsprocess_client" partnerLinkType="client:PVSProcess"
+                 myRole="PVSProcessPortType"/>
+    <partnerLink name="ProcessValidatorV2Service"
+                 partnerLinkType="ns24:ProcessValidatorV2Service"
+                 partnerRole="ProcessValidator"/>
+    <partnerLink name="OrderInterpreterProcess.orderinterpreterprocess_client"
+                 partnerLinkType="ns28:OrderInterpreterProcess"
+                 partnerRole="OrderInterpreterProcessPortType"/>
+  </partnerLinks>
+  <variables>
+    <variable name="inputVariable" messageType="client:SubmitOrderRequest_msg"/>
+    <variable name="outputVariable"
+              messageType="client:SubmitOrderResponse_msg"/>
+    <variable name="InvokePVSValidateInput"
+              messageType="ns9:ValidateRequestMessage"/>
+    <variable name="InvokePVSValidateOutput"
+              messageType="ns9:GeneralResponseMessage"/>
+    <variable name="response" element="ns17:PVSResultArray"/>
+    <variable name="pvsResult" element="ns17:PVSResultArray"/>
+    <variable name="request" element="ns18:validateArrayRequest"/>
+    <variable name="InvokeTb_Process_Select_Input"
+              messageType="ns20:TB_PROCESSSelect_inputParameters"/>
+    <variable name="InvokeTb_Process_Select_Output"
+              messageType="ns20:ProcessCollection_msg"/>
+    <variable name="InvokeProcessValidatorV2_Validate_Input"
+              messageType="ns24:ValidateRequestMessage"/>
+    <variable name="InvokeProcessValidatorV2_Validate_Output"
+              messageType="ns24:GeneralResponseMessage"/>
+    <variable name="InvokeOrderInterpreterInput"
+              messageType="ns28:SubmitOrderRequest_msg"/>
+    <variable name="InvokeOrderInterpreterOutput"
+              messageType="ns28:SubmitOrderResponse_msg"/>
+  </variables>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+    <!-- Receive input from requestor. (Note: This maps to operation defined in PVSProcess.wsdl) -->
+    <receive name="receiveInput" partnerLink="pvsprocess_client"
+             portType="client:PVSProcessPortType" operation="SubmitOrder"
+             variable="inputVariable" createInstance="yes"/>
+    <!-- Generate reply to synchronous request -->
+    <scope name="OrderInterpreter" exitOnStandardFault="no">
+      <faultHandlers>
+        <catchAll>
+          <empty name="Empty2"/>
+        </catchAll>
+      </faultHandlers>
+      <sequence name="OrderInterpreter">
+        <assign name="AssignOrderInterpreterReq">
+          <copy ignoreMissingFromData="yes">
+            <from>$inputVariable.body</from>
+            <to>$InvokeOrderInterpreterInput.body</to>
+          </copy>
+        </assign>
+        <invoke name="InvokeOrderInterpreter"
+                partnerLink="OrderInterpreterProcess.orderinterpreterprocess_client"
+                portType="ns28:OrderInterpreterProcessPortType"
+                operation="SubmitOrder"
+                inputVariable="InvokeOrderInterpreterInput"
+                outputVariable="InvokeOrderInterpreterOutput"
+                bpelx:invokeAsDetail="no"/>
+        <assign name="AssignRequest">
+          <copy>
+            <from>bpws:getVariableData('InvokeOrderInterpreterOutput','body','Order/OrderContent/content[1]/payload')/val:validateArrayRequest</from>
+            <to>$request</to>
+          </copy>
+        </assign>
+      </sequence>
+    </scope>
+    <forEach parallel="no" counterName="pvsCounter" name="PVSOrders">
+      <startCounterValue>1</startCounterValue>
+      <finalCounterValue>ora:countNodes('request','val:ValidateRequest')</finalCounterValue>
+      <scope name="PVS" exitOnStandardFault="no">
+        <faultHandlers>
+          <catchAll>
+            <empty name="Empty1"/>
+          </catchAll>
+        </faultHandlers>
+        <sequence name="PVS">
+          <assign name="AssignPVSrequest">
+            <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from>$request/val:ValidateRequest[$pvsCounter]</from>
+              <to>$InvokePVSValidateInput.part</to>
+            </copy>
+          </assign>
+          <scope name="ConsumoPVS_V2" exitOnStandardFault="no">
+            <sequence name="ConsumoPVS_V2">
+              <assign name="TransformToPVSv2">
+                <bpelx:annotation>
+                  <bpelx:pattern patternName="bpelx:transformation"/>
+                </bpelx:annotation>
+                <copy>
+                  <from>ora:doXSLTransformForDoc("xsl/Transformation_ToProccessValidatorV2.xsl", $inputVariable.body, "InvokePVSValidateInput.part", $InvokePVSValidateInput.part)</from>
+                  <to variable="InvokeProcessValidatorV2_Validate_Input"
+                      part="part"/>
+                </copy>
+              </assign>
+              <invoke name="InvokeProcessValidatorV2"
+                      partnerLink="ProcessValidatorV2Service"
+                      portType="ns24:ProcessValidator" operation="Validate"
+                      inputVariable="InvokeProcessValidatorV2_Validate_Input"
+                      outputVariable="InvokeProcessValidatorV2_Validate_Output"
+                      bpelx:invokeAsDetail="no"/>
+              <assign name="AssignInsertResponse">
+                <extensionAssignOperation>
+                  <bpelx:append ignoreMissingFromData="yes">
+                    <bpelx:from>$InvokeProcessValidatorV2_Validate_Output.part</bpelx:from>
+                    <bpelx:to>$response</bpelx:to>
+                  </bpelx:append>
+                </extensionAssignOperation>
+              </assign>
+            </sequence>
+          </scope>
+        </sequence>
+      </scope>
+    </forEach>
+    <assign name="AssignResponse">
+      <copy>
+        <from><literal/></from>
+        <to>$outputVariable.body/Order/OrderContent/content[1]/payload</to>
+      </copy>
+      <extensionAssignOperation>
+        <bpelx:append ignoreMissingFromData="yes">
+          <bpelx:from>$response</bpelx:from>
+          <bpelx:to>$outputVariable.body/Order/OrderContent/content[1]/payload</bpelx:to>
+        </bpelx:append>
+      </extensionAssignOperation>
+      <copy>
+        <from>ora:getECID()</from>
+        <to>$outputVariable.body/GeneralResponse/uti</to>
+      </copy>
+      <copy>
+        <from><literal>OK</literal></from>
+        <to>$outputVariable.body/GeneralResponse/status</to>
+      </copy>
+      <copy>
+        <from><literal>01</literal></from>
+        <to>$outputVariable.body/GeneralResponse/code</to>
+      </copy>
+      <copy>
+        <from><literal>OK</literal></from>
+        <to>$outputVariable.body/GeneralResponse/codeType</to>
+      </copy>
+      <copy>
+        <from><literal>Service has been completed</literal></from>
+        <to>$outputVariable.body/GeneralResponse/message</to>
+      </copy>
+    </assign>
+    <reply name="replyOutput" partnerLink="pvsprocess_client"
+           portType="client:PVSProcessPortType" operation="SubmitOrder"
+           variable="outputVariable"/>
+  </sequence>
+</process>

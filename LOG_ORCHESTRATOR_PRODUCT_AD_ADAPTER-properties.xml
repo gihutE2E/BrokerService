@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<properties>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD.REFERENCETRANSACTIONDATE:db_column_type">DATE</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD.UTI:db_column_size">100</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD.NAME:db_column_type">VARCHAR2</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD.STATUS:db_column_size">30</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD:db_column_5">REFERENCETRANSACTIONDATE</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD:db_column_4">UTI</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD.NAME:db_column_not_null">false</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD:db_column_3">STATUS</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD:db_column_2">VALUE</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD:db_column_1">NAME</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD:db_column_0">ID_PRODUCT</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD.VALUE:db_column_not_null">false</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD.VALUE:db_column_type">VARCHAR2</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD.ID_PRODUCT:db_column_not_null">true</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD.NAME:db_column_size">30</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD:db_table_type">TABLE</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD.ID_PRODUCT:db_column_size">100</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD.UTI:db_column_type">VARCHAR2</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD.UTI:db_column_not_null">false</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD.ID_PRODUCT:db_column_type">VARCHAR2</entry>
+   <entry key="root_descriptor_alias">LOG_ORCHESTRATOR_PRODUCT_AD</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD.STATUS:db_column_type">VARCHAR2</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD.STATUS:db_column_not_null">false</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD.VALUE:db_column_size">100</entry>
+   <entry key="LOG_ORCHESTRATOR_PRODUCT_AD.REFERENCETRANSACTIONDATE:db_column_not_null">false</entry>
+</properties>

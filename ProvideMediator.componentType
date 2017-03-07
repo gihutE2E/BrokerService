@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+   <service name="ProvideMediator" ui:wsdlLocation="wsdl/process/ProvideProcess.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess#wsdl.interface(BasicProvisioningPort)"/>
+   </service>
+   <reference name="ProvideProcess.provideprocess_client" ui:wsdlLocation="ProvideProcessWrapper.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess#wsdl.interface(BasicProvisioningPort)"/>
+   </reference>
+</componentType>

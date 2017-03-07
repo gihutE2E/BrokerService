@@ -1,0 +1,279 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Thu Nov 28 17:54:54 COT 2013
+  Author:  Harcalejo
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="O2MappingProcess"
+               targetNamespace="http://xmlns.oracle.com/Broker/BrokerService/O2MappingProcess"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/Broker/BrokerService/O2MappingProcess"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+               xmlns:ns1="http://tigo.com/enterprise/business/task/OrderBroker/v1/O2MappingProcess"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns2="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1"
+         xmlns:ns3="http://tigo.com/enterprise/business/task/OrderBroker/v1/schema"
+         xmlns:ns12="http://tigo.com/enterprise/serviceEntity/provisioning/dataChangeRequest/v1/schema"
+         xmlns:ns11="http://tigo.com/serviceEntity/provisioning/offeringDetail/v1/schema"
+         xmlns:ns7="http://tigo.com/enterprise/businessEntity/charge/v1/schema"
+         xmlns:ns6="http://tigo.com/enterprise/businessEntity/client/basic/v1/schema"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns5="http://tigo.com/commons/basicRequest/v1/schema"
+         xmlns:ns8="http://tigo.com/commons/resources/additional/v1/schema"
+         xmlns:ns4="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema"
+         xmlns:ns10="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema"
+         xmlns:ns13="http://tigo.com/enterprise/serviceEntity/provisioning/fieldService/v1/schema"
+         xmlns:ns9="http://tigo.com/enterprise/serviceEntity/provisioning/order/v1/schema"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:sch1="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema"
+         xmlns:ns14="http://tigo.com/commons/generalResponse/v1/schema"
+         xmlns:ns15="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema"
+         xmlns:ns16="http://tigo.com/enterprise/business/task/OrderBroker/v1/PreOrderProcess"
+         xmlns:ns17="http://tigo.com/enterprise/business/task/OrderBroker/v1/O2ItemGroupProcess"
+         xmlns:ns18="http://facade.broker.osm.mic/"
+         xmlns:ns19="http://tigo.com/enterprise/business/task/OrderBroker/v1/OrderInterpreterProcess">
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="o2mappingprocess_client" partnerLinkType="ns1:O2MappingProcess" myRole="OrderBrokerServicePortType"/>
+    <partnerLink name="O2Service" partnerLinkType="ns2:O2Service"
+                 partnerRole="BasicOrderPort"/>
+    <partnerLink name="PreOrderProcess.preorderprocess_client"
+                 partnerLinkType="ns16:PreOrderProcess"
+                 partnerRole="PreOrderProcessPortType"/>
+    <partnerLink name="OrderInterpreterProcess.orderinterpreterprocess_client"
+                 partnerLinkType="ns19:OrderInterpreterProcess"
+                 partnerRole="OrderInterpreterProcessPortType"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="ns1:SubmitOrderRequest_msg"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="ns1:SubmitOrderResponse_msg"/>
+    <variable name="InvokeO2ServiceExecuteOrderInput"
+              messageType="ns2:BasicOrderRequest_msg"/>
+    <variable name="InvokeO2ServiceExecuteOrderOutput"
+              messageType="ns2:BasicOrderResponse_msg"/>
+    <variable name="request"
+              element="ns4:BasicOrderRequest"/>
+    <variable name="reqString" type="xsd:string"/>
+    <variable name="generalResponse" messageType="ns1:GeneralResponseMessage"/>
+    <variable name="InvokePreOrderSubmitOrderInput"
+              messageType="ns16:SubmitOrderRequest_msg"/>
+    <variable name="InvokePreOrderSubmitOrderOutput"
+              messageType="ns16:SubmitOrderResponse_msg"/>
+    <variable name="InvokeOrderInterpreterInput"
+              messageType="ns19:SubmitOrderRequest_msg"/>
+    <variable name="InvokeOrderInterpreterOutput"
+              messageType="ns19:SubmitOrderResponse_msg"/>
+  </variables>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in O2MappingProcess.wsdl) -->
+    <receive name="receiveInput" partnerLink="o2mappingprocess_client" portType="ns1:OrderBrokerServicePortType" operation="SubmitOrder" variable="inputVariable" createInstance="yes"/>
+    <scope name="OrderInterpreter" exitOnStandardFault="no">
+      <faultHandlers>
+        <catchAll>
+          <empty name="Empty2"/>
+        </catchAll>
+      </faultHandlers>
+      <sequence name="OrderInterpreter">
+        <assign name="AssignInterpreterInput">
+          <copy>
+            <from>$inputVariable.body</from>
+            <to>$InvokeOrderInterpreterInput.body</to>
+          </copy>
+        </assign>
+        <invoke name="InvokeOrderInterpreter"
+                partnerLink="OrderInterpreterProcess.orderinterpreterprocess_client"
+                portType="ns19:OrderInterpreterProcessPortType"
+                operation="SubmitOrder"
+                inputVariable="InvokeOrderInterpreterInput"
+                outputVariable="InvokeOrderInterpreterOutput"
+                bpelx:invokeAsDetail="no"/>
+        <assign name="TransformOrderIntepreterToInput">
+          <bpelx:annotation>
+            <bpelx:pattern patternName="bpelx:transformation"/>
+          </bpelx:annotation>
+          <copy>
+            <from>ora:doXSLTransformForDoc("xsl/Transformation_OrderInterpreterToInputO2Mapping.xsl", $inputVariable.body, "InvokeOrderInterpreterOutput.body", $InvokeOrderInterpreterOutput.body)</from>
+            <to variable="inputVariable" part="body"/>
+          </copy>
+        </assign>
+      </sequence>
+    </scope>
+    <!-- Generate reply to synchronous request -->
+    <scope name="PreOrder" exitOnStandardFault="no">
+      <faultHandlers>
+        <catchAll>
+          <empty name="Empty1"/>
+        </catchAll>
+      </faultHandlers>
+      <sequence name="PreOrder">
+        <assign name="AssignPreOrderReq">
+          <copy>
+            <from>$inputVariable.body</from>
+            <to>$InvokePreOrderSubmitOrderInput.body</to>
+          </copy>
+        </assign>
+        <invoke name="InvokePreOrder"
+                partnerLink="PreOrderProcess.preorderprocess_client"
+                portType="ns16:PreOrderProcessPortType" operation="SubmitOrder"
+                inputVariable="InvokePreOrderSubmitOrderInput"
+                outputVariable="InvokePreOrderSubmitOrderOutput"
+                bpelx:invokeAsDetail="no"/>
+      </sequence>
+    </scope>
+    <scope name="O2Service" exitOnStandardFault="no">
+      <faultHandlers>
+        <catch faultName="ns2:fault" faultVariable="faultVariable"
+               faultElement="ns14:GeneralResponse">
+          <sequence name="O2Fault">
+            <assign name="AssignFault">
+              <copy>
+                <from>$faultVariable/uti</from>
+                <to>$generalResponse.fault/uti</to>
+              </copy>
+              <copy>
+                <from>$faultVariable/status</from>
+                <to>$generalResponse.fault/status</to>
+              </copy>
+              <copy>
+                <from>$faultVariable/code</from>
+                <to>$generalResponse.fault/code</to>
+              </copy>
+              <copy>
+                <from><literal>OK</literal></from>
+                <to>$generalResponse.fault/codeType</to>
+              </copy>
+              <copy>
+                <from>$faultVariable/message</from>
+                <to>$generalResponse.fault/message</to>
+              </copy>
+            </assign>
+            <reply name="ReplyFault" faultName="ns1:fault"
+                   variable="generalResponse"
+                   partnerLink="o2mappingprocess_client"
+                   portType="ns1:OrderBrokerServicePortType"
+                   operation="SubmitOrder"/>
+            <exit name="Exit1"/>
+          </sequence>
+        </catch>
+        <catchAll>
+          <sequence name="catchAll">
+            <assign name="AssignFault">
+              <copy>
+                <from><literal>ERROR</literal></from>
+                <to>$generalResponse.fault/status</to>
+              </copy>
+              <copy>
+                <from><literal>701</literal></from>
+                <to>$generalResponse.fault/code</to>
+              </copy>
+              <copy>
+                <from><literal>ERROR</literal></from>
+                <to>$generalResponse.fault/codeType</to>
+              </copy>
+              <copy>
+                <from><literal>Service has not been completed</literal></from>
+                <to>$generalResponse.fault/message</to>
+              </copy>
+            </assign>
+            <reply name="ReplyFault" faultName="ns1:fault"
+                   variable="generalResponse"
+                   partnerLink="o2mappingprocess_client"
+                   portType="ns1:OrderBrokerServicePortType"
+                   operation="SubmitOrder"/>
+            <exit name="Exit2"/>
+          </sequence>
+        </catchAll>
+      </faultHandlers>
+      <sequence name="O2Service">
+        <assign name="AssignRequest">
+          <copy>
+            <from>bpws:getVariableData('InvokePreOrderSubmitOrderOutput','body','Order/OrderContent/content[1]/payload')/sch1:BasicOrderRequest</from>
+            <to>$request</to>
+          </copy>
+        </assign>
+        <assign name="TransformToO2ExecuteOrder">
+          <bpelx:annotation>
+            <bpelx:pattern patternName="bpelx:transformation"/>
+          </bpelx:annotation>
+          <copy>
+            <from>ora:doXSLTransformForDoc("xsl/Transformation_ToO2ServiceExecuteOrder.xsl", $request, "inputVariable.body", $inputVariable.body)</from>
+            <to variable="InvokeO2ServiceExecuteOrderInput" part="body"/>
+          </copy>
+        </assign>
+        <invoke name="InvokeO2Service" partnerLink="O2Service"
+                portType="ns2:BasicOrderPort" operation="ExecuteOrder"
+                inputVariable="InvokeO2ServiceExecuteOrderInput"
+                outputVariable="InvokeO2ServiceExecuteOrderOutput"
+                bpelx:invokeAsDetail="no"/>
+      </sequence>
+    </scope>
+    <assign name="AssignReply">
+      <copy>
+        <from>$InvokeO2ServiceExecuteOrderOutput.body/generalResponse/uti</from>
+        <to>$outputVariable.body/GeneralResponse/uti</to>
+      </copy>
+      <copy>
+        <from>$InvokeO2ServiceExecuteOrderOutput.body/generalResponse/status</from>
+        <to>$outputVariable.body/GeneralResponse/status</to>
+      </copy>
+      <copy>
+        <from>$InvokeO2ServiceExecuteOrderOutput.body/generalResponse/code</from>
+        <to>$outputVariable.body/GeneralResponse/code</to>
+      </copy>
+      <copy>
+        <from><literal>OK</literal></from>
+        <to>$outputVariable.body/GeneralResponse/codeType</to>
+      </copy>
+      <copy>
+        <from>$InvokeO2ServiceExecuteOrderOutput.body/generalResponse/message</from>
+        <to>$outputVariable.body/GeneralResponse/message</to>
+      </copy>
+    </assign>
+    <reply name="replyOutput" partnerLink="o2mappingprocess_client" portType="ns1:OrderBrokerServicePortType" operation="SubmitOrder" variable="outputVariable"/>
+  </sequence>
+</process>

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="ProvideProces" targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:sch="http://tigo.com/enterprise/taskService/provideProcess/schema" xmlns:tns="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cmn="http://tigo.com/commons/generalResponse/v1/schema" xmlns:nflt="http://tigo.com/commons/generalResponse/notify/v1/schema">
+   <wsdl:types>
+      <xsd:schema targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess">
+         <xsd:import namespace="http://tigo.com/enterprise/taskService/provideProcess/schema" schemaLocation="../../xsd/process/BasicProvideProcess_schema.xsd"/>
+         <xsd:import namespace="http://tigo.com/commons/generalResponse/notify/v1/schema" schemaLocation="../../xsd/process/resources/FaultNotifyGeneralResponse_schema.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="BasicProvisioningRequest_msg">
+      <wsdl:part element="sch:BasicProvisioningRequest" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="BasicProvisioningResponse_msg">
+      <wsdl:part element="sch:BasicProvisioningResponse" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="GeneralResponse__fault_msg">
+      <wsdl:part element="nflt:GeneralResponse" name="fault"/>
+   </wsdl:message>
+   <wsdl:portType name="BasicProvisioningPort">
+      <wsdl:operation name="ExecuteOrder">
+         <wsdl:input message="tns:BasicProvisioningRequest_msg" name="BasicProvisioningPortRequest"/>
+         <wsdl:output message="tns:BasicProvisioningResponse_msg" name="BasicProvisioningPortResponse"/>
+         <wsdl:fault message="tns:GeneralResponse__fault_msg" name="fault"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="Order_wsSOAP" type="tns:BasicProvisioningPort">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="ExecuteOrder">
+         <soap:operation soapAction=""/>
+         <wsdl:input name="BasicProvisioningPortRequest">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="BasicProvisioningPortResponse">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+</wsdl:definitions>

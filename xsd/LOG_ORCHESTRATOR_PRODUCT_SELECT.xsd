@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/LOG_ORCHESTRATOR_PRODUCT_SELECT" xmlns="http://xmlns.oracle.com/pcbpel/adapter/db/LOG_ORCHESTRATOR_PRODUCT_SELECT" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:element name="LOG_ORCHESTRATOR_PRODUCT_SELECTInput" type="LOG_ORCHESTRATOR_PRODUCT_SELECTInput"/>
+   <xs:complexType name="LOG_ORCHESTRATOR_PRODUCT_SELECTInput">
+      <xs:sequence>
+         <xs:element name="correlationId" type="xs:string"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="LOG_ORCHESTRATOR_PRODUCT_SELECTOutputCollection" type="LOG_ORCHESTRATOR_PRODUCT_SELECTOutputCollection"/>
+   <xs:complexType name="LOG_ORCHESTRATOR_PRODUCT_SELECTOutputCollection">
+      <xs:sequence>
+         <xs:element name="LOG_ORCHESTRATOR_PRODUCT_SELECTOutput" type="LOG_ORCHESTRATOR_PRODUCT_SELECTOutput" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="LOG_ORCHESTRATOR_PRODUCT_SELECTOutput">
+      <xs:sequence>
+         <xs:element name="ID" type="xs:decimal"/>
+         <xs:element name="CORRELATION_ID" type="xs:string"/>
+         <xs:element name="CODE" type="xs:string"/>
+         <xs:element name="NAME" type="xs:string"/>
+         <xs:element name="VALUE" type="xs:decimal"/>
+         <xs:element name="CURRENCY" type="xs:string"/>
+         <xs:element name="EXPIRATION_DATE" type="xs:dateTime"/>
+         <xs:element name="START_DATE" type="xs:dateTime"/>
+         <xs:element name="DEFER" type="xs:string"/>
+         <xs:element name="OFFER_ACTION" type="xs:string"/>
+         <xs:element name="STATUS" type="xs:string"/>
+         <xs:element name="ID_CLIENTE" type="xs:string"/>
+         <xs:element name="ID_TYPE" type="xs:string"/>
+         <xs:element name="UTI" type="xs:string"/>
+         <xs:element name="UTI_REFERENCE" type="xs:string"/>
+         <xs:element name="REFERENCETRANSACTIONDATE" type="xs:dateTime"/>
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>

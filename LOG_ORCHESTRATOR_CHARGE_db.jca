@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<adapter-config name="LOG_ORCHESTRATOR_CHARGE" adapter="Database Adapter" wsdlLocation="LOG_ORCHESTRATOR_CHARGE.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+   <connection-factory location="eis/DB/DBConnection" UIConnectionName="MDWDesa" adapterRef=""/>
+   <endpoint-interaction portType="LOG_ORCHESTRATOR_CHARGE_ptt" operation="insert">
+      <interaction-spec className="oracle.tip.adapter.db.DBWriteInteractionSpec">
+         <property name="DescriptorName" value="LOG_ORCHESTRATOR_CHARGE.LogOrchestratorCharge"/>
+         <property name="DmlType" value="insert"/>
+         <property name="MappingsMetaDataURL" value="LOG_ORCHESTRATOR_CHARGE-or-mappings.xml"/>
+         <property name="DetectOmissions" value="true"/>
+         <property name="GetActiveUnitOfWork" value="false"/>
+      </interaction-spec>
+   </endpoint-interaction>
+   <endpoint-interaction portType="LOG_ORCHESTRATOR_CHARGE_ptt" operation="update">
+      <interaction-spec className="oracle.tip.adapter.db.DBWriteInteractionSpec">
+         <property name="DescriptorName" value="LOG_ORCHESTRATOR_CHARGE.LogOrchestratorCharge"/>
+         <property name="DmlType" value="update"/>
+         <property name="MappingsMetaDataURL" value="LOG_ORCHESTRATOR_CHARGE-or-mappings.xml"/>
+         <property name="DetectOmissions" value="true"/>
+         <property name="GetActiveUnitOfWork" value="false"/>
+      </interaction-spec>
+   </endpoint-interaction>
+   <endpoint-interaction portType="LOG_ORCHESTRATOR_CHARGE_ptt" operation="LOG_ORCHESTRATOR_CHARGESelect">
+      <interaction-spec className="oracle.tip.adapter.db.DBReadInteractionSpec">
+         <property name="DescriptorName" value="LOG_ORCHESTRATOR_CHARGE.LogOrchestratorCharge"/>
+         <property name="QueryName" value="LOG_ORCHESTRATOR_CHARGESelect"/>
+         <property name="MappingsMetaDataURL" value="LOG_ORCHESTRATOR_CHARGE-or-mappings.xml"/>
+         <property name="ReturnSingleResultSet" value="false"/>
+         <property name="GetActiveUnitOfWork" value="false"/>
+      </interaction-spec>
+   </endpoint-interaction>
+</adapter-config>

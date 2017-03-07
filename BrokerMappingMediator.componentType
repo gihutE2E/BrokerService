@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+   <service name="BrokerMappingMediator" ui:wsdlLocation="wsdl/process/BrokerMappingProcess.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/business/task/OrderBroker/v1/SendOrderProcess#wsdl.interface(OrderBrokerServicePortType)"/>
+   </service>
+   <reference name="O2MappingProcess.o2mappingprocess_client" ui:wsdlLocation="O2MappingProcessWrapper.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/business/task/OrderBroker/v1/O2MappingProcess#wsdl.interface(OrderBrokerServicePortType)"/>
+   </reference>
+   <reference name="PVSProcess.pvsprocess_client" ui:wsdlLocation="PVSProcessWrapper.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/business/task/OrderBroker/v1/PVSProcess#wsdl.interface(PVSProcessPortType)"/>
+   </reference>
+</componentType>

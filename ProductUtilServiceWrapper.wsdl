@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="OrderBrokerService" targetNamespace="http://tigo.com/resources/util/javaUtil/v1" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:WL5G3N3="http://tigo.com/resources/util/javaUtil/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <plnk:partnerLinkType name="ProductUtilService">
+      <plnk:role name="UtilServicePortType" portType="WL5G3N3:UtilServicePortType"/>
+   </plnk:partnerLinkType>
+   <wsdl:import namespace="http://tigo.com/resources/util/javaUtil/v1" location="wsdl/partner/ProductUtilService.wsdl"/>
+</wsdl:definitions>

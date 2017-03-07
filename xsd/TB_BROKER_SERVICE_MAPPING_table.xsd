@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_BROKER_SERVICE_MAPPING" xmlns="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_BROKER_SERVICE_MAPPING" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:element name="TbBrokerServiceMappingCollection" type="TbBrokerServiceMappingCollection"/>
+   <xs:complexType name="TbBrokerServiceMappingCollection">
+      <xs:sequence>
+         <xs:element name="TbBrokerServiceMapping" type="TbBrokerServiceMapping" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="TbBrokerServiceMapping">
+      <xs:sequence>
+         <xs:element name="id" type="xs:decimal"/>
+         <xs:element name="action" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="event" minOccurs="0" nillable="true">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="80"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="serviceCode" minOccurs="0" nillable="true">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="80"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="target" minOccurs="0" nillable="true">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="80"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="delegateTask" minOccurs="0" nillable="true">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="TB_BROKER_SERVICE_MAPPINGSelect_action_event_serviceCodeInputParameters" type="TB_BROKER_SERVICE_MAPPINGSelect_action_event_serviceCode"/>
+   <xs:complexType name="TB_BROKER_SERVICE_MAPPINGSelect_action_event_serviceCode">
+      <xs:sequence>
+         <xs:element name="action" type="xs:string" minOccurs="1" maxOccurs="1"/>
+         <xs:element name="event" type="xs:string" minOccurs="1" maxOccurs="1"/>
+         <xs:element name="serviceCode" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>

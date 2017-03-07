@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="PriorityOrderFacade" targetNamespace="http://facade.broker.osm.mic/" xmlns:tns="http://facade.broker.osm.mic/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+   <wsdl:types>
+      <xsd:schema xmlns:ns0="http://facade.broker.osm.mic/types" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://facade.broker.osm.mic/types">
+         <xsd:complexType name="client">
+            <xsd:sequence>
+               <xsd:element name="id" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="type" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="osmOrderRequest">
+            <xsd:sequence>
+               <xsd:element name="basicRequest" type="ns0:basicRequest" minOccurs="0"/>
+               <xsd:element name="offer" type="ns0:offer" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="dataChangeType">
+            <xsd:sequence>
+               <xsd:element name="dataReference" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="dataValue" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="additionalType">
+            <xsd:sequence>
+               <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="productOfferingType">
+            <xsd:sequence>
+               <xsd:element name="additionals" type="ns0:additional" minOccurs="0"/>
+               <xsd:element name="offeringDetail" type="ns0:offeringDetail" minOccurs="0"/>
+               <xsd:element name="product" type="ns0:product" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="offer">
+            <xsd:sequence>
+               <xsd:element name="orders" type="ns0:order" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="fieldOrder">
+            <xsd:sequence>
+               <xsd:element name="fieldOrders" type="ns0:fieldOrderType" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="product">
+            <xsd:sequence>
+               <xsd:element name="code" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="dataChange">
+            <xsd:sequence>
+               <xsd:element name="dataChange" type="ns0:dataChangeType" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="fieldOrderType">
+            <xsd:sequence>
+               <xsd:element name="additionals" type="ns0:additional" minOccurs="0"/>
+               <xsd:element name="executionDate" type="xsd:dateTime" minOccurs="0"/>
+               <xsd:element name="fieldServiceCode" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="priority" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="chargeOrder">
+            <xsd:sequence>
+               <xsd:element name="charges" type="ns0:charge" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="charge">
+            <xsd:sequence>
+               <xsd:element name="additionals" type="ns0:additional" minOccurs="0"/>
+               <xsd:element name="changeReference" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="value" type="xsd:double"/>
+               <xsd:element name="wallet" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="walletId" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="order">
+            <xsd:sequence>
+               <xsd:element name="chargeOrder" type="ns0:chargeOrder" minOccurs="0"/>
+               <xsd:element name="client" type="ns0:client" minOccurs="0"/>
+               <xsd:element name="dataChange" type="ns0:dataChange" minOccurs="0"/>
+               <xsd:element name="fieldOrder" type="ns0:fieldOrder" minOccurs="0"/>
+               <xsd:element name="productOffering" type="ns0:productOffering" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="additional">
+            <xsd:sequence>
+               <xsd:element name="additional" type="ns0:additionalType" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="basicRequest">
+            <xsd:sequence>
+               <xsd:element name="externalApplicationId" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="externalTransactionId" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="uti" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="offeringDetail">
+            <xsd:sequence>
+               <xsd:element name="currency" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="defer" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="expirationDate" type="xsd:dateTime" minOccurs="0"/>
+               <xsd:element name="offerAction" type="xsd:string" minOccurs="0"/>
+               <xsd:element name="startDate" type="xsd:dateTime" minOccurs="0"/>
+               <xsd:element name="value" type="xsd:double"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="productOffering">
+            <xsd:sequence>
+               <xsd:element name="provisioningOrder" type="ns0:productOfferingType" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+            </xsd:sequence>
+         </xsd:complexType>
+      </xsd:schema>
+      <xsd:schema targetNamespace="http://facade.broker.osm.mic/" xmlns:tns="http://facade.broker.osm.mic/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://facade.broker.osm.mic/types">
+         <xsd:import namespace="http://facade.broker.osm.mic/types"/>
+         <xsd:complexType name="determinePriorities">
+            <xsd:sequence>
+               <xsd:element name="arg0" type="ns1:osmOrderRequest"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:element name="determinePriorities" type="tns:determinePriorities"/>
+         <xsd:complexType name="determinePrioritiesResponse">
+            <xsd:sequence>
+               <xsd:element name="return" type="ns1:osmOrderRequest"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:element name="determinePrioritiesResponse" type="tns:determinePrioritiesResponse"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="determinePrioritiesInput">
+      <wsdl:part name="parameters" element="tns:determinePriorities"/>
+   </wsdl:message>
+   <wsdl:message name="determinePrioritiesOutput">
+      <wsdl:part name="parameters" element="tns:determinePrioritiesResponse"/>
+   </wsdl:message>
+   <wsdl:portType name="PriorityOrderFacade">
+      <wsdl:operation name="determinePriorities">
+         <wsdl:input message="tns:determinePrioritiesInput" xmlns:ns1="http://www.w3.org/2006/05/addressing/wsdl" ns1:Action=""/>
+         <wsdl:output message="tns:determinePrioritiesOutput" xmlns:ns1="http://www.w3.org/2006/05/addressing/wsdl" ns1:Action=""/>
+      </wsdl:operation>
+   </wsdl:portType>
+</wsdl:definitions>

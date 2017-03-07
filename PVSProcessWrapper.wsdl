@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="PVSProcess" targetNamespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/PVSProcess" xmlns:ns2="http://xmlns.tigo.com/ProcessValidator/ProcessValidatorService" xmlns:ns1="http://xmlns.tigo.com/ProcessValidator/ValidatorGeneralResponse/array" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns3="http://xmlns.tigo.com/ProcessValidator/ValidateRequest" xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:tns="http://tigo.com/enterprise/business/task/OrderBroker/v1/PVSProcess" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <plnk:partnerLinkType name="PVSProcess">
+      <plnk:role name="PVSProcessPortType" portType="tns:PVSProcessPortType"/>
+   </plnk:partnerLinkType>
+   <wsdl:import namespace="http://xmlns.tigo.com/ProcessValidator/ProcessValidatorService" location="wsdl/partner/ProcessValidatorService.wsdl"/>
+   <wsdl:import namespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/PVSProcess" location="wsdl/process/PVSProcess.wsdl"/>
+   <wsdl:types>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="http://xmlns.tigo.com/ProcessValidator/ValidatorGeneralResponse/array" schemaLocation="xsd/process/PvsArrayResult_schema.xsd"/>
+      </xsd:schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="http://xmlns.tigo.com/ProcessValidator/ValidateRequest" schemaLocation="xsd/partner/ValidateRequest.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+</wsdl:definitions>

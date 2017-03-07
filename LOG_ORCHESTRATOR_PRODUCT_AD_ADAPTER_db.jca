@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<adapter-config name="LOG_ORCHESTRATOR_PRODUCT_AD_ADAPTER" adapter="Database Adapter" wsdlLocation="LOG_ORCHESTRATOR_PRODUCT_AD_ADAPTER.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+   <connection-factory location="eis/DB/DBConnection" UIConnectionName="OSBConnection" adapterRef=""/>
+   <endpoint-interaction portType="LOG_ORCHESTRATOR_PRODUCT_AD_ADAPTER_ptt" operation="insert">
+      <interaction-spec className="oracle.tip.adapter.db.DBWriteInteractionSpec">
+         <property name="DescriptorName" value="LOG_ORCHESTRATOR_PRODUCT_AD_ADAPTER.LogOrchestratorProductAd"/>
+         <property name="DmlType" value="insert"/>
+         <property name="MappingsMetaDataURL" value="LOG_ORCHESTRATOR_PRODUCT_AD_ADAPTER-or-mappings.xml"/>
+         <property name="DetectOmissions" value="true"/>
+         <property name="GetActiveUnitOfWork" value="false"/>
+      </interaction-spec>
+   </endpoint-interaction>
+</adapter-config>

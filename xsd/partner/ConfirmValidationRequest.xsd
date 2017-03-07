@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http:/xmlns.tigo.com/ProcessValidator/ConfirmValidationRequest" xmlns:tns="http://xmlns.tigo.com/ConfirmValidationRequest" elementFormDefault="qualified" xmlns:req="http://xmlns.tigo.com/RequestHeader/V3" xmlns:details="http:/xmlns.tigo.com/ProcessValidator/ProcessDetailsSchema/V1" xmlns:add="http://xmlns.tigo.com/AdditionalSchema/V1" xmlns:rul="http://xmlns.tigo.com/ProcessValidator/RuleSchema/V1" xmlns:stat="http://xmlns.tigo.com/ProcessValidator/StatusSchema/V1" xmlns:step="http://xmlns.tigo.com/ProcessValidator/StepSchema/V1">
+   <import namespace="http://xmlns.tigo.com/RequestHeader/V3" schemaLocation="commons/RequestHeaderV3.xsd"/>
+   <import namespace="http:/xmlns.tigo.com/ProcessValidator/ProcessDetailsSchema/V1" schemaLocation="ProcessDetailsSchemaV1.xsd"/>
+   <import namespace="http://xmlns.tigo.com/AdditionalSchema/V1" schemaLocation="commons/AdditionalSchemaV1.xsd"/>
+   <import namespace="http://xmlns.tigo.com/ProcessValidator/RuleSchema/V1" schemaLocation="RuleSchemaV1.xsd"/>
+   <import namespace="http://xmlns.tigo.com/ProcessValidator/StatusSchema/V1" schemaLocation="StatusSchemaV1.xsd"/>
+   <import namespace="http://xmlns.tigo.com/ProcessValidator/StepSchema/V1" schemaLocation="StepSchemaV1.xsd"/>
+   <element name="ConfirmValidationRequest">
+      <complexType>
+         <sequence>
+            <element ref="req:RequestHeader"/>
+            <element name="requestBody">
+               <complexType>
+                  <sequence>
+                     <element name="token" type="string" minOccurs="1" maxOccurs="1"/>
+                     <element name="processRules" minOccurs="0" maxOccurs="1">
+                        <complexType>
+                           <sequence>
+                              <element ref="rul:rule" maxOccurs="unbounded"/>
+                           </sequence>
+                        </complexType>
+                     </element>
+                     <element name="result" minOccurs="0" maxOccurs="1">
+                        <complexType>
+                           <sequence>
+                              <element minOccurs="1" ref="stat:status"/>
+                              <element name="actions" minOccurs="0" maxOccurs="1">
+                                 <complexType>
+                                    <sequence>
+                                       <element ref="step:step" maxOccurs="unbounded"/>
+                                    </sequence>
+                                 </complexType>
+                              </element>
+                           </sequence>
+                        </complexType>
+                     </element>
+                     <element ref="details:processDetails" minOccurs="0" maxOccurs="1"/>
+                     <element ref="add:additionals"/>
+                  </sequence>
+               </complexType>
+            </element>
+         </sequence>
+      </complexType>
+   </element>
+</schema>

@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="LOG_ORCHESTRATOR_PRODUCT_SELECT" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/O2_Release/LOG_ORCHESTRATOR_PRODUCT_SELECT" xmlns:db="http://xmlns.oracle.com/pcbpel/adapter/db/LOG_ORCHESTRATOR_PRODUCT_SELECT" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/O2_Release/LOG_ORCHESTRATOR_PRODUCT_SELECT" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/">
+   <plt:partnerLinkType name="LOG_ORCHESTRATOR_PRODUCT_SELECT_plt">
+      <plt:role name="LOG_ORCHESTRATOR_PRODUCT_SELECT_role">
+         <plt:portType name="tns:LOG_ORCHESTRATOR_PRODUCT_SELECT_ptt"/>
+      </plt:role>
+   </plt:partnerLinkType>
+   <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema">
+         <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/LOG_ORCHESTRATOR_PRODUCT_SELECT" schemaLocation="xsd/LOG_ORCHESTRATOR_PRODUCT_SELECT.xsd"/>
+      </schema>
+   </wsdl:types>
+   <wsdl:message name="LOG_ORCHESTRATOR_PRODUCT_SELECTInput_msg">
+      <wsdl:part name="LOG_ORCHESTRATOR_PRODUCT_SELECTInput_msg" element="db:LOG_ORCHESTRATOR_PRODUCT_SELECTInput"/>
+   </wsdl:message>
+   <wsdl:message name="LOG_ORCHESTRATOR_PRODUCT_SELECTOutputCollection_msg">
+      <wsdl:part name="LOG_ORCHESTRATOR_PRODUCT_SELECTOutputCollection" element="db:LOG_ORCHESTRATOR_PRODUCT_SELECTOutputCollection"/>
+   </wsdl:message>
+   <wsdl:portType name="LOG_ORCHESTRATOR_PRODUCT_SELECT_ptt">
+      <wsdl:operation name="LOG_ORCHESTRATOR_PRODUCT_SELECT">
+         <wsdl:input message="tns:LOG_ORCHESTRATOR_PRODUCT_SELECTInput_msg"/>
+         <wsdl:output message="tns:LOG_ORCHESTRATOR_PRODUCT_SELECTOutputCollection_msg"/>
+      </wsdl:operation>
+   </wsdl:portType>
+</wsdl:definitions>

@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Mediator name="ContinueProvisioningMediator" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" wsdlTargetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/continueProvisioningOrder/v1" xmlns="http://xmlns.oracle.com/sca/1.0/mediator">
+   <operation name="ContinueOrder" deliveryPolicy="AllOrNothing" priority="4" validateSchema="false">
+      <switch>
+         <case executionType="direct" name="ContinueProvisioningService.ContinueOrder">
+            <action>
+               <transform>
+                  <part name="$out.body" function="xslt(xsl/BasicContinueOrderRequest_To_BasicContinueOrderRequest.xsl, $in.body)"/>
+               </transform>
+               <invoke reference="ContinueProvisioningService" operation="ContinueOrder">
+                  <onReply>
+                     <transform>
+                        <part name="$out.body" function="xslt(xsl/BasicContinueOrderResponse_To_BasicContinueOrderResponse.xsl, $in.body)"/>
+                     </transform>
+                     <reply/>
+                  </onReply>
+                  <onFault type="fault">
+                     <transform>
+                        <part name="$out.fault" function="xslt(xsl/GeneralResponse_To_GeneralResponse.xsl, $in.fault)"/>
+                     </transform>
+                     <fault type="fault"/>
+                  </onFault>
+               </invoke>
+            </action>
+         </case>
+      </switch>
+   </operation>
+</Mediator>

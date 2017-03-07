@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://xmlns.tigo.com/ProcessValidator/ValidatorFaultResponse" targetNamespace="http://xmlns.tigo.com/ProcessValidator/ValidatorFaultResponse" xmlns:responseHeader="http://xmlns.tigo.com/ResponseHeader/V3" elementFormDefault="qualified">
+   <xsd:import namespace="http://xmlns.tigo.com/ResponseHeader/V3" schemaLocation="commons/ResponseHeaderV3.xsd"/>
+   <xsd:element name="ValidatorFaultResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="responseHeader:ResponseHeader"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+</xsd:schema>

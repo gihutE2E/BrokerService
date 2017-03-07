@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SubmitOrder_Request xmlns="http://tigo.com/enterprise/business/task/OrderBroker/v1/schema">
+   <GeneralRequest xmlns="">
+      <applicationID>applicationID1</applicationID>
+      <applicationTransactionID>applicationTransactionID2</applicationTransactionID>
+      <utiReference>utiReference3</utiReference>
+      <parameters>
+         <parameter/>
+         <parameter/>
+         <parameter/>
+      </parameters>
+   </GeneralRequest>
+   <Order xmlns="">
+      <orderID>orderID4</orderID>
+      <orderStatus>
+         <status>status5</status>
+         <code>code6</code>
+         <codeType>codeType7</codeType>
+         <parameters/>
+      </orderStatus>
+      <orderSpecification>
+         <orderReferenceID>orderReferenceID8</orderReferenceID>
+         <orderReferenceType>orderReferenceType9</orderReferenceType>
+         <action>action10</action>
+         <eventReference>eventReference11</eventReference>
+         <serviceCode>serviceCode12</serviceCode>
+         <dateTimeReference>2013-12-03T06:06:52.039</dateTimeReference>
+         <description>description13</description>
+         <executionDetails/>
+         <notification/>
+         <parameters/>
+      </orderSpecification>
+      <client>
+         <ID>ID14</ID>
+         <IDType>IDType15</IDType>
+         <parameters/>
+      </client>
+      <OrderContent>
+         <contentType>contentType16</contentType>
+         <parameters/>
+         <payload/>
+      </OrderContent>
+      <items>
+         <item/>
+         <item/>
+         <item/>
+      </items>
+   </Order>
+</SubmitOrder_Request>

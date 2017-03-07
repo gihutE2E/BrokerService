@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_PRODUCT_AD_ADAPTER" xmlns="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_PRODUCT_AD_ADAPTER" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:element name="LogOrchestratorProductAdCollection" type="LogOrchestratorProductAdCollection"/>
+   <xs:complexType name="LogOrchestratorProductAdCollection">
+      <xs:sequence>
+         <xs:element name="LogOrchestratorProductAd" type="LogOrchestratorProductAd" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="LogOrchestratorProductAd">
+      <xs:sequence>
+         <xs:element name="idProduct" type="xs:decimal"/>
+         <xs:element name="name" type="xs:string" nillable="true"/>
+         <xs:element name="value" type="xs:string" nillable="true"/>
+         <xs:element name="status" nillable="true">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="30"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="uti" nillable="true">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="100"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="referencetransactiondate" type="xs:dateTime" nillable="true"/>
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>

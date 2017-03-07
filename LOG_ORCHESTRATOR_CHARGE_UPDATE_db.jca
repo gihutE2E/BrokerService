@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<adapter-config name="LOG_ORCHESTRATOR_CHARGE_UPDATE" adapter="Database Adapter" wsdlLocation="LOG_ORCHESTRATOR_CHARGE_UPDATE.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+   <connection-factory location="eis/DB/DBConnection" UIConnectionName="MDWDesa" adapterRef=""/>
+   <endpoint-interaction portType="LOG_ORCHESTRATOR_CHARGE_UPDATE_ptt" operation="update">
+      <interaction-spec className="oracle.tip.adapter.db.DBWriteInteractionSpec">
+         <property name="DescriptorName" value="LOG_ORCHESTRATOR_CHARGE_UPDATE.LogOrchestratorCharge"/>
+         <property name="DmlType" value="update"/>
+         <property name="MappingsMetaDataURL" value="LOG_ORCHESTRATOR_CHARGE_UPDATE-or-mappings.xml"/>
+         <property name="DetectOmissions" value="true"/>
+         <property name="GetActiveUnitOfWork" value="false"/>
+      </interaction-spec>
+   </endpoint-interaction>
+</adapter-config>

@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<properties>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.ID_CLIENTE:db_column_not_null">true</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.ID_TYPE:db_column_type">VARCHAR2</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.DATA_REFERENCE:db_column_not_null">false</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.STATUS:db_column_size">30</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.ID_CLIENTE:db_column_size">30</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE:db_table_type">TABLE</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE:db_column_7">REFERENCETRANSACTIONDATE</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE:db_column_6">UTI</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.CORRELATION_ID:db_column_not_null">true</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE:db_column_5">ID_TYPE</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE:db_column_4">ID_CLIENTE</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.DATA_VALUE:db_column_not_null">false</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.DATA_REFERENCE:db_column_size">30</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.REFERENCETRANSACTIONDATE:db_column_type">DATE</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE:db_column_3">STATUS</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.CORRELATION_ID:db_column_type">VARCHAR2</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.DATA_VALUE:db_column_type">VARCHAR2</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE:db_column_2">DATA_VALUE</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.UTI:db_column_size">100</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE:db_column_1">DATA_REFERENCE</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE:db_column_0">CORRELATION_ID</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.ID_TYPE:db_column_size">30</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.UTI:db_column_not_null">false</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.STATUS:db_column_type">VARCHAR2</entry>
+   <entry key="root_descriptor_alias">LOG_ORCHESTRATOR_DATA_CHANGE</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.CORRELATION_ID:db_column_size">100</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.DATA_VALUE:db_column_size">30</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.STATUS:db_column_not_null">false</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.ID_CLIENTE:db_column_type">VARCHAR2</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.ID_TYPE:db_column_not_null">true</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.DATA_REFERENCE:db_column_type">VARCHAR2</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.REFERENCETRANSACTIONDATE:db_column_not_null">false</entry>
+   <entry key="LOG_ORCHESTRATOR_DATA_CHANGE.UTI:db_column_type">VARCHAR2</entry>
+</properties>

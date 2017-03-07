@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="OrderBrokerService" targetNamespace="http://tigo.com/enterprise/business/task/OrderBroker/v1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="http://tigo.com/enterprise/business/task/OrderBroker/v1" xmlns:sch="http://tigo.com/enterprise/business/task/OrderBroker/v1/schema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:grs="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema">
+   <wsdl:types>
+      <xsd:schema targetNamespace="http://tigo.com/enterprise/business/task/OrderBroker/v1">
+         <xsd:import namespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/schema" schemaLocation="../../xsd/owner/OrderBroker_schema.xsd"/>
+         <xsd:import namespace="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema" schemaLocation="../../xsd/commons/resources/GeneralResponse.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="SubmitOrderRequest_msg">
+      <wsdl:part element="sch:SubmitOrder_Request" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="SubmitOrderResponse_msg">
+      <wsdl:part element="sch:SubmitOrder_Response" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="GetOrderRequest_msg">
+      <wsdl:part element="sch:GetOrder_Request" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="GetOrderResponse_msg">
+      <wsdl:part element="sch:GetOrder_Response" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="CancelOrderRequest_msg">
+      <wsdl:part element="sch:CancelOrder_Request" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="CancelOrderResponse_msg">
+      <wsdl:part element="sch:CancelOrder_Response" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="ResumeOrderRequest_msg">
+      <wsdl:part element="sch:ResumeOrder_Request" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="ResumeOrderResponse_msg">
+      <wsdl:part element="sch:ResumeOrder_Response" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="UpdateOrderRequest_msg">
+      <wsdl:part element="sch:UpdateOrder_Request" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="UpdateOrderResponse_msg">
+      <wsdl:part element="sch:UpdateOrder_Response" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="GeneralResponseMessage">
+      <wsdl:part element="grs:GeneralResponse" name="fault"/>
+   </wsdl:message>
+   <wsdl:portType name="OrderBrokerServicePortType">
+      <wsdl:operation name="SubmitOrder">
+         <wsdl:input name="SubmitOrder_RequestPort" message="tns:SubmitOrderRequest_msg"/>
+         <wsdl:output name="SubmitOrder_ResponsePort" message="tns:SubmitOrderResponse_msg"/>
+         <wsdl:fault message="tns:GeneralResponseMessage" name="fault"/>
+      </wsdl:operation>
+      <wsdl:operation name="GetOrder">
+         <wsdl:input name="GetOrder_RequestPort" message="tns:GetOrderRequest_msg"/>
+         <wsdl:output name="GetOrder_ResponsePort" message="tns:GetOrderResponse_msg"/>
+         <wsdl:fault message="tns:GeneralResponseMessage" name="fault"/>
+      </wsdl:operation>
+      <wsdl:operation name="CancelOrder">
+         <wsdl:input name="CancelOrder_RequestPort" message="tns:CancelOrderRequest_msg"/>
+         <wsdl:output name="CancelOrder_ResponsePort" message="tns:CancelOrderResponse_msg"/>
+         <wsdl:fault message="tns:GeneralResponseMessage" name="fault"/>
+      </wsdl:operation>
+      <wsdl:operation name="ResumeOrder">
+         <wsdl:input name="ResumeOrder_RequestPort" message="tns:ResumeOrderRequest_msg"/>
+         <wsdl:output name="ResumeOrder_ResponsePort" message="tns:ResumeOrderResponse_msg"/>
+         <wsdl:fault message="tns:GeneralResponseMessage" name="fault"/>
+      </wsdl:operation>
+      <wsdl:operation name="UpdateOrder">
+         <wsdl:input name="UpdateOrder_RequestPort" message="tns:UpdateOrderRequest_msg"/>
+         <wsdl:output name="UpdateOrder_ResponsePort" message="tns:UpdateOrderResponse_msg"/>
+         <wsdl:fault message="tns:GeneralResponseMessage" name="fault"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="OrderBroker_SOAP" type="tns:OrderBrokerServicePortType">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="SubmitOrder">
+         <soap:operation soapAction="http://tigo.com/NotificationService/SubmitRequest" soapActionRequired="true"/>
+         <wsdl:input name="SubmitOrder_RequestPort">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="SubmitOrder_ResponsePort">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="GetOrder">
+         <soap:operation soapAction="http://tigo.com/NotificationService/GetRequest" soapActionRequired="true"/>
+         <wsdl:input name="GetOrder_RequestPort">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="GetOrder_ResponsePort">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="CancelOrder">
+         <soap:operation soapAction=""/>
+         <wsdl:input name="CancelOrder_RequestPort">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="CancelOrder_ResponsePort">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="ResumeOrder">
+         <soap:operation soapAction=""/>
+         <wsdl:input name="ResumeOrder_RequestPort">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="ResumeOrder_ResponsePort">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="UpdateOrder">
+         <soap:operation soapAction=""/>
+         <wsdl:input name="UpdateOrder_RequestPort">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="UpdateOrder_ResponsePort">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="fault">
+            <soap:fault name="fault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+</wsdl:definitions>

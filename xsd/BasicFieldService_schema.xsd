@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/fieldService/v1/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://tigo.com/enterprise/serviceEntity/provisioning/fieldService/v1/schema" xmlns:add="http://tigo.com/commons/resources/additional/v1/schema">
+   <xsd:import namespace="http://tigo.com/commons/resources/additional/v1/schema" schemaLocation="commons/resources/BasicAdditional_schema.xsd"/>
+   <xsd:element name="fieldService" type="tns:fieldServiceType"/>
+   <xsd:complexType name="fieldServiceType">
+      <xsd:sequence>
+         <xsd:element name="FIELDSERVICECODE" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="executionDate" type="xsd:dateTime" minOccurs="1"/>
+         <xsd:element name="priority" type="xsd:string" minOccurs="1"/>
+         <xsd:element ref="add:additionals" minOccurs="0"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

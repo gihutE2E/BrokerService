@@ -1,0 +1,1690 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Mon Jan 21 22:07:09 COT 2013
+  Author:  Harcalejo
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="ProvideProcess"
+         targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:ns1="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns2="http://tigo.com/enterprise/taskService/provisioning/v1"
+         xmlns:ns3="http://tigo.com/enterprise/serviceEntity/configProduct/productConfiguration/v1"
+         xmlns:ns11="http://tigo.com/enterprise/serviceEntity/provisioning/dataChangeRequest/v1/schema"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:ns10="http://tigo.com/commons/resources/additional/v1/schema"
+         xmlns:ns8="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema"
+         xmlns:ns9="http://tigo.com/serviceEntity/provisioning/offeringDetail/v1/schema"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:ns6="http://tigo.com/enterprise/businessEntity/client/basic/v1/schema"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ns5="http://tigo.com/commons/basicRequest/v1/schema"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ns4="http://tigo.com/enterprise/taskService/provisioning/v1/schema"
+         xmlns:ns7="http://tigo.com/enterprise/serviceEntity/provisioning/order/v1/schema"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns12="http://tigo.com/platform/serviceEntity/configProduct/configProduct/v1/schema"
+         xmlns:ns13="http://tigo.com/platform/serviceEntity/configProduct/configProductDetail/v1/schema"
+         xmlns:ns14="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema"
+         xmlns:ns15="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_M_ADAPTER"
+         xmlns:ns16="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_M_ADAPTER"
+         xmlns:ns17="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_DETAIL"
+         xmlns:ns18="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_DETAIL"
+         xmlns:ns19="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/SEQ_NEXT_VAL"
+         xmlns:ns20="http://xmlns.oracle.com/pcbpel/adapter/db/OSBUSR/GET_NEXT_ID/"
+         xmlns:ns21="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_PRODUCT"
+         xmlns:ns22="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_PRODUCT"
+         xmlns:ns23="http://tigo.com/commons/generalResponse/v1/schema"
+         xmlns:ns26="http://tigo.com/enterprise/businessEntity/charge/v1/schema"
+         xmlns:ns27="http://tigo.com/enterprise/serviceEntity/provisioning/fieldService/v1/schema"
+         xmlns:ns24="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_PRODUCT_UPDATE"
+         xmlns:ns25="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_PRODUCT_UPDATE"
+         xmlns:ns28="http://tigo.hn/enterprise/faultNotificationService/createFault"
+         xmlns:ns29="http://tigo.hn/commons/resources/faultNotificationService/createFaultSchema/schema"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:ns30="http://xmlns.oracle.com/pcbpel/adapter/db/O2/O2/LOG_ORCHESTRATOR_PRODUCT_AD_ADAPTER"
+         xmlns:ns31="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_PRODUCT_AD_ADAPTER"
+         xmlns:ns32="http://tigo.com/enterprise/business/task/Notification/v1"
+         xmlns:ns33="http://tigo.com/enterprise/business/task/Notification/v1/schema"
+         xmlns:ns34="http://tigo.com/enterprise/taskService/provideProcess/schema"
+         xmlns:ns35="http://tigo.com/enterprise/resources/statusArray"
+         xmlns:ns36="http://tigo.com/commons/generalResponse/notify/v1/schema"
+         xmlns:ns37="http://xmlns.oracle.com/pcbpel/adapter/db/Broker/O2/TB_BROKER_ITEM_GROUP_SLCT_ADAPTER"
+         xmlns:ns38="http://tigo.com/resources/util/javaUtil/v1"
+         xmlns:ns39="http://tigo.com/resources/util/productItem/v1/schema"
+         xmlns:ns40="http://tigo.com/resources/util/javaUtil/v1/schema"
+         xmlns:ns41="http://tigo.com/enterprise/business/entities/order/v1/schema"
+         xmlns:ns42="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_BROKER_ITEM_GROUP_SLCT_ADAPTER">
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <import namespace="http://tigo.com/enterprise/business/entities/order/v1/schema"
+          location="xsd/util/item_type_schema.xsd"
+          importType="http://www.w3.org/2001/XMLSchema"/>
+  <import namespace="http://tigo.com/resources/util/productItem/v1/schema"
+          location="xsd/util/product_items_schema.xsd"
+          importType="http://www.w3.org/2001/XMLSchema"/>
+  <import namespace="http://tigo.com/enterprise/resources/statusArray"
+          location="xsd/process/resources/statusResult.xsd"
+          importType="http://www.w3.org/2001/XMLSchema"/>
+  <import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess"
+          location="wsdl/process/ProvideProcess.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <import namespace="http://tigo.com/enterprise/business/task/Notification/v1"
+          location="wsdl/partner/BasicNotificationServiceV2.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <import namespace="http://tigo.hn/enterprise/faultNotificationService/createFault"
+          location="wsdl/BasicFaultNotification.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="provideprocess_client"
+                 partnerLinkType="client:BasicProvisioningPort_PL"
+                 myRole="BasicProvisioningPort_Role"/>
+    <partnerLink name="LOG_ORCHESTRATOR_DETAIL"
+                 partnerLinkType="ns17:LOG_ORCHESTRATOR_DETAIL_plt"
+                 partnerRole="LOG_ORCHESTRATOR_DETAIL_role">
+      <bpelx:annotation>
+        <bpelx:general>
+          <bpelx:property name="userImage">database_lg.png</bpelx:property>
+        </bpelx:general>
+      </bpelx:annotation>
+    </partnerLink>
+    <partnerLink name="LOG_ORCHESTRATOR_PRODUCT_UPDATE"
+                 partnerLinkType="ns24:LOG_ORCHESTRATOR_PRODUCT_UPDATE_plt"
+                 partnerRole="LOG_ORCHESTRATOR_PRODUCT_UPDATE_role">
+      <bpelx:annotation>
+        <bpelx:general>
+          <bpelx:property name="userImage">database_lg.png</bpelx:property>
+        </bpelx:general>
+      </bpelx:annotation>
+    </partnerLink>
+    <partnerLink name="ProvisioningMediator.ProvisioningMediator"
+                 partnerLinkType="ns2:ProvisioningMediator.ProvisioningMediator"
+                 partnerRole="ProvisioningPort"/>
+    <partnerLink name="FaultNotificationService"
+                 partnerLinkType="ns28:FaultNotificationService"
+                 partnerRole="FaultNotification_Port">
+      <bpelx:annotation>
+        <bpelx:general>
+          <bpelx:property name="userImage">earth.png</bpelx:property>
+        </bpelx:general>
+      </bpelx:annotation>
+    </partnerLink>
+    <partnerLink name="LOG_ORCHESTRATOR_PRODUCT_AD_ADAPTER"
+                 partnerLinkType="ns30:LOG_ORCHESTRATOR_PRODUCT_AD_ADAPTER_plt"
+                 partnerRole="LOG_ORCHESTRATOR_PRODUCT_AD_ADAPTER_role">
+      <bpelx:annotation>
+        <bpelx:general>
+          <bpelx:property name="userImage">database_lg.png</bpelx:property>
+        </bpelx:general>
+      </bpelx:annotation>
+    </partnerLink>
+    <partnerLink name="TB_BROKER_ITEM_GROUP_SLCT_ADAPTER"
+                 partnerLinkType="ns37:TB_BROKER_ITEM_GROUP_SLCT_ADAPTER_plt"
+                 partnerRole="TB_BROKER_ITEM_GROUP_SLCT_ADAPTER_role"/>
+    <partnerLink name="ProductUtilService"
+                 partnerLinkType="ns38:ProductUtilService"
+                 partnerRole="UtilServicePortType">
+      <bpelx:annotation>
+        <bpelx:general>
+          <bpelx:property name="userImage">earth.png</bpelx:property>
+        </bpelx:general>
+      </bpelx:annotation>
+    </partnerLink>
+  </partnerLinks>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="Invoke_Provisioning_InputVariable"
+              messageType="ns2:BasicProvisioningRequest_msg"/>
+    <variable name="Invoke_Provisioning_OutputVariable"
+              messageType="ns2:BasicProvisioningResponse_msg"/>
+    <variable name="inputVariable"
+              messageType="client:BasicProvisioningRequest_msg"/>
+    <variable name="outputVariable"
+              messageType="client:BasicProvisioningResponse_msg"/>
+    <variable name="variable_order" element="ns7:order"/>
+    <variable name="offeringType" type="ns14:productOfferingType"/>
+    <variable name="order_clean" element="ns7:order"/>
+    <variable name="generalResponse"
+              messageType="client:GeneralResponse__fault_msg"/>
+    <variable name="Invoke_LogDetail_insert_Input"
+              messageType="ns17:LogOrchestratorProductCollection_msg"/>
+    <variable name="Invoke_LogProductUpdate_Input"
+              messageType="ns24:LogOrchestratorProductCollection_msg"/>
+    <variable name="Invoke_Provisioning_Input"
+              messageType="ns2:BasicProvisioningRequest_msg"/>
+    <variable name="Invoke_Provisioning_Output"
+              messageType="ns2:BasicProvisioningResponse_msg"/>
+    <variable name="Invoke_CreateFault_Input"
+              messageType="ns28:CreateFaultRequest_msg"/>
+    <variable name="Invoke_CreateFault_Output"
+              messageType="ns28:CreateFaultResponse_msg"/>
+    <variable name="generalStatus" type="xsd:string"/>
+    <variable name="input_LogAdditionals"
+              messageType="ns30:LogOrchestratorProductAdCollection_msg"/>
+    <variable name="LogAdditionalsInsert"
+              element="ns31:LogOrchestratorProductAdCollection"/>
+    <variable name="correlationId" type="xsd:string"/>
+    <variable name="globalFaultVariable" element="ns23:GeneralResponse"/>
+    <variable name="ReferenceTransactionDate" type="xsd:string"/>
+    <variable name="RequestNotification" messageType="ns32:NotifyRequest_msg"/>
+    <variable name="statusArray" element="ns35:statusArray"/>
+    <variable name="itemID" type="xsd:string"/>
+    <variable name="detailID" type="xsd:string"/>
+    <variable name="notifyGeneralResponse"
+              messageType="client:GeneralResponse__fault_msg"/>
+    <variable name="InvokeGetGroupConf_Output"
+              messageType="ns37:TbBrokerItemGroupConfCollection_msg"/>
+    <variable name="InvokeProductUtil_execute_Input"
+              messageType="ns38:executeRequest_msg"/>
+    <variable name="InvokeProductUtil_execute_Output"
+              messageType="ns38:executeResponse_msg"/>
+    <variable name="productItems" element="ns39:productItemList"/>
+    <variable name="itemGroups" element="ns39:productItemList"/>
+    <variable name="itemType" element="ns41:item"/>
+    <variable name="InvokeGetGroupConf_Input"
+              messageType="ns37:TB_BROKER_ITEM_GROUP_SLCT_ADAPTERSelect_inputParameters"/>
+  </variables>
+  <faultHandlers>
+    <catch faultName="ns28:fault">
+      <sequence name="FaultNotification">
+        <if name="Product">
+          <documentation>NotEmpty</documentation>
+          <condition>$detailID != ''</condition>
+          <scope name="LogOrchestratorProductError" exitOnStandardFault="no">
+            <bpelx:annotation>
+              <bpelx:general>
+                <bpelx:property name="userDescription">ErrorParametrizado</bpelx:property>
+                <bpelx:property name="userImage">database_lg.png</bpelx:property>
+              </bpelx:general>
+            </bpelx:annotation>
+            <faultHandlers>
+              <catchAll>
+                <scope name="FaultNotificationService" exitOnStandardFault="no">
+                  <bpelx:annotation>
+                    <bpelx:general>
+                      <bpelx:property name="userImage">earth.png</bpelx:property>
+                    </bpelx:general>
+                  </bpelx:annotation>
+                  <faultHandlers>
+                    <catch faultName="ns28:fault" faultVariable="faultVariable"
+                           faultElement="ns23:GeneralResponse">
+                      <sequence name="fault">
+                        <empty name="Empty1"/>
+                      </sequence>
+                    </catch>
+                  </faultHandlers>
+                  <sequence name="FaultNotification">
+                    <assign name="Assign_FaultNotificationReq">
+                      <copy>
+                        <from>$correlationId</from>
+                        <to>$Invoke_CreateFault_Input.body/uti</to>
+                      </copy>
+                      <copy>
+                        <from><literal>INS_ORCHESTRATOR_PRODUCT_UP</literal></from>
+                        <to>$Invoke_CreateFault_Input.body/instanceID</to>
+                      </copy>
+                      <copy>
+                        <from><literal>O2_TEC16</literal></from>
+                        <to>$Invoke_CreateFault_Input.body/reasonID</to>
+                      </copy>
+                      <copy>
+                        <from><literal>266</literal></from>
+                        <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+                      </copy>
+                      <copy>
+                        <from><literal>5</literal></from>
+                        <to>$Invoke_CreateFault_Input.body/errorID</to>
+                      </copy>
+                      <copy>
+                        <from><literal>SOA</literal></from>
+                        <to>$Invoke_CreateFault_Input.body/userName</to>
+                      </copy>
+                      <copy>
+                        <from><literal>O2Service_Bpel</literal></from>
+                        <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+                      </copy>
+                      <copy>
+                        <from>ora:getFaultAsString()</from>
+                        <to>$Invoke_CreateFault_Input.body/detailError</to>
+                      </copy>
+                      <copy>
+                        <from><literal>LogOrchestratorProductError - ProvideProcess</literal></from>
+                        <to>$Invoke_CreateFault_Input.body/stageName</to>
+                      </copy>
+                      <copy>
+                        <from><literal>177</literal></from>
+                        <to>$Invoke_CreateFault_Input.body/serviceID</to>
+                      </copy>
+                    </assign>
+                    <invoke name="Invoke_FaultNotification"
+                            partnerLink="FaultNotificationService"
+                            portType="ns28:FaultNotification_Port"
+                            operation="CreateFault"
+                            inputVariable="Invoke_CreateFault_Input"
+                            outputVariable="Invoke_CreateFault_Output"
+                            bpelx:invokeAsDetail="no"/>
+                  </sequence>
+                </scope>
+              </catchAll>
+            </faultHandlers>
+            <sequence name="LogOrchestratorProductError">
+              <invoke name="Invoke_LogProductUpdate"
+                      partnerLink="LOG_ORCHESTRATOR_PRODUCT_UPDATE"
+                      portType="ns24:LOG_ORCHESTRATOR_PRODUCT_UPDATE_ptt"
+                      operation="update"
+                      inputVariable="Invoke_LogProductUpdate_Input"
+                      bpelx:invokeAsDetail="no"/>
+            </sequence>
+          </scope>
+        </if>
+        <reply name="ReplyFault" faultName="client:fault"
+               variable="notifyGeneralResponse"
+               partnerLink="provideprocess_client"
+               portType="client:BasicProvisioningPort"
+               operation="ExecuteOrder"/>
+        <exit name="Exit4"/>
+      </sequence>
+    </catch>
+    <catchAll>
+      <sequence name="FaultNotificationErrorOrder">
+        <if name="Product">
+          <documentation>NotEmpty</documentation>
+          <condition>$detailID &gt; 0</condition>
+          <sequence name="NotEmpty">
+            <scope name="LogOrchestratorProductOrderError"
+                   exitOnStandardFault="no">
+              <bpelx:annotation>
+                <bpelx:general>
+                  <bpelx:property name="userDescription">ErrorParametrizado</bpelx:property>
+                  <bpelx:property name="userImage">database_lg.png</bpelx:property>
+                </bpelx:general>
+              </bpelx:annotation>
+              <faultHandlers>
+                <catchAll>
+                  <scope name="FaultNotificationService"
+                         exitOnStandardFault="no">
+                    <bpelx:annotation>
+                      <bpelx:general>
+                        <bpelx:property name="userImage">earth.png</bpelx:property>
+                      </bpelx:general>
+                    </bpelx:annotation>
+                    <faultHandlers>
+                      <catch faultName="ns28:fault"
+                             faultVariable="faultVariable"
+                             faultElement="ns23:GeneralResponse">
+                        <sequence name="fault">
+                          <empty name="Empty1"/>
+                        </sequence>
+                      </catch>
+                    </faultHandlers>
+                    <sequence name="FaultNotification">
+                      <assign name="Assign_FaultNotificationReq">
+                        <copy>
+                          <from>$correlationId</from>
+                          <to>$Invoke_CreateFault_Input.body/uti</to>
+                        </copy>
+                        <copy>
+                          <from><literal>INS_ORCHESTRATOR_PRODUCT_UP</literal></from>
+                          <to>$Invoke_CreateFault_Input.body/instanceID</to>
+                        </copy>
+                        <copy>
+                          <from><literal>O2_TEC16</literal></from>
+                          <to>$Invoke_CreateFault_Input.body/reasonID</to>
+                        </copy>
+                        <copy>
+                          <from><literal>266</literal></from>
+                          <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+                        </copy>
+                        <copy>
+                          <from><literal>5</literal></from>
+                          <to>$Invoke_CreateFault_Input.body/errorID</to>
+                        </copy>
+                        <copy>
+                          <from><literal>SOA</literal></from>
+                          <to>$Invoke_CreateFault_Input.body/userName</to>
+                        </copy>
+                        <copy>
+                          <from><literal>O2Service_Bpel</literal></from>
+                          <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+                        </copy>
+                        <copy>
+                          <from>ora:getFaultAsString()</from>
+                          <to>$Invoke_CreateFault_Input.body/detailError</to>
+                        </copy>
+                        <copy>
+                          <from><literal>LogOrchestratorProductOrderError - ProvideProcess</literal></from>
+                          <to>$Invoke_CreateFault_Input.body/stageName</to>
+                        </copy>
+                        <copy>
+                          <from><literal>177</literal></from>
+                          <to>$Invoke_CreateFault_Input.body/serviceID</to>
+                        </copy>
+                      </assign>
+                      <invoke name="Invoke_FaultNotification"
+                              partnerLink="FaultNotificationService"
+                              portType="ns28:FaultNotification_Port"
+                              operation="CreateFault"
+                              inputVariable="Invoke_CreateFault_Input"
+                              outputVariable="Invoke_CreateFault_Output"
+                              bpelx:invokeAsDetail="no"/>
+                    </sequence>
+                  </scope>
+                </catchAll>
+              </faultHandlers>
+              <sequence name="LogOrchestratorProductOrderError">
+                <assign name="AssignLogProductUpdate">
+                  <copy>
+                    <from>$detailID</from>
+                    <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:id</to>
+                  </copy>
+                  <copy>
+                    <from><literal>ERROR</literal></from>
+                    <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:status</to>
+                  </copy>
+                </assign>
+                <invoke name="Invoke_LogProductUpdate"
+                        partnerLink="LOG_ORCHESTRATOR_PRODUCT_UPDATE"
+                        portType="ns24:LOG_ORCHESTRATOR_PRODUCT_UPDATE_ptt"
+                        operation="update"
+                        inputVariable="Invoke_LogProductUpdate_Input"
+                        bpelx:invokeAsDetail="no"/>
+              </sequence>
+            </scope>
+          </sequence>
+        </if>
+        <scope name="faultNotificationOrderError" exitOnStandardFault="no">
+          <faultHandlers>
+            <catch faultName="ns28:fault" faultVariable="faultVariable"
+                   faultElement="ns23:GeneralResponse">
+              <assign name="AssignGeneralResponse">
+                <copy>
+                  <from>$correlationId</from>
+                  <to>$generalResponse.fault/uti</to>
+                </copy>
+                <copy>
+                  <from>$faultVariable/status</from>
+                  <to>$generalResponse.fault/status</to>
+                </copy>
+                <copy>
+                  <from>$faultVariable/code</from>
+                  <to>$generalResponse.fault/code</to>
+                </copy>
+                <copy>
+                  <from>$faultVariable/message</from>
+                  <to>$generalResponse.fault/message</to>
+                </copy>
+              </assign>
+            </catch>
+          </faultHandlers>
+          <sequence name="faultNotification">
+            <assign name="AssignFaultNotification">
+              <copy>
+                <from>$correlationId</from>
+                <to>$Invoke_CreateFault_Input.body/uti</to>
+              </copy>
+              <copy>
+                <from><literal>ProvideProcess - ProvideProcess</literal></from>
+                <to>$Invoke_CreateFault_Input.body/stageName</to>
+              </copy>
+              <copy>
+                <from><literal>INS_O2_PROVIDE_PROCESS</literal></from>
+                <to>$Invoke_CreateFault_Input.body/instanceID</to>
+              </copy>
+              <copy>
+                <from><literal>O2_TEC17</literal></from>
+                <to>$Invoke_CreateFault_Input.body/reasonID</to>
+              </copy>
+              <copy>
+                <from><literal>293</literal></from>
+                <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+              </copy>
+              <copy>
+                <from><literal>3</literal></from>
+                <to>$Invoke_CreateFault_Input.body/errorID</to>
+              </copy>
+              <copy>
+                <from><literal>177</literal></from>
+                <to>$Invoke_CreateFault_Input.body/serviceID</to>
+              </copy>
+              <copy>
+                <from><literal>O2Service_Bpel</literal></from>
+                <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+              </copy>
+              <copy>
+                <from><literal>SOA</literal></from>
+                <to>$Invoke_CreateFault_Input.body/userName</to>
+              </copy>
+              <copy>
+                <from>ora:getFaultAsString()</from>
+                <to>$Invoke_CreateFault_Input.body/detailError</to>
+              </copy>
+            </assign>
+            <invoke name="InvokeFaultNotification"
+                    partnerLink="FaultNotificationService"
+                    portType="ns28:FaultNotification_Port"
+                    operation="CreateFault"
+                    inputVariable="Invoke_CreateFault_Input"
+                    outputVariable="Invoke_CreateFault_Output"
+                    bpelx:invokeAsDetail="no"/>
+          </sequence>
+        </scope>
+        <reply name="ReplyFault" faultName="client:fault"
+               variable="generalResponse" partnerLink="provideprocess_client"
+               portType="client:BasicProvisioningPort"
+               operation="ExecuteOrder"/>
+        <exit name="Exit4"/>
+      </sequence>
+    </catchAll>
+  </faultHandlers>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+    <!-- Receive input from requestor. (Note: This maps to operation defined in ProvideProcess.wsdl) -->
+    <receive name="receiveInput" partnerLink="provideprocess_client"
+             portType="client:BasicProvisioningPort" operation="ExecuteOrder"
+             variable="inputVariable" createInstance="yes"/>
+    <!-- Generate reply to synchronous request -->
+    <assign name="AssignReferenceTransaction">
+      <copy>
+        <from>$inputVariable.body/productOffering/ns7:order[1]/ns10:additionals/additional[name='REFERENCETRANSACTIONDATE']/value</from>
+        <to>$ReferenceTransactionDate</to>
+      </copy>
+    </assign>
+    <if name="HeredarCorrelation">
+      <documentation>NotEmpty</documentation>
+      <condition>concat($inputVariable.body/ns5:basicRequest/utiReference,'') != ''</condition>
+      <assign name="AssignCorrelation">
+        <copy>
+          <from>$inputVariable.body/ns5:basicRequest/utiReference</from>
+          <to>$correlationId</to>
+        </copy>
+      </assign>
+      <else>
+        <documentation>Empty</documentation>
+        <assign name="AssignCorrelation">
+          <copy>
+            <from>ora:getECID()</from>
+            <to>$correlationId</to>
+          </copy>
+        </assign>
+      </else>
+    </if>
+    <assign name="Transform_StatusArray">
+      <bpelx:annotation>
+        <bpelx:pattern patternName="bpelx:transformation"/>
+      </bpelx:annotation>
+      <copy>
+        <from>ora:doXSLTransformForDoc("xsl/Transformation_ToStatusArray.xsl", $inputVariable.body)</from>
+        <to variable="statusArray"/>
+      </copy>
+    </assign>
+    <scope name="SimplifyProducts" exitOnStandardFault="no">
+      <sequence name="SimplifyProducts">
+        <scope name="GetGroupConfig" exitOnStandardFault="no">
+          <faultHandlers>
+            <catchAll>
+              <empty name="Empty3"/>
+            </catchAll>
+          </faultHandlers>
+          <sequence name="Sequence1">
+            <assign name="Assign1">
+              <copy>
+                <from><literal>dum</literal></from>
+                <to>$InvokeGetGroupConf_Input.TB_BROKER_ITEM_GROUP_SLCT_ADAPTERSelect_inputParameters/ns42:dummy</to>
+              </copy>
+            </assign>
+            <invoke name="InvokeGetGroupConf"
+                    partnerLink="TB_BROKER_ITEM_GROUP_SLCT_ADAPTER"
+                    portType="ns37:TB_BROKER_ITEM_GROUP_SLCT_ADAPTER_ptt"
+                    operation="TB_BROKER_ITEM_GROUP_SLCT_ADAPTERSelect"
+                    inputVariable="InvokeGetGroupConf_Input"
+                    outputVariable="InvokeGetGroupConf_Output"
+                    bpelx:invokeAsDetail="no"/>
+          </sequence>
+        </scope>
+        <scope name="ProductUtil" exitOnStandardFault="no">
+          <bpelx:annotation>
+            <bpelx:general>
+              <bpelx:property name="userLabel">ProductsUtil</bpelx:property>
+            </bpelx:general>
+          </bpelx:annotation>
+          <faultHandlers>
+            <catchAll>
+              <empty name="Empty2"/>
+            </catchAll>
+          </faultHandlers>
+          <sequence name="ProductUtil">
+            <assign name="TransformToProductUtil">
+              <bpelx:annotation>
+                <bpelx:pattern patternName="bpelx:transformation"/>
+              </bpelx:annotation>
+              <copy>
+                <from>ora:doXSLTransformForDoc("xsl/Transformation_OrderToProductItems.xsl", $inputVariable.body)</from>
+                <to variable="productItems"/>
+              </copy>
+            </assign>
+            <assign name="TransformGroupToProductItem">
+              <bpelx:annotation>
+                <bpelx:pattern patternName="bpelx:transformation"/>
+              </bpelx:annotation>
+              <copy>
+                <from>ora:doXSLTransformForDoc("xsl/Transformation_GroupsToProductItems.xsl", $InvokeGetGroupConf_Output.TbBrokerItemGroupConfCollection)</from>
+                <to variable="itemGroups"/>
+              </copy>
+            </assign>
+            <assign name="AssignProductUtilReq">
+              <copy>
+                <from><literal>INPUT</literal></from>
+                <to>$itemType/itemContent/content/contentType</to>
+              </copy>
+              <copy>
+                <from>$productItems</from>
+                <to>$itemType/itemContent/content/payload</to>
+              </copy>
+              <copy ignoreMissingFromData="yes">
+                <from>$itemType</from>
+                <to>$InvokeProductUtil_execute_Input.body/items</to>
+              </copy>
+              <copy ignoreMissingFromData="yes">
+                <from><literal>COMPARE</literal></from>
+                <to>$itemType/itemContent/content/contentType</to>
+              </copy>
+              <copy>
+                <from>$itemGroups</from>
+                <to>$itemType/itemContent/content/payload</to>
+              </copy>
+              <extensionAssignOperation>
+                <bpelx:append ignoreMissingFromData="yes">
+                  <bpelx:from>$itemType</bpelx:from>
+                  <bpelx:to>$InvokeProductUtil_execute_Input.body/items</bpelx:to>
+                </bpelx:append>
+              </extensionAssignOperation>
+            </assign>
+            <assign name="TransformToProductUtil">
+              <bpelx:annotation>
+                <bpelx:pattern patternName="bpelx:transformation"/>
+              </bpelx:annotation>
+              <copy>
+                <from>ora:doXSLTransformForDoc("xsl/Transformation_ToProductUtil.xsl", $productItems, "itemGroups", $itemGroups)</from>
+                <to variable="InvokeProductUtil_execute_Input" part="body"/>
+              </copy>
+            </assign>
+            <invoke name="InvokeProductUtil" partnerLink="ProductUtilService"
+                    portType="ns38:UtilServicePortType" operation="execute"
+                    inputVariable="InvokeProductUtil_execute_Input"
+                    outputVariable="InvokeProductUtil_execute_Output"
+                    bpelx:invokeAsDetail="no"/>
+          </sequence>
+        </scope>
+      </sequence>
+    </scope>
+    <assign name="Transform_NotificationRequest">
+      <bpelx:annotation>
+        <bpelx:pattern patternName="bpelx:transformation"/>
+      </bpelx:annotation>
+      <copy>
+        <from>ora:doXSLTransformForDoc("xsl/Transformation_ToRequestNotification.xsl", $inputVariable.body)</from>
+        <to variable="RequestNotification" part="body"/>
+      </copy>
+    </assign>
+    <forEach parallel="no" counterName="orderCounter" name="Order">
+      <startCounterValue>1</startCounterValue>
+      <finalCounterValue>ora:countNodes('inputVariable','body','productOffering/ns7:order')</finalCounterValue>
+      <scope name="Orders" exitOnStandardFault="no">
+        <sequence name="Orders">
+          <scope name="InsertLogOrchestratorProduct" exitOnStandardFault="no">
+            <bpelx:annotation>
+              <bpelx:general>
+                <bpelx:property name="userDescription">ErrorParametrizado</bpelx:property>
+                <bpelx:property name="userImage">database_lg.png</bpelx:property>
+              </bpelx:general>
+            </bpelx:annotation>
+            <faultHandlers>
+              <catchAll>
+                <scope name="FaultNotification" exitOnStandardFault="no">
+                  <bpelx:annotation>
+                    <bpelx:general>
+                      <bpelx:property name="userImage">earth.png</bpelx:property>
+                    </bpelx:general>
+                  </bpelx:annotation>
+                  <faultHandlers>
+                    <catch faultName="ns28:fault" faultVariable="faultVariable"
+                           faultElement="ns23:GeneralResponse">
+                      <sequence name="fault">
+                        <assign name="Assign_fault">
+                          <copy>
+                            <from>$faultVariable/status</from>
+                            <to>$generalResponse.fault/status</to>
+                          </copy>
+                          <copy>
+                            <from>$faultVariable/code</from>
+                            <to>$generalResponse.fault/code</to>
+                          </copy>
+                          <copy>
+                            <from>$faultVariable/message</from>
+                            <to>$generalResponse.fault/message</to>
+                          </copy>
+                          <copy>
+                            <from>$correlationId</from>
+                            <to>$generalResponse.fault/uti</to>
+                          </copy>
+                        </assign>
+                        <assign name="AssignLogProductUpdate">
+                          <copy>
+                            <from>$detailID</from>
+                            <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:id</to>
+                          </copy>
+                          <copy>
+                            <from><literal>ERROR</literal></from>
+                            <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:status</to>
+                          </copy>
+                        </assign>
+                        <throw name="FaultNotification" faultName="ns28:fault"
+                               faultVariable="globalFaultVariable"/>
+                      </sequence>
+                    </catch>
+                  </faultHandlers>
+                  <sequence name="FaultNotification">
+                    <assign name="Assign_FaultNotificationReq">
+                      <copy>
+                        <from>$correlationId</from>
+                        <to>$Invoke_CreateFault_Input.body/uti</to>
+                      </copy>
+                      <copy>
+                        <from><literal>INS_ORCHESTRATOR_PRODUCT_INS</literal></from>
+                        <to>$Invoke_CreateFault_Input.body/instanceID</to>
+                      </copy>
+                      <copy>
+                        <from><literal>262</literal></from>
+                        <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+                      </copy>
+                      <copy>
+                        <from><literal>O2_TEC13</literal></from>
+                        <to>$Invoke_CreateFault_Input.body/reasonID</to>
+                      </copy>
+                      <copy>
+                        <from><literal>5</literal></from>
+                        <to>$Invoke_CreateFault_Input.body/errorID</to>
+                      </copy>
+                      <copy>
+                        <from><literal>SOA</literal></from>
+                        <to>$Invoke_CreateFault_Input.body/userName</to>
+                      </copy>
+                      <copy>
+                        <from><literal>O2Service_Bpel</literal></from>
+                        <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+                      </copy>
+                      <copy>
+                        <from>ora:getFaultAsString()</from>
+                        <to>$Invoke_CreateFault_Input.body/detailError</to>
+                      </copy>
+                      <copy>
+                        <from><literal>InsertLogOrchestratorProduct - ProvideProcess</literal></from>
+                        <to>$Invoke_CreateFault_Input.body/stageName</to>
+                      </copy>
+                      <copy>
+                        <from><literal>177</literal></from>
+                        <to>$Invoke_CreateFault_Input.body/serviceID</to>
+                      </copy>
+                    </assign>
+                    <invoke name="Invoke_FaultNotification"
+                            partnerLink="FaultNotificationService"
+                            portType="ns28:FaultNotification_Port"
+                            operation="CreateFault"
+                            inputVariable="Invoke_CreateFault_Input"
+                            outputVariable="Invoke_CreateFault_Output"
+                            bpelx:invokeAsDetail="no"/>
+                  </sequence>
+                </scope>
+              </catchAll>
+            </faultHandlers>
+            <sequence name="InsertLogOrchestratorProduct">
+              <assign name="Assign_LogD_Insert">
+                <copy>
+                  <from>oraext:generate-guid()</from>
+                  <to>$detailID</to>
+                </copy>
+                <copy>
+                  <from>$detailID</from>
+                  <to>$Invoke_LogDetail_insert_Input.LogOrchestratorProductCollection/ns18:LogOrchestratorProduct/ns18:id</to>
+                </copy>
+                <copy>
+                  <from>$correlationId</from>
+                  <to>$Invoke_LogDetail_insert_Input.LogOrchestratorProductCollection/ns18:LogOrchestratorProduct/ns18:correlationId</to>
+                </copy>
+                <copy>
+                  <from>$inputVariable.body/ns6:client/ID</from>
+                  <to>$Invoke_LogDetail_insert_Input.LogOrchestratorProductCollection/ns18:LogOrchestratorProduct/ns18:idCliente</to>
+                </copy>
+                <copy>
+                  <from>$inputVariable.body/ns6:client/idType</from>
+                  <to>$Invoke_LogDetail_insert_Input.LogOrchestratorProductCollection/ns18:LogOrchestratorProduct/ns18:idType</to>
+                </copy>
+                <copy>
+                  <from>$inputVariable.body/productOffering/ns7:order[$orderCounter]/ns8:product/CODE</from>
+                  <to>$Invoke_LogDetail_insert_Input.LogOrchestratorProductCollection/ns18:LogOrchestratorProduct/ns18:code</to>
+                </copy>
+                <copy>
+                  <from>'PROCESSING'</from>
+                  <to>$Invoke_LogDetail_insert_Input.LogOrchestratorProductCollection/ns18:LogOrchestratorProduct/ns18:status</to>
+                </copy>
+                <copy>
+                  <from>$inputVariable.body/productOffering/ns7:order[$orderCounter]/ns8:product/name</from>
+                  <to>$Invoke_LogDetail_insert_Input.LogOrchestratorProductCollection/ns18:LogOrchestratorProduct/ns18:name</to>
+                </copy>
+                <copy>
+                  <from>$inputVariable.body/productOffering/ns7:order[$orderCounter]/ns9:offeringDetail/value</from>
+                  <to>$Invoke_LogDetail_insert_Input.LogOrchestratorProductCollection/ns18:LogOrchestratorProduct/ns18:value</to>
+                </copy>
+                <copy ignoreMissingFromData="yes">
+                  <from>$inputVariable.body/productOffering/ns7:order[$orderCounter]/ns9:offeringDetail/currency</from>
+                  <to>$Invoke_LogDetail_insert_Input.LogOrchestratorProductCollection/ns18:LogOrchestratorProduct/ns18:currency</to>
+                </copy>
+                <copy ignoreMissingFromData="yes">
+                  <from>$inputVariable.body/productOffering/ns7:order[$orderCounter]/ns9:offeringDetail/expirationDate</from>
+                  <to>$Invoke_LogDetail_insert_Input.LogOrchestratorProductCollection/ns18:LogOrchestratorProduct/ns18:expirationDate</to>
+                </copy>
+                <copy ignoreMissingFromData="yes">
+                  <from>$inputVariable.body/productOffering/ns7:order[$orderCounter]/ns9:offeringDetail/startDate</from>
+                  <to>$Invoke_LogDetail_insert_Input.LogOrchestratorProductCollection/ns18:LogOrchestratorProduct/ns18:startDate</to>
+                </copy>
+                <copy ignoreMissingFromData="yes">
+                  <from>$inputVariable.body/productOffering/ns7:order[$orderCounter]/ns9:offeringDetail/defer</from>
+                  <to>$Invoke_LogDetail_insert_Input.LogOrchestratorProductCollection/ns18:LogOrchestratorProduct/ns18:defer</to>
+                </copy>
+                <copy ignoreMissingFromData="yes">
+                  <from>$inputVariable.body/productOffering/ns7:order[$orderCounter]/ns9:offeringDetail/offerAction</from>
+                  <to>$Invoke_LogDetail_insert_Input.LogOrchestratorProductCollection/ns18:LogOrchestratorProduct/ns18:offerAction</to>
+                </copy>
+                <copy>
+                  <from>$ReferenceTransactionDate</from>
+                  <to>$Invoke_LogDetail_insert_Input.LogOrchestratorProductCollection/ns18:LogOrchestratorProduct/ns18:referencetransactiondate</to>
+                </copy>
+              </assign>
+              <invoke name="Invoke_LogDetail"
+                      partnerLink="LOG_ORCHESTRATOR_DETAIL"
+                      portType="ns17:LOG_ORCHESTRATOR_DETAIL_ptt"
+                      operation="insert"
+                      inputVariable="Invoke_LogDetail_insert_Input"
+                      bpelx:invokeAsDetail="no"/>
+            </sequence>
+          </scope>
+          <if name="If_HasAdditionals">
+            <documentation>Has Additionals</documentation>
+            <condition>ora:countNodes('inputVariable','body','productOffering/ns7:order[$orderCounter]/ns10:additionals/additional') &gt; 0</condition>
+            <sequence name="Seq_LogAdditionals">
+              <if name="If_HasItems">
+                <documentation>HasItems</documentation>
+                <condition>ora:countNodes('input_LogAdditionals','LogOrchestratorProductAdCollection','ns31:LogOrchestratorProductAd')&gt;0</condition>
+                <assign name="Assign_ClearAdditionals">
+                  <extensionAssignOperation>
+                    <bpelx:remove>
+                      <bpelx:target>$input_LogAdditionals.LogOrchestratorProductAdCollection/ns31:LogOrchestratorProductAd</bpelx:target>
+                    </bpelx:remove>
+                  </extensionAssignOperation>
+                </assign>
+              </if>
+              <forEach parallel="no" counterName="Additional"
+                       name="ForEachAdditional">
+                <startCounterValue>1</startCounterValue>
+                <finalCounterValue>ora:countNodes('inputVariable','body','productOffering/ns7:order[$orderCounter]/ns10:additionals/additional')</finalCounterValue>
+                <scope name="Scope_LogAdditionals" exitOnStandardFault="no">
+                  <sequence>
+                    <assign name="Assign_Additionals">
+                      <copy ignoreMissingFromData="yes">
+                        <from>$inputVariable.body/productOffering/ns7:order[$orderCounter]/ns8:product/CODE</from>
+                        <to>$LogAdditionalsInsert/ns31:LogOrchestratorProductAd/ns31:idProduct</to>
+                      </copy>
+                      <copy>
+                        <from>$correlationId</from>
+                        <to>$LogAdditionalsInsert/ns31:LogOrchestratorProductAd/ns31:uti</to>
+                      </copy>
+                      <copy ignoreMissingFromData="yes">
+                        <from>$inputVariable.body/productOffering/ns7:order[$orderCounter]/ns10:additionals/additional[$Additional]/name</from>
+                        <to>$LogAdditionalsInsert/ns31:LogOrchestratorProductAd/ns31:name</to>
+                      </copy>
+                      <copy ignoreMissingFromData="yes">
+                        <from>$inputVariable.body/productOffering/ns7:order[$orderCounter]/ns10:additionals/additional[$Additional]/value</from>
+                        <to>$LogAdditionalsInsert/ns31:LogOrchestratorProductAd/ns31:value</to>
+                      </copy>
+                    </assign>
+                    <assign name="Assign_AddAdditional">
+                      <extensionAssignOperation>
+                        <bpelx:append ignoreMissingFromData="yes">
+                          <bpelx:from>$LogAdditionalsInsert/ns31:LogOrchestratorProductAd</bpelx:from>
+                          <bpelx:to>$input_LogAdditionals.LogOrchestratorProductAdCollection</bpelx:to>
+                        </bpelx:append>
+                      </extensionAssignOperation>
+                    </assign>
+                  </sequence>
+                </scope>
+              </forEach>
+              <scope name="LogOrchestratorProductAd" exitOnStandardFault="no">
+                <bpelx:annotation>
+                  <bpelx:general>
+                    <bpelx:property name="userDescription">ErrorParametrizado</bpelx:property>
+                    <bpelx:property name="userImage">database_lg.png</bpelx:property>
+                  </bpelx:general>
+                </bpelx:annotation>
+                <faultHandlers>
+                  <catchAll>
+                    <scope name="faultNotification" exitOnStandardFault="no">
+                      <bpelx:annotation>
+                        <bpelx:general>
+                          <bpelx:property name="userImage">earth.png</bpelx:property>
+                        </bpelx:general>
+                      </bpelx:annotation>
+                      <faultHandlers>
+                        <catch faultName="ns28:fault"
+                               faultVariable="faultVariable"
+                               faultElement="ns23:GeneralResponse">
+                          <sequence name="fault">
+                            <assign name="AssignGeneralResponse">
+                              <copy>
+                                <from>$correlationId</from>
+                                <to>$generalResponse.fault/uti</to>
+                              </copy>
+                              <copy>
+                                <from>$faultVariable/status</from>
+                                <to>$generalResponse.fault/status</to>
+                              </copy>
+                              <copy>
+                                <from>$faultVariable/code</from>
+                                <to>$generalResponse.fault/code</to>
+                              </copy>
+                              <copy>
+                                <from>$faultVariable/message</from>
+                                <to>$generalResponse.fault/message</to>
+                              </copy>
+                            </assign>
+                            <assign name="AssignLogProductUpdate">
+                              <copy>
+                                <from>$detailID</from>
+                                <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:id</to>
+                              </copy>
+                              <copy>
+                                <from><literal>ERROR</literal></from>
+                                <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:status</to>
+                              </copy>
+                            </assign>
+                            <throw name="FaultNotification"
+                                   faultName="ns28:fault"
+                                   faultVariable="globalFaultVariable"/>
+                          </sequence>
+                        </catch>
+                      </faultHandlers>
+                      <sequence name="faultNotification">
+                        <assign name="AssignFaultNotification">
+                          <copy>
+                            <from>$correlationId</from>
+                            <to>$Invoke_CreateFault_Input.body/uti</to>
+                          </copy>
+                          <copy>
+                            <from><literal>INS_ORCHESTRATOR_PROD_AD_INS</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/instanceID</to>
+                          </copy>
+                          <copy>
+                            <from><literal>O2_TEC14</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/reasonID</to>
+                          </copy>
+                          <copy>
+                            <from><literal>264</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+                          </copy>
+                          <copy>
+                            <from><literal>5</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/errorID</to>
+                          </copy>
+                          <copy>
+                            <from><literal>177</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/serviceID</to>
+                          </copy>
+                          <copy>
+                            <from><literal>O2Service_Bpel</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+                          </copy>
+                          <copy>
+                            <from><literal>SOA</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/userName</to>
+                          </copy>
+                          <copy>
+                            <from><literal>LogOrchestratorProductAd - ProvideProcess</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/stageName</to>
+                          </copy>
+                          <copy>
+                            <from>ora:getFaultAsString()</from>
+                            <to>$Invoke_CreateFault_Input.body/detailError</to>
+                          </copy>
+                        </assign>
+                        <invoke name="InvokeFaultNotification"
+                                partnerLink="FaultNotificationService"
+                                portType="ns28:FaultNotification_Port"
+                                operation="CreateFault"
+                                inputVariable="Invoke_CreateFault_Input"
+                                outputVariable="Invoke_CreateFault_Output"
+                                bpelx:invokeAsDetail="no"/>
+                      </sequence>
+                    </scope>
+                  </catchAll>
+                </faultHandlers>
+                <invoke name="Invoke_LogAdditionals"
+                        partnerLink="LOG_ORCHESTRATOR_PRODUCT_AD_ADAPTER"
+                        portType="ns30:LOG_ORCHESTRATOR_PRODUCT_AD_ADAPTER_ptt"
+                        operation="insert" inputVariable="input_LogAdditionals"
+                        bpelx:invokeAsDetail="no"/>
+              </scope>
+            </sequence>
+          </if>
+          <if name="GENERAL_STATUS">
+            <documentation>PENDING</documentation>
+            <condition>$generalStatus = 'PENDING'</condition>
+            <sequence name="PENDING">
+              <scope name="LogOrchestratorProductPending"
+                     exitOnStandardFault="no">
+                <bpelx:annotation>
+                  <bpelx:general>
+                    <bpelx:property name="userDescription">ErrorParametrizado</bpelx:property>
+                    <bpelx:property name="userImage">database_lg.png</bpelx:property>
+                  </bpelx:general>
+                </bpelx:annotation>
+                <faultHandlers>
+                  <catchAll>
+                    <scope name="FaultNotificationService"
+                           exitOnStandardFault="no">
+                      <bpelx:annotation>
+                        <bpelx:general>
+                          <bpelx:property name="userImage">earth.png</bpelx:property>
+                        </bpelx:general>
+                      </bpelx:annotation>
+                      <faultHandlers>
+                        <catch faultName="ns28:fault"
+                               faultVariable="faultVariable"
+                               faultElement="ns23:GeneralResponse">
+                          <sequence name="fault">
+                            <assign name="Assign_fault">
+                              <copy>
+                                <from>$faultVariable/status</from>
+                                <to>$generalResponse.fault/status</to>
+                              </copy>
+                              <copy>
+                                <from>$faultVariable/code</from>
+                                <to>$generalResponse.fault/code</to>
+                              </copy>
+                              <copy>
+                                <from>$faultVariable/message</from>
+                                <to>$generalResponse.fault/message</to>
+                              </copy>
+                              <copy>
+                                <from>$correlationId</from>
+                                <to>$generalResponse.fault/uti</to>
+                              </copy>
+                            </assign>
+                            <assign name="AssignLogProductUpdate">
+                              <copy>
+                                <from>$detailID</from>
+                                <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:id</to>
+                              </copy>
+                              <copy>
+                                <from><literal>ERROR</literal></from>
+                                <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:status</to>
+                              </copy>
+                            </assign>
+                            <throw name="FaultNotification"
+                                   faultName="ns28:fault"
+                                   faultVariable="globalFaultVariable"/>
+                          </sequence>
+                        </catch>
+                      </faultHandlers>
+                      <sequence name="FaultNotification">
+                        <assign name="Assign_FaultNotificationReq">
+                          <copy>
+                            <from>$correlationId</from>
+                            <to>$Invoke_CreateFault_Input.body/uti</to>
+                          </copy>
+                          <copy>
+                            <from><literal>INS_ORCHESTRATOR_PRODUCT_UP</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/instanceID</to>
+                          </copy>
+                          <copy>
+                            <from><literal>O2_TEC16</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/reasonID</to>
+                          </copy>
+                          <copy>
+                            <from><literal>266</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+                          </copy>
+                          <copy>
+                            <from><literal>5</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/errorID</to>
+                          </copy>
+                          <copy>
+                            <from><literal>SOA</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/userName</to>
+                          </copy>
+                          <copy>
+                            <from><literal>O2Service_Bpel</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+                          </copy>
+                          <copy>
+                            <from>ora:getFaultAsString()</from>
+                            <to>$Invoke_CreateFault_Input.body/detailError</to>
+                          </copy>
+                          <copy>
+                            <from><literal>LogOrchestratorProductPending - ProvideProcess</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/stageName</to>
+                          </copy>
+                          <copy>
+                            <from><literal>177</literal></from>
+                            <to>$Invoke_CreateFault_Input.body/serviceID</to>
+                          </copy>
+                        </assign>
+                        <invoke name="Invoke_FaultNotification"
+                                partnerLink="FaultNotificationService"
+                                portType="ns28:FaultNotification_Port"
+                                operation="CreateFault"
+                                inputVariable="Invoke_CreateFault_Input"
+                                outputVariable="Invoke_CreateFault_Output"
+                                bpelx:invokeAsDetail="no"/>
+                      </sequence>
+                    </scope>
+                  </catchAll>
+                </faultHandlers>
+                <sequence name="LogOrchestratorProductPending">
+                  <assign name="Assign_LogDetail">
+                    <copy>
+                      <from>$Invoke_Provisioning_OutputVariable.body/generalResponse/uti</from>
+                      <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:uti</to>
+                    </copy>
+                    <copy>
+                      <from><literal>PENDING</literal></from>
+                      <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:status</to>
+                    </copy>
+                    <copy>
+                      <from>$detailID</from>
+                      <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:id</to>
+                    </copy>
+                  </assign>
+                  <invoke name="Invoke_LogProductUpdate"
+                          partnerLink="LOG_ORCHESTRATOR_PRODUCT_UPDATE"
+                          portType="ns24:LOG_ORCHESTRATOR_PRODUCT_UPDATE_ptt"
+                          operation="update"
+                          inputVariable="Invoke_LogProductUpdate_Input"
+                          bpelx:invokeAsDetail="no"/>
+                </sequence>
+              </scope>
+            </sequence>
+            <else>
+              <documentation>OK</documentation>
+              <sequence name="OK">
+                <scope name="ProvisioningService" exitOnStandardFault="no">
+                  <bpelx:annotation>
+                    <bpelx:general>
+                      <bpelx:property name="userLabel">ProvisioningServer</bpelx:property>
+                      <bpelx:property name="userImage">earth.png</bpelx:property>
+                      <bpelx:property name="userDescription">ErrorParametrizado</bpelx:property>
+                    </bpelx:general>
+                  </bpelx:annotation>
+                  <faultHandlers>
+                    <catch faultName="ns2:fault" faultVariable="faultVariable"
+                           faultElement="ns23:GeneralResponse">
+                      <sequence name="fault">
+                        <assign name="AssignStatus">
+                          <copy>
+                            <from>$faultVariable/status</from>
+                            <to>$statusArray/status[$orderCounter]/status</to>
+                          </copy>
+                          <copy>
+                            <from>$faultVariable/code</from>
+                            <to>$statusArray/status[$orderCounter]/code</to>
+                          </copy>
+                        </assign>
+                        <assign name="AssignStatusArray">
+                          <copy>
+                            <from>$faultVariable/status</from>
+                            <to>$RequestNotification.body/Order/items/item[$orderCounter]/itemStatus/status</to>
+                          </copy>
+                          <copy>
+                            <from>$faultVariable/code</from>
+                            <to>$RequestNotification.body/Order/items/item[$orderCounter]/itemStatus/code</to>
+                          </copy>
+                        </assign>
+                        <assign name="Assign_LogProduct_Update">
+                          <copy>
+                            <from>$detailID</from>
+                            <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:id</to>
+                          </copy>
+                          <copy>
+                            <from><literal>ERROR</literal></from>
+                            <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:status</to>
+                          </copy>
+                          <copy>
+                            <from>$faultVariable/uti</from>
+                            <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:uti</to>
+                          </copy>
+                        </assign>
+                        <assign name="Assign_fault">
+                          <copy>
+                            <from>$faultVariable/uti</from>
+                            <to>$notifyGeneralResponse.fault/uti</to>
+                          </copy>
+                          <copy>
+                            <from>$RequestNotification.body/GeneralRequest</from>
+                            <to>$notifyGeneralResponse.fault/ns33:Notify_Request/GeneralRequest</to>
+                          </copy>
+                          <copy>
+                            <from>$RequestNotification.body/Order</from>
+                            <to>$notifyGeneralResponse.fault/ns33:Notify_Request/Order</to>
+                          </copy>
+                          <copy>
+                            <from>$faultVariable/status</from>
+                            <to>$notifyGeneralResponse.fault/status</to>
+                          </copy>
+                          <copy>
+                            <from>$faultVariable/code</from>
+                            <to>$notifyGeneralResponse.fault/code</to>
+                          </copy>
+                          <copy>
+                            <from>$faultVariable/message</from>
+                            <to>$notifyGeneralResponse.fault/message</to>
+                          </copy>
+                        </assign>
+                        <throw name="FaultNotification" faultName="ns28:fault"
+                               faultVariable="globalFaultVariable"/>
+                      </sequence>
+                    </catch>
+                    <catchAll>
+                      <scope name="FaultNotification" exitOnStandardFault="no">
+                        <bpelx:annotation>
+                          <bpelx:general>
+                            <bpelx:property name="userImage">earth.png</bpelx:property>
+                          </bpelx:general>
+                        </bpelx:annotation>
+                        <faultHandlers>
+                          <catch faultName="ns28:fault"
+                                 faultVariable="faultVariable"
+                                 faultElement="ns23:GeneralResponse">
+                            <sequence name="fault">
+                              <assign name="AssignStatus">
+                                <copy>
+                                  <from>$faultVariable/status</from>
+                                  <to>$statusArray/status[$orderCounter]/status</to>
+                                </copy>
+                                <copy>
+                                  <from>$faultVariable/code</from>
+                                  <to>$statusArray/status[$orderCounter]/code</to>
+                                </copy>
+                              </assign>
+                              <assign name="AssignStatusArray">
+                                <copy>
+                                  <from>$faultVariable/status</from>
+                                  <to>$RequestNotification.body/Order/items/item[$orderCounter]/itemStatus/status</to>
+                                </copy>
+                                <copy>
+                                  <from>$faultVariable/code</from>
+                                  <to>$RequestNotification.body/Order/items/item[$orderCounter]/itemStatus/code</to>
+                                </copy>
+                              </assign>
+                              <assign name="Assign_fault">
+                                <copy>
+                                  <from>$faultVariable/status</from>
+                                  <to>$generalResponse.fault/status</to>
+                                </copy>
+                                <copy>
+                                  <from>$faultVariable/code</from>
+                                  <to>$generalResponse.fault/code</to>
+                                </copy>
+                                <copy>
+                                  <from>$faultVariable/message</from>
+                                  <to>$generalResponse.fault/message</to>
+                                </copy>
+                                <copy>
+                                  <from>$correlationId</from>
+                                  <to>$generalResponse.fault/uti</to>
+                                </copy>
+                              </assign>
+                              <assign name="AssignLogProductUpdate">
+                                <copy>
+                                  <from>$detailID</from>
+                                  <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:id</to>
+                                </copy>
+                                <copy>
+                                  <from><literal>ERROR</literal></from>
+                                  <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:status</to>
+                                </copy>
+                              </assign>
+                              <throw name="FaultNotification"
+                                     faultName="ns28:fault"
+                                     faultVariable="globalFaultVariable"/>
+                            </sequence>
+                          </catch>
+                        </faultHandlers>
+                        <sequence name="FaultNotification">
+                          <assign name="Assign_FaultNotificationReq">
+                            <copy>
+                              <from><literal>6</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/errorID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>INS_O2_PROVISIONING</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/instanceID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>265</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>O2_TEC15</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/reasonID</to>
+                            </copy>
+                            <copy>
+                              <from>$correlationId</from>
+                              <to>$Invoke_CreateFault_Input.body/uti</to>
+                            </copy>
+                            <copy>
+                              <from><literal>SOA</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/userName</to>
+                            </copy>
+                            <copy>
+                              <from><literal>O2Service_Bpel</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+                            </copy>
+                            <copy>
+                              <from>ora:getFaultAsString()</from>
+                              <to>$Invoke_CreateFault_Input.body/detailError</to>
+                            </copy>
+                            <copy>
+                              <from><literal>ProvisioningService - ProvideProcess</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/stageName</to>
+                            </copy>
+                            <copy>
+                              <from><literal>177</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/serviceID</to>
+                            </copy>
+                          </assign>
+                          <invoke name="Invoke_FaultNotification"
+                                  partnerLink="FaultNotificationService"
+                                  portType="ns28:FaultNotification_Port"
+                                  operation="CreateFault"
+                                  inputVariable="Invoke_CreateFault_Input"
+                                  outputVariable="Invoke_CreateFault_Output"
+                                  bpelx:invokeAsDetail="no"/>
+                        </sequence>
+                      </scope>
+                    </catchAll>
+                  </faultHandlers>
+                  <sequence name="ProvisioningService">
+                    <assign name="Assign_ProvisioningM">
+                      <copy>
+                        <from>$inputVariable.body/ns5:basicRequest/externalApplicationID</from>
+                        <to>$Invoke_Provisioning_InputVariable.body/ns5:basicRequest/externalApplicationID</to>
+                      </copy>
+                      <copy>
+                        <from>$inputVariable.body/ns5:basicRequest/externalTransactionID</from>
+                        <to>$Invoke_Provisioning_InputVariable.body/ns5:basicRequest/externalTransactionID</to>
+                      </copy>
+                      <copy>
+                        <from>$inputVariable.body/ns5:basicRequest/utiReference</from>
+                        <to>$Invoke_Provisioning_InputVariable.body/ns5:basicRequest/utiReference</to>
+                      </copy>
+                      <copy>
+                        <from>$inputVariable.body/ns6:client</from>
+                        <to>$Invoke_Provisioning_InputVariable.body/ns6:client</to>
+                      </copy>
+                      <copy>
+                        <from>$inputVariable.body/productOffering/ns7:order[$orderCounter]</from>
+                        <to>$Invoke_Provisioning_InputVariable.body/productOffering/ns7:order</to>
+                      </copy>
+                    </assign>
+                    <if name="dataChange">
+                      <documentation>NotEmpty</documentation>
+                      <condition>ora:countNodes('inputVariable','body','dataChangeRequest_orders/ns11:dataChangeRequest') &gt; 0</condition>
+                      <assign name="Assign_ProvisioningM">
+                        <copy ignoreMissingFromData="yes">
+                          <from>$inputVariable.body/dataChangeRequest_orders</from>
+                          <to>$Invoke_Provisioning_InputVariable.body/dataChangeRequest_orders</to>
+                        </copy>
+                      </assign>
+                    </if>
+                    <assign name="Transform_ProvisioningService">
+                      <bpelx:annotation>
+                        <bpelx:pattern patternName="bpelx:transformation"/>
+                      </bpelx:annotation>
+                      <copy>
+                        <from>ora:doXSLTransformForDoc("xsl/Trans_provisioning_to_privosining.xsl", $Invoke_Provisioning_InputVariable.body)</from>
+                        <to variable="Invoke_Provisioning_InputVariable"
+                            part="body"/>
+                      </copy>
+                    </assign>
+                    <if name="StatusNoN">
+                      <documentation>true</documentation>
+                      <condition>$inputVariable.body/productOffering/ns7:order[$orderCounter]/ns9:offeringDetail/offerAction = 'NONE'</condition>
+                      <assign name="AssignResult">
+                        <copy>
+                          <from>$correlationId</from>
+                          <to>$Invoke_Provisioning_OutputVariable.body/generalResponse/uti</to>
+                        </copy>
+                        <copy>
+                          <from><literal>OK</literal></from>
+                          <to>$Invoke_Provisioning_OutputVariable.body/generalResponse/status</to>
+                        </copy>
+                        <copy>
+                          <from><literal>01</literal></from>
+                          <to>$Invoke_Provisioning_OutputVariable.body/generalResponse/code</to>
+                        </copy>
+                        <copy>
+                          <from><literal>Service has been completed</literal></from>
+                          <to>$Invoke_Provisioning_OutputVariable.body/generalResponse/message</to>
+                        </copy>
+                      </assign>
+                      <else>
+                        <documentation>false</documentation>
+                        <invoke name="Invoke_ProvisiongServiceM"
+                                partnerLink="ProvisioningMediator.ProvisioningMediator"
+                                portType="ns2:ProvisioningPort"
+                                operation="Provisioning"
+                                inputVariable="Invoke_Provisioning_InputVariable"
+                                outputVariable="Invoke_Provisioning_OutputVariable"
+                                bpelx:invokeAsDetail="no"/>
+                      </else>
+                    </if>
+                  </sequence>
+                </scope>
+                <assign name="AssignStatus">
+                  <copy ignoreMissingFromData="yes"
+                        bpelx:insertMissingToData="yes">
+                    <from>$Invoke_Provisioning_OutputVariable.body/generalResponse/status</from>
+                    <to>$statusArray/status[$orderCounter]/status</to>
+                  </copy>
+                  <copy ignoreMissingFromData="yes"
+                        bpelx:insertMissingToData="yes">
+                    <from>$Invoke_Provisioning_OutputVariable.body/generalResponse/message</from>
+                    <to>$statusArray/status[$orderCounter]/message</to>
+                  </copy>
+                  <copy ignoreMissingFromData="yes"
+                        bpelx:insertMissingToData="yes">
+                    <from>$Invoke_Provisioning_OutputVariable.body/generalResponse/code</from>
+                    <to>$statusArray/status[$orderCounter]/code</to>
+                  </copy>
+                </assign>
+                <assign name="AssignStatusArray">
+                  <copy>
+                    <from>$Invoke_Provisioning_OutputVariable.body/generalResponse/status</from>
+                    <to>$RequestNotification.body/Order/items/item[$orderCounter]/itemStatus/status</to>
+                  </copy>
+                  <copy ignoreMissingFromData="yes"
+                        bpelx:insertMissingToData="yes">
+                    <from>$Invoke_Provisioning_InputVariable.body/productOffering/ns7:order[1]/ns8:product/name</from>
+                    <to>$RequestNotification.body/Order/items/item[$orderCounter]/Specification/description</to>
+                  </copy>
+                  <copy ignoreMissingFromData="yes"
+                        bpelx:insertMissingToData="yes">
+                    <from>$Invoke_Provisioning_OutputVariable.body/generalResponse/message</from>
+                    <to>$RequestNotification.body/Order/items/item[$orderCounter]/itemStatus/parameters/parameter[1]/value</to>
+                  </copy>
+                  <copy ignoreMissingFromData="yes"
+                        bpelx:insertMissingToData="yes">
+                    <from><literal>MESSAGE</literal></from>
+                    <to>$RequestNotification.body/Order/items/item[$orderCounter]/itemStatus/parameters/parameter[1]/name</to>
+                  </copy>
+                  <copy>
+                    <from>$Invoke_Provisioning_OutputVariable.body/generalResponse/code</from>
+                    <to>$RequestNotification.body/Order/items/item[$orderCounter]/itemStatus/code</to>
+                  </copy>
+                </assign>
+                <flow name="Update">
+                  <sequence name="LogProductUpdate">
+                    <scope name="LogProductUpdate" exitOnStandardFault="no">
+                      <bpelx:annotation>
+                        <bpelx:general>
+                          <bpelx:property name="userDescription">ErrorParametrizado</bpelx:property>
+                          <bpelx:property name="userImage">database_lg.png</bpelx:property>
+                        </bpelx:general>
+                      </bpelx:annotation>
+                      <faultHandlers>
+                        <catchAll>
+                          <scope name="FaultNotificationService"
+                                 exitOnStandardFault="no">
+                            <bpelx:annotation>
+                              <bpelx:general>
+                                <bpelx:property name="userImage">earth.png</bpelx:property>
+                              </bpelx:general>
+                            </bpelx:annotation>
+                            <faultHandlers>
+                              <catch faultName="ns28:fault"
+                                     faultVariable="faultVariable"
+                                     faultElement="ns23:GeneralResponse">
+                                <sequence name="fault">
+                                  <assign name="Assign_fault">
+                                    <copy>
+                                      <from>$faultVariable/status</from>
+                                      <to>$generalResponse.fault/status</to>
+                                    </copy>
+                                    <copy>
+                                      <from>$faultVariable/code</from>
+                                      <to>$generalResponse.fault/code</to>
+                                    </copy>
+                                    <copy>
+                                      <from>$correlationId</from>
+                                      <to>$generalResponse.fault/uti</to>
+                                    </copy>
+                                    <copy>
+                                      <from>$faultVariable/message</from>
+                                      <to>$generalResponse.fault/message</to>
+                                    </copy>
+                                  </assign>
+                                  <assign name="AssignLogProductUpdate">
+                                    <copy>
+                                      <from>$detailID</from>
+                                      <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:id</to>
+                                    </copy>
+                                    <copy>
+                                      <from><literal>ERROR</literal></from>
+                                      <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:status</to>
+                                    </copy>
+                                  </assign>
+                                  <throw name="FaultNotification"
+                                         faultName="ns28:fault"
+                                         faultVariable="globalFaultVariable"/>
+                                </sequence>
+                              </catch>
+                            </faultHandlers>
+                            <sequence name="FaultNotification">
+                              <assign name="Assign_FaultNotificationReq">
+                                <copy>
+                                  <from>$correlationId</from>
+                                  <to>$Invoke_CreateFault_Input.body/uti</to>
+                                </copy>
+                                <copy>
+                                  <from><literal>O2_TEC16</literal></from>
+                                  <to>$Invoke_CreateFault_Input.body/reasonID</to>
+                                </copy>
+                                <copy>
+                                  <from><literal>266</literal></from>
+                                  <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+                                </copy>
+                                <copy>
+                                  <from><literal>INS_ORCHESTRATOR_PRODUCT_UP</literal></from>
+                                  <to>$Invoke_CreateFault_Input.body/instanceID</to>
+                                </copy>
+                                <copy>
+                                  <from><literal>5</literal></from>
+                                  <to>$Invoke_CreateFault_Input.body/errorID</to>
+                                </copy>
+                                <copy>
+                                  <from><literal>SOA</literal></from>
+                                  <to>$Invoke_CreateFault_Input.body/userName</to>
+                                </copy>
+                                <copy>
+                                  <from><literal>O2Service_Bpel</literal></from>
+                                  <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+                                </copy>
+                                <copy>
+                                  <from><literal>LogProductUpdate - ProvideProcess</literal></from>
+                                  <to>$Invoke_CreateFault_Input.body/stageName</to>
+                                </copy>
+                                <copy>
+                                  <from>ora:getFaultAsString()</from>
+                                  <to>$Invoke_CreateFault_Input.body/detailError</to>
+                                </copy>
+                                <copy>
+                                  <from><literal>177</literal></from>
+                                  <to>$Invoke_CreateFault_Input.body/serviceID</to>
+                                </copy>
+                              </assign>
+                              <invoke name="Invoke_FaultNotification"
+                                      partnerLink="FaultNotificationService"
+                                      portType="ns28:FaultNotification_Port"
+                                      operation="CreateFault"
+                                      inputVariable="Invoke_CreateFault_Input"
+                                      outputVariable="Invoke_CreateFault_Output"
+                                      bpelx:invokeAsDetail="no"/>
+                            </sequence>
+                          </scope>
+                        </catchAll>
+                      </faultHandlers>
+                      <sequence name="LogProductUpdate">
+                        <assign name="Assign_LogDetail">
+                          <copy>
+                            <from>$Invoke_Provisioning_OutputVariable.body/generalResponse/status</from>
+                            <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:status</to>
+                          </copy>
+                          <copy>
+                            <from>$Invoke_Provisioning_OutputVariable.body/generalResponse/uti</from>
+                            <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:uti</to>
+                          </copy>
+                          <copy>
+                            <from>$detailID</from>
+                            <to>$Invoke_LogProductUpdate_Input.LogOrchestratorProductCollection/ns25:LogOrchestratorProduct/ns25:id</to>
+                          </copy>
+                        </assign>
+                        <invoke name="Invoke_LogProductUpdate"
+                                partnerLink="LOG_ORCHESTRATOR_PRODUCT_UPDATE"
+                                portType="ns24:LOG_ORCHESTRATOR_PRODUCT_UPDATE_ptt"
+                                operation="update"
+                                inputVariable="Invoke_LogProductUpdate_Input"
+                                bpelx:invokeAsDetail="no"/>
+                        <assign name="AssignCleanNextVal">
+                          <copy>
+                            <from><literal>''</literal></from>
+                            <to>$detailID</to>
+                          </copy>
+                        </assign>
+                      </sequence>
+                    </scope>
+                  </sequence>
+                  <sequence name="Pending">
+                    <if name="PENDING">
+                      <documentation>TRUE</documentation>
+                      <condition>$Invoke_Provisioning_OutputVariable.body/generalResponse/status = 'PENDING'</condition>
+                      <assign name="Assign_generalStatus">
+                        <copy>
+                          <from>'PENDING'</from>
+                          <to>$generalStatus</to>
+                        </copy>
+                      </assign>
+                    </if>
+                  </sequence>
+                </flow>
+              </sequence>
+            </else>
+          </if>
+        </sequence>
+      </scope>
+    </forEach>
+    <if name="PENDING">
+      <documentation>TRUE</documentation>
+      <condition>$generalStatus = 'PENDING'</condition>
+      <sequence name="Pending">
+        <assign name="Assign_Reply">
+          <copy>
+            <from>$Invoke_Provisioning_OutputVariable.body/generalResponse/status</from>
+            <to>$outputVariable.body/generalResponse/status</to>
+          </copy>
+          <copy>
+            <from>$correlationId</from>
+            <to>$outputVariable.body/generalResponse/uti</to>
+          </copy>
+          <copy>
+            <from>$Invoke_Provisioning_OutputVariable.body/generalResponse/code</from>
+            <to>$outputVariable.body/generalResponse/code</to>
+          </copy>
+          <copy>
+            <from>$Invoke_Provisioning_OutputVariable.body/generalResponse/message</from>
+            <to>$outputVariable.body/generalResponse/message</to>
+          </copy>
+        </assign>
+        <reply name="ReplyPending" variable="outputVariable"
+               partnerLink="provideprocess_client"
+               portType="client:BasicProvisioningPort"
+               operation="ExecuteOrder"/>
+        <exit name="Exit3"/>
+      </sequence>
+    </if>
+    <sequence name="Reply">
+      <assign name="Assign_Reply">
+        <copy>
+          <from>$Invoke_Provisioning_OutputVariable.body/generalResponse/status</from>
+          <to>$outputVariable.body/generalResponse/status</to>
+        </copy>
+        <copy>
+          <from><literal>01</literal></from>
+          <to>$outputVariable.body/generalResponse/code</to>
+        </copy>
+        <copy>
+          <from>$correlationId</from>
+          <to>$outputVariable.body/generalResponse/uti</to>
+        </copy>
+        <copy>
+          <from><literal>Service has been completed</literal></from>
+          <to>$outputVariable.body/generalResponse/message</to>
+        </copy>
+        <copy ignoreMissingFromData="yes">
+          <from>$RequestNotification.body/GeneralRequest</from>
+          <to>$outputVariable.body/ns33:Notify_Request/GeneralRequest</to>
+        </copy>
+        <copy ignoreMissingFromData="yes">
+          <from>$RequestNotification.body/Order</from>
+          <to>$outputVariable.body/ns33:Notify_Request/Order</to>
+        </copy>
+      </assign>
+      <reply name="replyOutput" partnerLink="provideprocess_client"
+             portType="client:BasicProvisioningPort" operation="ExecuteOrder"
+             variable="outputVariable"/>
+    </sequence>
+  </sequence>
+</process>

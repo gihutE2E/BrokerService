@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<WL5G3N0:definitions name="BasicProductConfigurationO2Service" targetNamespace="http://www.tigo.com/enterprise/productConfigurationO2Service/productConfigurationO2/v1" xmlns:WL5G3N0="http://schemas.xmlsoap.org/wsdl/" xmlns:WL5G3N1="http://www.tigo.com/platform/productConfigurationO2Service/getConfigurationPlatformProduct/v1/schema" xmlns:WL5G3N2="http://www.tigo.com/platform/productConfigurationO2Service/getConfigurationBaseProduct/v1/schema" xmlns:WL5G3N3="http://www.tigo.com/platform/productConfigurationO2Service/getConditionsBaseProduct/v1/schema" xmlns:WL5G3N4="http://www.tigo.com/platform/productConfigurationO2Service/getConfigurationBaseFromPlatformProduct/v1/schema" xmlns:WL5G3N5="http://www.tigo.com/enterprise/productConfigurationO2Service/getconfigurationplatformproductbyconditions/v1/schema" xmlns:WL5G3N6="http://www.tigo.com/platform/productConfigurationO2Service/getProductByConditions/v1/schema" xmlns:WL5G3N7="http://tigo.com/commons/generalResponse/v1/schema" xmlns:WL5G3N8="http://www.tigo.com/enterprise/productConfigurationO2Service/productConfigurationO2/v1" xmlns:WL5G3N9="http://schemas.xmlsoap.org/wsdl/soap12/">
+   <WL5G3N0:types>
+      <xsd:schema targetNamespace="http://www.tigo.com/enterprise/productConfigurationO2Service/productConfigurationO2/v1" xmlns:cmn="http://tigo.com/commons/generalResponse/v1/schema" xmlns:sch1="http://www.tigo.com/platform/productConfigurationO2Service/getConfigurationPlatformProduct/v1/schema" xmlns:sch2="http://www.tigo.com/platform/productConfigurationO2Service/getConfigurationBaseProduct/v1/schema" xmlns:sch3="http://www.tigo.com/platform/productConfigurationO2Service/getConditionsBaseProduct/v1/schema" xmlns:sch4="http://www.tigo.com/platform/productConfigurationO2Service/getConfigurationBaseFromPlatformProduct/v1/schema" xmlns:sch5="http://www.tigo.com/enterprise/productConfigurationO2Service/getconfigurationplatformproductbyconditions/v1/schema" xmlns:sch6="http://www.tigo.com/platform/productConfigurationO2Service/getProductByConditions/v1/schema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="http://www.tigo.com/enterprise/productConfigurationO2Service/productConfigurationO2/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="http://www.tigo.com/platform/productConfigurationO2Service/getConfigurationPlatformProduct/v1/schema" schemaLocation="../xsd/BasicGetConfigurationPlatformProduct_schema.xsd"/>
+         <xsd:import namespace="http://www.tigo.com/platform/productConfigurationO2Service/getConfigurationBaseProduct/v1/schema" schemaLocation="../xsd/BasicGetConfigurationBaseProduct_schema.xsd"/>
+         <xsd:import namespace="http://www.tigo.com/platform/productConfigurationO2Service/getConditionsBaseProduct/v1/schema" schemaLocation="../xsd/BasicGetConditionsBaseProduct_schema.xsd"/>
+         <xsd:import namespace="http://www.tigo.com/platform/productConfigurationO2Service/getConfigurationBaseFromPlatformProduct/v1/schema" schemaLocation="../xsd/BasicGetConfigurationBaseFromPlatformProduct_schema.xsd"/>
+         <xsd:import namespace="http://www.tigo.com/enterprise/productConfigurationO2Service/getconfigurationplatformproductbyconditions/v1/schema" schemaLocation="../xsd/BasicGetConfigurationPlatformProductByConditions_schema.xsd"/>
+         <xsd:import namespace="http://www.tigo.com/platform/productConfigurationO2Service/getProductByConditions/v1/schema" schemaLocation="../xsd/BasicGetProductsByConditions_schema.xsd"/>
+         <xsd:import namespace="http://tigo.com/commons/generalResponse/v1/schema" schemaLocation="../xsd/commons/BasicGeneralResponse_schema.xsd"/>
+      </xsd:schema>
+   </WL5G3N0:types>
+   <WL5G3N0:message name="GetConfigurationPlatformProductRequest_msg">
+      <WL5G3N0:part element="WL5G3N1:GetConfigurationPlatformProductRequest" name="body"/>
+   </WL5G3N0:message>
+   <WL5G3N0:message name="GetConfigurationPlatformProductResponse_msg">
+      <WL5G3N0:part element="WL5G3N1:GetConfigurationPlatformProductResponse" name="body"/>
+   </WL5G3N0:message>
+   <WL5G3N0:message name="GetConfigurationBaseProductRequest_msg">
+      <WL5G3N0:part element="WL5G3N2:GetConfigurationBaseProductRequest" name="body"/>
+   </WL5G3N0:message>
+   <WL5G3N0:message name="GetConfigurationBaseProductResponse_msg">
+      <WL5G3N0:part element="WL5G3N2:GetConfigurationBaseProductResponse" name="body"/>
+   </WL5G3N0:message>
+   <WL5G3N0:message name="GetConditionsBasicProductsRequest_msg">
+      <WL5G3N0:part element="WL5G3N3:GetConditionsBasicProductsRequest" name="body"/>
+   </WL5G3N0:message>
+   <WL5G3N0:message name="GetConditionsBasicProductsResponse_msg">
+      <WL5G3N0:part element="WL5G3N3:GetConditionsBasicProductsResponse" name="body"/>
+   </WL5G3N0:message>
+   <WL5G3N0:message name="GetConfigurationBaseFromPlatformProductRequest_msg">
+      <WL5G3N0:part element="WL5G3N4:GetConfigurationBaseFromPlatformProductRequest" name="body"/>
+   </WL5G3N0:message>
+   <WL5G3N0:message name="GetConfigurationBaseFromPlatformProductResponse_msg">
+      <WL5G3N0:part element="WL5G3N4:GetConfigurationBaseFromPlatformProductResponse" name="body"/>
+   </WL5G3N0:message>
+   <WL5G3N0:message name="GetConfigurationPlatformProductByConditionsRequest_msg">
+      <WL5G3N0:part element="WL5G3N5:GetConfigurationPlatformProductByConditionsRequest" name="body"/>
+   </WL5G3N0:message>
+   <WL5G3N0:message name="GetConfigurationPlatformProductByConditionsResponse_msg">
+      <WL5G3N0:part element="WL5G3N5:GetConfigurationPlatformProductByConditionsResponse" name="body"/>
+   </WL5G3N0:message>
+   <WL5G3N0:message name="GetProductByConditionsRequest_msg">
+      <WL5G3N0:part element="WL5G3N6:GetProductByConditionsRequest" name="body"/>
+   </WL5G3N0:message>
+   <WL5G3N0:message name="GetProductByConditionsResponse_msg">
+      <WL5G3N0:part element="WL5G3N6:GetProductByConditionsResponse" name="body"/>
+   </WL5G3N0:message>
+   <WL5G3N0:message name="GeneralResponseMessage">
+      <WL5G3N0:part element="WL5G3N7:GeneralResponse" name="fault"/>
+   </WL5G3N0:message>
+   <WL5G3N0:portType name="BasicProductConfigurationO2ServicePortType">
+      <WL5G3N0:operation name="GetConfigurationPlatformProduct">
+         <WL5G3N0:input message="WL5G3N8:GetConfigurationPlatformProductRequest_msg" name="GetConfigurationPlatformProductRequestPort"/>
+         <WL5G3N0:output message="WL5G3N8:GetConfigurationPlatformProductResponse_msg" name="GetConfigurationPlatformProductResponsePort"/>
+         <WL5G3N0:fault message="WL5G3N8:GeneralResponseMessage" name="fault"/>
+      </WL5G3N0:operation>
+      <WL5G3N0:operation name="GetConfigurationBaseProduct">
+         <WL5G3N0:input message="WL5G3N8:GetConfigurationBaseProductRequest_msg" name="GetConfigurationBaseProductRequestPort"/>
+         <WL5G3N0:output message="WL5G3N8:GetConfigurationBaseProductResponse_msg" name="GetConfigurationBaseProductResponsePort"/>
+         <WL5G3N0:fault message="WL5G3N8:GeneralResponseMessage" name="fault"/>
+      </WL5G3N0:operation>
+      <WL5G3N0:operation name="GetConditionsBasicProducts">
+         <WL5G3N0:input message="WL5G3N8:GetConditionsBasicProductsRequest_msg" name="GetConditionsBasicProductsRequestPort"/>
+         <WL5G3N0:output message="WL5G3N8:GetConditionsBasicProductsResponse_msg" name="GetConditionsBasicProductsResponsePort"/>
+         <WL5G3N0:fault message="WL5G3N8:GeneralResponseMessage" name="fault"/>
+      </WL5G3N0:operation>
+      <WL5G3N0:operation name="GetConfigurationBaseFromPlatformProduct">
+         <WL5G3N0:input message="WL5G3N8:GetConfigurationBaseFromPlatformProductRequest_msg" name="GetConfigurationBaseFromPlatformProductRequestPort"/>
+         <WL5G3N0:output message="WL5G3N8:GetConfigurationBaseFromPlatformProductResponse_msg" name="GetConfigurationBaseFromPlatformProductResponsePort"/>
+         <WL5G3N0:fault message="WL5G3N8:GeneralResponseMessage" name="fault"/>
+      </WL5G3N0:operation>
+      <WL5G3N0:operation name="GetConfigurationPlatformByConditions">
+         <WL5G3N0:input message="WL5G3N8:GetConfigurationPlatformProductByConditionsRequest_msg" name="GetConfigurationPlatformProductByConditionsRequestPort"/>
+         <WL5G3N0:output message="WL5G3N8:GetConfigurationPlatformProductByConditionsResponse_msg" name="GetConfigurationPlatformProductByConditionsResponsePort"/>
+         <WL5G3N0:fault message="WL5G3N8:GeneralResponseMessage" name="fault"/>
+      </WL5G3N0:operation>
+      <WL5G3N0:operation name="GetProductByConditions">
+         <WL5G3N0:input message="WL5G3N8:GetProductByConditionsRequest_msg" name="GetProductByConditionsRequestPort"/>
+         <WL5G3N0:output message="WL5G3N8:GetProductByConditionsResponse_msg" name="GetProductByConditionsResponsePort"/>
+         <WL5G3N0:fault message="WL5G3N8:GeneralResponseMessage" name="fault"/>
+      </WL5G3N0:operation>
+   </WL5G3N0:portType>
+   <WL5G3N0:binding name="BasicProductConfigurationO2Service_wsSOAP" type="WL5G3N8:BasicProductConfigurationO2ServicePortType">
+      <WL5G3N9:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <WL5G3N0:operation name="GetConfigurationPlatformProduct">
+         <WL5G3N9:operation/>
+         <WL5G3N0:input name="GetConfigurationPlatformProductRequestPort">
+            <WL5G3N9:body use="literal"/>
+         </WL5G3N0:input>
+         <WL5G3N0:output name="GetConfigurationPlatformProductResponsePort">
+            <WL5G3N9:body use="literal"/>
+         </WL5G3N0:output>
+         <WL5G3N0:fault name="fault">
+            <WL5G3N9:fault name="fault" use="literal"/>
+         </WL5G3N0:fault>
+      </WL5G3N0:operation>
+      <WL5G3N0:operation name="GetConfigurationBaseProduct">
+         <WL5G3N9:operation/>
+         <WL5G3N0:input name="GetConfigurationBaseProductRequestPort">
+            <WL5G3N9:body use="literal"/>
+         </WL5G3N0:input>
+         <WL5G3N0:output name="GetConfigurationBaseProductResponsePort">
+            <WL5G3N9:body use="literal"/>
+         </WL5G3N0:output>
+         <WL5G3N0:fault name="fault">
+            <WL5G3N9:fault name="fault" use="literal"/>
+         </WL5G3N0:fault>
+      </WL5G3N0:operation>
+      <WL5G3N0:operation name="GetConditionsBasicProducts">
+         <WL5G3N9:operation/>
+         <WL5G3N0:input name="GetConditionsBasicProductsRequestPort">
+            <WL5G3N9:body use="literal"/>
+         </WL5G3N0:input>
+         <WL5G3N0:output name="GetConditionsBasicProductsResponsePort">
+            <WL5G3N9:body use="literal"/>
+         </WL5G3N0:output>
+         <WL5G3N0:fault name="fault">
+            <WL5G3N9:fault name="fault" use="literal"/>
+         </WL5G3N0:fault>
+      </WL5G3N0:operation>
+      <WL5G3N0:operation name="GetConfigurationBaseFromPlatformProduct">
+         <WL5G3N9:operation/>
+         <WL5G3N0:input name="GetConfigurationBaseFromPlatformProductRequestPort">
+            <WL5G3N9:body use="literal"/>
+         </WL5G3N0:input>
+         <WL5G3N0:output name="GetConfigurationBaseFromPlatformProductResponsePort">
+            <WL5G3N9:body use="literal"/>
+         </WL5G3N0:output>
+         <WL5G3N0:fault name="fault">
+            <WL5G3N9:fault name="fault" use="literal"/>
+         </WL5G3N0:fault>
+      </WL5G3N0:operation>
+      <WL5G3N0:operation name="GetConfigurationPlatformByConditions">
+         <WL5G3N9:operation/>
+         <WL5G3N0:input name="GetConfigurationPlatformProductByConditionsRequestPort">
+            <WL5G3N9:body use="literal"/>
+         </WL5G3N0:input>
+         <WL5G3N0:output name="GetConfigurationPlatformProductByConditionsResponsePort">
+            <WL5G3N9:body use="literal"/>
+         </WL5G3N0:output>
+         <WL5G3N0:fault name="fault">
+            <WL5G3N9:fault name="fault" use="literal"/>
+         </WL5G3N0:fault>
+      </WL5G3N0:operation>
+      <WL5G3N0:operation name="GetProductByConditions">
+         <WL5G3N9:operation/>
+         <WL5G3N0:input name="GetProductByConditionsRequestPort">
+            <WL5G3N9:body use="literal"/>
+         </WL5G3N0:input>
+         <WL5G3N0:output name="GetProductByConditionsResponsePort">
+            <WL5G3N9:body use="literal"/>
+         </WL5G3N0:output>
+         <WL5G3N0:fault name="fault">
+            <WL5G3N9:fault name="fault" use="literal"/>
+         </WL5G3N0:fault>
+      </WL5G3N0:operation>
+   </WL5G3N0:binding>
+   <WL5G3N0:service name="BasicProductConfigurationO2Service_wsSOAPQSService">
+      <WL5G3N0:port binding="WL5G3N8:BasicProductConfigurationO2Service_wsSOAP" name="BasicProductConfigurationO2Service_wsSOAPQSPort">
+         <WL5G3N9:address location="http://osbo2pvs-srv.tigo.com.gt:8011/osb/enterprise/productConfigurationO2Service/productConfigurationO2/v1"/>
+      </WL5G3N0:port>
+   </WL5G3N0:service>
+</WL5G3N0:definitions>

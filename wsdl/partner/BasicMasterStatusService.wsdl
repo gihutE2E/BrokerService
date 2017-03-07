@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="MasterStatusService" targetNamespace="http://www.tigo.com/resource/masterStatusServices/masterStatus/v1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:sch="http://www.tigo.com/resource/masterStatusServices/masterStatus/v1/schema" xmlns:tns="http://www.tigo.com/resource/masterStatusServices/masterStatus/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cmn="http://tigo.hn/commons/resources/generalResponse">
+   <wsdl:types>
+      <xsd:schema targetNamespace="http://www.tigo.com/resource/masterStatusServices/masterStatus/v1">
+         <xsd:import namespace="http://www.tigo.com/resource/masterStatusServices/masterStatus/v1/schema" schemaLocation="../../xsd/partner/BasicMasterStatus_schema.xsd"/>
+         <xsd:import namespace="http://tigo.hn/commons/resources/generalResponse" schemaLocation="../../xsd/partner/commons/GeneralResponse.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="GetMasterStatusRequest_msg">
+      <wsdl:part element="sch:GetMasterStatusRequest" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="GetMasterStatusResponse_msg">
+      <wsdl:part element="sch:GetMasterStatusResponse" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="SetMasterStatusRequest_msg">
+      <wsdl:part element="sch:SetMasterStatusRequest" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="SetMasterStatusResponse_msg">
+      <wsdl:part element="sch:SetMasterStatusResponse" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="GetEntityTreeRequest_msg">
+      <wsdl:part element="sch:GetEntityTreeRequest" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="GetEntityTreeResponse_msg">
+      <wsdl:part element="sch:GetEntityTreeResponse" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="GetEntityTreeValueRequest_msg">
+      <wsdl:part element="sch:GetEntityTreeValueRequest" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="GetEntityTreeValueResponse_msg">
+      <wsdl:part element="sch:GetEntityTreeValueResponse" name="body"/>
+   </wsdl:message>
+   <wsdl:message name="generalResponseMsg">
+      <wsdl:part element="cmn:GeneralResponse" name="fault"/>
+   </wsdl:message>
+   <wsdl:portType name="MasterStatusService_Port">
+      <wsdl:operation name="GetMasterStatus">
+         <wsdl:input message="tns:GetMasterStatusRequest_msg" name="Request_Port"/>
+         <wsdl:output message="tns:GetMasterStatusResponse_msg" name="Response_Port"/>
+         <wsdl:fault message="tns:generalResponseMsg" name="Fault_Port"/>
+      </wsdl:operation>
+      <wsdl:operation name="SetMasterStatus">
+         <wsdl:input message="tns:SetMasterStatusRequest_msg" name="SetMasterStatusRequest_Port"/>
+         <wsdl:output message="tns:SetMasterStatusResponse_msg" name="SetMasterStatusResponse_Port"/>
+         <wsdl:fault message="tns:generalResponseMsg" name="Fault_Port"/>
+      </wsdl:operation>
+      <wsdl:operation name="GetEntityTree">
+         <wsdl:input message="tns:GetEntityTreeRequest_msg" name="GetEntityTreeRequest_Port"/>
+         <wsdl:output message="tns:GetEntityTreeResponse_msg" name="GetEntityTreeResponse_Port"/>
+         <wsdl:fault message="tns:generalResponseMsg" name="Fault_Port"/>
+      </wsdl:operation>
+      <wsdl:operation name="GetEntityTreeValue">
+         <wsdl:input message="tns:GetEntityTreeValueRequest_msg" name="GetEntityTreeValueRequest_Port"/>
+         <wsdl:output message="tns:GetEntityTreeValueResponse_msg" name="GetEntityTreeValueResponse_Port"/>
+         <wsdl:fault message="tns:generalResponseMsg" name="Fault_Port"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="MasterStatusService_SOAP" type="tns:MasterStatusService_Port">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="GetMasterStatus">
+         <soap:operation soapAction=""/>
+         <wsdl:input name="Request_Port">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="Response_Port">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="Fault_Port">
+            <soap:fault name="Fault_Port" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="SetMasterStatus">
+         <soap:operation soapAction=""/>
+         <wsdl:input name="SetMasterStatusRequest_Port">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="SetMasterStatusResponse_Port">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="Fault_Port">
+            <soap:fault name="Fault_Port" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="GetEntityTree">
+         <soap:operation soapAction=""/>
+         <wsdl:input name="GetEntityTreeRequest_Port">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="GetEntityTreeResponse_Port">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="Fault_Port">
+            <soap:fault name="Fault_Port" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="GetEntityTreeValue">
+         <soap:operation soapAction=""/>
+         <wsdl:input name="GetEntityTreeValueRequest_Port">
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="GetEntityTreeValueResponse_Port">
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="Fault_Port">
+            <soap:fault name="Fault_Port" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="MasterStatusService">
+      <wsdl:port name="MasterStatusService_Port" binding="tns:MasterStatusService_SOAP">
+         <soap:address location="http://osbo2pvs-srv.tigo.com.gt:8011/osb/TigoOSM/MasterStatusService/V1"/>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>

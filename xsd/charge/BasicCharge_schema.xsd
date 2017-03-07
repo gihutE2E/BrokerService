@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://tigo.com/enterprise/businessEntity/charge/v1/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://tigo.com/enterprise/businessEntity/charge/v1/schema" xmlns:rsc="http://tigo.com/commons/resources/additional/v1/schema">
+   <xsd:import namespace="http://tigo.com/commons/resources/additional/v1/schema" schemaLocation="../commons/resources/BasicAdditional_schema.xsd"/>
+   <xsd:element name="charge" type="tns:charge_type"/>
+   <xsd:complexType name="charge_type">
+      <xsd:sequence>
+         <xsd:element name="value" type="xsd:double" minOccurs="1"/>
+         <xsd:element name="wallet" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="walletID" type="xsd:string" minOccurs="0"/>
+         <xsd:element name="chargeReference" type="xsd:string" minOccurs="1"/>
+         <xsd:element ref="rsc:additionals" minOccurs="0"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

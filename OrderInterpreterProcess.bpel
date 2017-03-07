@@ -1,0 +1,331 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Wed Apr 23 14:49:29 COT 2014
+  Author:  USUARIO
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="OrderInterpreterProcess"
+               targetNamespace="http://tigo.com/enterprise/business/task/OrderBroker/v1/OrderInterpreterProcess"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://tigo.com/enterprise/business/task/OrderBroker/v1/OrderInterpreterProcess"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ns1="http://tigo.com/enterprise/business/task/OrderBroker/v1/schema"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns2="http://tigo.com/enterprise/business/task/OrderBroker/v1/OrderInterpreterService"
+         xmlns:ns3="http://tigo.com/enterprise/business/task/OrderInterpreter/v1/schema"
+         xmlns:ns4="http://xmlns.oracle.com/pcbpel/adapter/db/BrokerRegional/Broker/TB_ORDER_INTERPRETER"
+         xmlns:ns5="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_ORDER_INTERPRETER"
+         xmlns:ns6="http://facade.broker.osm.mic/"
+         xmlns:ns7="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema"
+         xmlns:ns15="http://tigo.com/enterprise/serviceEntity/provisioning/dataChangeRequest/v1/schema"
+         xmlns:ns10="http://tigo.com/enterprise/businessEntity/charge/v1/schema"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns11="http://tigo.com/commons/resources/additional/v1/schema"
+         xmlns:ns13="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema"
+         xmlns:ns16="http://tigo.com/enterprise/serviceEntity/provisioning/fieldService/v1/schema"
+         xmlns:ns14="http://tigo.com/serviceEntity/provisioning/offeringDetail/v1/schema"
+         xmlns:ns9="http://tigo.com/enterprise/businessEntity/client/basic/v1/schema"
+         xmlns:ns8="http://tigo.com/commons/basicRequest/v1/schema"
+         xmlns:ns12="http://tigo.com/enterprise/serviceEntity/provisioning/order/v1/schema"
+         xmlns:sch1="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema"
+         xmlns:ns17="http://xmlns.tigo.com/ProcessValidator/ValidateRequest"
+         xmlns:val="http://xmlns.tigo.com/ProcessValidator/ValidateRequest"
+         xmlns:ns18="http://xmlns.tigo.com/ProductSchema/V1"
+         xmlns:ns19="http://xmlns.tigo.com/RequestHeader/V3"
+         xmlns:ns20="http://xmlns.tigo.com/ProcessValidator/BillingAccountSchema/V1"
+         xmlns:ns21="http://xmlns.tigo.com/ClientSchema/V1"
+         xmlns:ns22="http://xmlns.tigo.com/AdditionalSchema/V1"
+         xmlns:ns23="http://xmlns.tigo.com/ProcessValidator/ServiceAccountSchema/V1"
+         xmlns:ns24="http://xmlns.tigo.com/ProcessValidator/ProcessValidatorService">
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <import namespace="http://xmlns.tigo.com/ProcessValidator/ValidateRequest"
+          location="xsd/partner/ValidateRequest.xsd"
+          importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema"
+          location="xsd/BasicOrderRequest_schema.xsd"
+          importType="http://www.w3.org/2001/XMLSchema"/>
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="orderinterpreterprocess_client" partnerLinkType="client:OrderInterpreterProcess" myRole="OrderInterpreterProcessPortType"/>
+    <partnerLink name="OrderInterpreterService"
+                 partnerLinkType="ns2:OrderInterpreterService"
+                 partnerRole="OrderInterpreterServicePortType"/>
+    <partnerLink name="TB_ORDER_INTERPRETER"
+                 partnerLinkType="ns4:TB_ORDER_INTERPRETER_plt"
+                 partnerRole="TB_ORDER_INTERPRETER_role"/>
+    <partnerLink name="BrokerSpringComponent.orderInterpreterService"
+                 partnerLinkType="ns6:BrokerSpringComponent.orderInterpreterService"
+                 partnerRole="OrderInterpreterFacade"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:SubmitOrderRequest_msg"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="client:SubmitOrderResponse_msg"/>
+    <variable name="InvokeOrderInterpreterServiceInput"
+              messageType="ns2:SubmitOrderRequest_msg"/>
+    <variable name="InvokeOrderInterpreterServiceOutput"
+              messageType="ns2:SubmitOrderResponse_msg"/>
+    <variable name="InvokeTbOrderInterpreteInput"
+              messageType="ns4:TB_ORDER_INTERPRETERSelect_inputParameters"/>
+    <variable name="InvokeTbOrderInterpreterOutput"
+              messageType="ns4:TbOrderInterpreterMCollection_msg"/>
+    <variable name="InvokeOrderInterpreterOSMInput"
+              messageType="ns6:processOSMOrderInput"/>
+    <variable name="InvokeOrderInterpreterOSMOutput"
+              messageType="ns6:processOSMOrderOutput"/>
+    <variable name="InvokeOrderInterpreterPVSInput"
+              messageType="ns6:processPVSOrderInput"/>
+    <variable name="InvokeOrderInterpreterPVSOutput"
+              messageType="ns6:processPVSOrderOutput"/>
+    <variable name="osmOrder" element="ns7:BasicOrderRequest"/>
+    <variable name="pvsOrder" element="val:validateArrayRequest"/>
+  </variables>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in OrderInterpreterProcess.wsdl) -->
+    <receive name="receiveInput" partnerLink="orderinterpreterprocess_client" portType="client:OrderInterpreterProcessPortType" operation="SubmitOrder" variable="inputVariable" createInstance="yes"/>
+    <scope name="OrderInterpreterService" exitOnStandardFault="no">
+      <faultHandlers>
+        <catchAll>
+          <empty name="Empty1"/>
+        </catchAll>
+      </faultHandlers>
+      <sequence name="OrderInterpreterService">
+        <assign name="AssignOrderInterpreterRequest">
+          <copy>
+            <from>$inputVariable.body/GeneralRequest</from>
+            <to>$InvokeOrderInterpreterServiceInput.body/GeneralRequest</to>
+          </copy>
+          <copy>
+            <from>$inputVariable.body/Order/orderID</from>
+            <to>$InvokeOrderInterpreterServiceInput.body/SimpleOrder/orderID</to>
+          </copy>
+          <copy>
+            <from>$inputVariable.body/Order/orderSpecification</from>
+            <to>$InvokeOrderInterpreterServiceInput.body/SimpleOrder/orderSpecification</to>
+          </copy>
+          <copy>
+            <from>$inputVariable.body/Order/client</from>
+            <to>$InvokeOrderInterpreterServiceInput.body/SimpleOrder/client</to>
+          </copy>
+          <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+            <from>$inputVariable.body/Order/OrderContent/content[1]/contentType</from>
+            <to>$InvokeOrderInterpreterServiceInput.body/SimpleOrder/contentType</to>
+          </copy>
+        </assign>
+        <invoke name="InvokeOrderInterpreterService"
+                partnerLink="OrderInterpreterService"
+                portType="ns2:OrderInterpreterServicePortType"
+                operation="SubmitOrder"
+                inputVariable="InvokeOrderInterpreterServiceInput"
+                outputVariable="InvokeOrderInterpreterServiceOutput"
+                bpelx:invokeAsDetail="no"/>
+      </sequence>
+    </scope>
+    <scope name="TbOrderInterpreter" exitOnStandardFault="no">
+      <faultHandlers>
+        <catchAll>
+          <empty name="Empty4"/>
+        </catchAll>
+      </faultHandlers>
+      <sequence name="TbOrderInterpreter">
+        <assign name="AssignOrderInterpreterReq">
+          <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+            <from>$InvokeOrderInterpreterServiceOutput.body/SimpleOrder/order[1]/orderSpecification/serviceCode</from>
+            <to>$InvokeTbOrderInterpreteInput.TB_ORDER_INTERPRETERSelect_inputParameters/ns5:serviceCode</to>
+          </copy>
+          <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+            <from>$inputVariable.body/Order/orderSpecification/action</from>
+            <to>$InvokeTbOrderInterpreteInput.TB_ORDER_INTERPRETERSelect_inputParameters/ns5:orderAction</to>
+          </copy>
+        </assign>
+        <invoke name="InvokeTbOrderInterpreter"
+                partnerLink="TB_ORDER_INTERPRETER"
+                portType="ns4:TB_ORDER_INTERPRETER_ptt"
+                operation="TB_ORDER_INTERPRETERSelect"
+                inputVariable="InvokeTbOrderInterpreteInput"
+                outputVariable="InvokeTbOrderInterpreterOutput"
+                bpelx:invokeAsDetail="no"/>
+      </sequence>
+    </scope>
+    <if name="InterpreterConfig">
+      <documentation>
+        <![CDATA[Exist]]>
+      </documentation>
+      <condition>ora:countNodes('InvokeTbOrderInterpreterOutput','TbOrderInterpreterMCollection','ns5:TbOrderInterpreterM') &gt; 0</condition>
+      <if name="Action">
+        <documentation>
+          <![CDATA[OSM]]>
+        </documentation>
+        <condition>$inputVariable.body/Order/orderSpecification/action = "PROVISIONING"</condition>
+        <sequence name="Sequence1">
+          <scope name="OrderInterpreterOSM" exitOnStandardFault="no">
+            <faultHandlers>
+              <catchAll>
+                <empty name="Empty6"/>
+              </catchAll>
+            </faultHandlers>
+            <sequence name="OrderInterpreterOSM">
+              <assign name="AssignOSMRequest">
+                <copy>
+                  <from>bpws:getVariableData('inputVariable','body','Order/OrderContent/content[1]/payload')/sch1:BasicOrderRequest</from>
+                  <to>$osmOrder</to>
+                </copy>
+              </assign>
+              <assign name="TransformToOrderInterpreterOSM">
+                <bpelx:annotation>
+                  <bpelx:pattern patternName="bpelx:transformation"/>
+                </bpelx:annotation>
+                <copy>
+                  <from>ora:doXSLTransformForDoc("xsl/Transformation_OrderTBInterpreterToOrderInterpreterReq_v1.xsl", $osmOrder, "InvokeTbOrderInterpreterOutput.TbOrderInterpreterMCollection", $InvokeTbOrderInterpreterOutput.TbOrderInterpreterMCollection)</from>
+                  <to variable="InvokeOrderInterpreterOSMInput"
+                      part="parameters"/>
+                </copy>
+              </assign>
+              <invoke name="InvokeOrderInterpreterOSM"
+                      partnerLink="BrokerSpringComponent.orderInterpreterService"
+                      portType="ns6:OrderInterpreterFacade"
+                      operation="processOSMOrder"
+                      inputVariable="InvokeOrderInterpreterOSMInput"
+                      outputVariable="InvokeOrderInterpreterOSMOutput"
+                      bpelx:invokeAsDetail="no"/>
+            </sequence>
+          </scope>
+          <assign name="TransformOrderInterpreterOSMToOrderOSM">
+            <bpelx:annotation>
+              <bpelx:pattern patternName="bpelx:transformation"/>
+            </bpelx:annotation>
+            <copy>
+              <from>ora:doXSLTransformForDoc("xsl/Transformation_OrderInterpreterToOrderOSM.xsl", $InvokeOrderInterpreterOSMOutput.parameters)</from>
+              <to variable="osmOrder"/>
+            </copy>
+          </assign>
+          <assign name="TransformOrderOSMToResponse">
+            <bpelx:annotation>
+              <bpelx:pattern patternName="bpelx:transformation"/>
+            </bpelx:annotation>
+            <copy>
+              <from>ora:doXSLTransformForDoc("xsl/Transformation_OrderOSMToInterpreterResponse.xsl", $inputVariable.body, "osmOrder", $osmOrder)</from>
+              <to variable="outputVariable" part="body"/>
+            </copy>
+          </assign>
+        </sequence>
+        <else>
+          <documentation>
+            <![CDATA[PVS]]>
+          </documentation>
+          <sequence name="Sequence2">
+            <scope name="OrderInterpreterPVS" exitOnStandardFault="no">
+              <faultHandlers>
+                <catchAll>
+                  <empty name="Empty5"/>
+                </catchAll>
+              </faultHandlers>
+              <sequence name="OrderInterpreterPVS">
+                <assign name="AssignPVSRequest">
+                  <copy>
+                    <from>bpws:getVariableData('inputVariable','body','Order/OrderContent/content[1]/payload')/val:validateArrayRequest</from>
+                    <to>$pvsOrder</to>
+                  </copy>
+                </assign>
+                <assign name="TransformToOrderInterpreterPVS">
+                  <bpelx:annotation>
+                    <bpelx:pattern patternName="bpelx:transformation"/>
+                  </bpelx:annotation>
+                  <copy>
+                    <from>ora:doXSLTransformForDoc("xsl/Transformation_OrderTbInterpreterToPVSOrderInterpreter.xsl", $pvsOrder, "InvokeTbOrderInterpreterOutput.TbOrderInterpreterMCollection", $InvokeTbOrderInterpreterOutput.TbOrderInterpreterMCollection)</from>
+                    <to variable="InvokeOrderInterpreterPVSInput"
+                        part="parameters"/>
+                  </copy>
+                </assign>
+                <invoke name="InvokeOrderInterpreterPVS"
+                        partnerLink="BrokerSpringComponent.orderInterpreterService"
+                        portType="ns6:OrderInterpreterFacade"
+                        operation="processPVSOrder"
+                        inputVariable="InvokeOrderInterpreterPVSInput"
+                        outputVariable="InvokeOrderInterpreterPVSOutput"
+                        bpelx:invokeAsDetail="no"/>
+              </sequence>
+            </scope>
+            <assign name="TransformOrderInterpreterOSMToOrderPVS">
+              <bpelx:annotation>
+                <bpelx:pattern patternName="bpelx:transformation"/>
+              </bpelx:annotation>
+              <copy>
+                <from>ora:doXSLTransformForDoc("xsl/Transformation_OrderInterpreterToOrderPVS.xsl", $InvokeOrderInterpreterPVSOutput.parameters)</from>
+                <to variable="pvsOrder"/>
+              </copy>
+            </assign>
+            <assign name="TransformOrderPVSToResponse">
+              <bpelx:annotation>
+                <bpelx:pattern patternName="bpelx:transformation"/>
+              </bpelx:annotation>
+              <copy>
+                <from>ora:doXSLTransformForDoc("xsl/Transformation_OrderPVSToInterpreterResponse.xsl", $inputVariable.body, "pvsOrder", $pvsOrder)</from>
+                <to variable="outputVariable" part="body"/>
+              </copy>
+            </assign>
+          </sequence>
+        </else>
+      </if>
+      <else>
+        <documentation>
+          <![CDATA[Empty]]>
+        </documentation>
+        <assign name="TransformInputToResponse">
+          <bpelx:annotation>
+            <bpelx:pattern patternName="bpelx:transformation"/>
+          </bpelx:annotation>
+          <copy>
+            <from>ora:doXSLTransformForDoc("xsl/Transformation_OrderInterpreterInputToInterpreterOutput.xsl", $inputVariable.body)</from>
+            <to variable="outputVariable" part="body"/>
+          </copy>
+        </assign>
+      </else>
+    </if>
+    <!-- Generate reply to synchronous request -->
+    <reply name="replyOutput" partnerLink="orderinterpreterprocess_client" portType="client:OrderInterpreterProcessPortType" operation="SubmitOrder" variable="outputVariable"/>
+  </sequence>
+</process>

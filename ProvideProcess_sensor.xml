@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<sensors targetNamespace="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess" xmlns="http://xmlns.oracle.com/bpel/sensor" xmlns:tns="http://tigo.com/enterprise/serviceEntity/provisioning/provideProcess" xmlns:pc="http://xmlns.oracle.com/bpel/sensor">
+   <sensor sensorName="Notification" classname="oracle.tip.pc.services.reports.dca.agents.BpelVariableSensorAgent" kind="variable" target="$RequestNotification">
+      <variableConfig outputDataType="NotifyRequest_msg" outputNamespace="http://tigo.com/enterprise/business/task/Notification/v1"/>
+   </sensor>
+   <sensor sensorName="ActivitySensor" classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="Transform1">
+      <activityConfig evalTime="all">
+         <variable outputDataType="NotifyRequest_msg" outputNamespace="http://tigo.com/enterprise/business/task/Notification/v1" target="$RequestNotification"/>
+      </activityConfig>
+   </sensor>
+</sensors>

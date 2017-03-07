@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="PaymentProces" targetNamespace="http://tigo.com/enterprise/serviceEntity/payment/paymentProcess" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://tigo.com/enterprise/serviceEntity/payment/paymentProcess" xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <plnk:partnerLinkType name="PaymentProcess">
+      <plnk:role name="BasicPaymentPort" portType="tns:BasicPaymentPort"/>
+   </plnk:partnerLinkType>
+   <wsdl:import namespace="http://tigo.com/enterprise/serviceEntity/payment/paymentProcess" location="wsdl/process/PaymentProcess.wsdl"/>
+</wsdl:definitions>

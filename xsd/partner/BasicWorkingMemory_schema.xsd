@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://tigo.com/enterprise/serviceEntity/WorkingMemory/v1/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:sch="http://tigo.com/enterprise/serviceEntity/WorkingMemory/v1/schema" xmlns:grq="http://tigo.com/enterprise/resources/GeneralRequest/v1/schema" xmlns:grs="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema">
+   <xsd:import namespace="http://tigo.com/enterprise/resources/GeneralRequest/v1/schema" schemaLocation="../commons/resources/GeneralRequest.xsd"/>
+   <xsd:import namespace="http://tigo.com/enterprise/resources/GeneralResponse/v1/schema" schemaLocation="../commons/resources/GeneralResponse.xsd"/>
+   <xsd:element name="BasicSetRequest" type="sch:BasicSetQuery"/>
+   <xsd:complexType name="BasicSetQuery">
+      <xsd:sequence>
+         <xsd:element name="GeneralRequest" type="grq:GeneralRequest_type" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="key" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="code" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="data" type="xsd:anyType" minOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="BasicSetResponse" type="sch:BasicSetResponseQuery"/>
+   <xsd:complexType name="BasicSetResponseQuery">
+      <xsd:sequence>
+         <xsd:element name="GeneralResponse" type="grs:GeneralResponse_type" minOccurs="1" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="BasicGetRequest" type="sch:BasicGetQuery"/>
+   <xsd:complexType name="BasicGetQuery">
+      <xsd:sequence>
+         <xsd:element name="GeneralRequest" type="grq:GeneralRequest_type" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="key" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="code" type="xsd:string" minOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="BasicGetResponse" type="sch:BasicGetResponseQuery"/>
+   <xsd:complexType name="BasicGetResponseQuery">
+      <xsd:sequence>
+         <xsd:element name="GeneralResponse" type="grs:GeneralResponse_type" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="key" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="code" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="data" type="xsd:anyType" minOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

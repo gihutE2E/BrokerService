@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="LOG_ORCHESTRATOR_DETAIL" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_DETAIL" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_DETAIL" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:top="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_DETAIL">
+   <plt:partnerLinkType name="LOG_ORCHESTRATOR_DETAIL_plt">
+      <plt:role name="LOG_ORCHESTRATOR_DETAIL_role">
+         <plt:portType name="tns:LOG_ORCHESTRATOR_DETAIL_ptt"/>
+      </plt:role>
+   </plt:partnerLinkType>
+   <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema">
+         <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_DETAIL" schemaLocation="xsd/LOG_ORCHESTRATOR_DETAIL_table.xsd"/>
+      </schema>
+   </wsdl:types>
+   <wsdl:message name="LogOrchestratorProductCollection_msg">
+      <wsdl:part name="LogOrchestratorProductCollection" element="top:LogOrchestratorProductCollection"/>
+   </wsdl:message>
+   <wsdl:message name="LOG_ORCHESTRATOR_DETAILSelect_inputParameters">
+      <wsdl:part name="LOG_ORCHESTRATOR_DETAILSelect_inputParameters" element="top:LOG_ORCHESTRATOR_DETAILSelect_correlationIdInputParameters"/>
+   </wsdl:message>
+   <wsdl:portType name="LOG_ORCHESTRATOR_DETAIL_ptt">
+      <wsdl:operation name="insert">
+         <wsdl:input message="tns:LogOrchestratorProductCollection_msg"/>
+      </wsdl:operation>
+      <wsdl:operation name="update">
+         <wsdl:input message="tns:LogOrchestratorProductCollection_msg"/>
+      </wsdl:operation>
+      <wsdl:operation name="LOG_ORCHESTRATOR_DETAILSelect">
+         <wsdl:input message="tns:LOG_ORCHESTRATOR_DETAILSelect_inputParameters"/>
+         <wsdl:output message="tns:LogOrchestratorProductCollection_msg"/>
+      </wsdl:operation>
+   </wsdl:portType>
+</wsdl:definitions>

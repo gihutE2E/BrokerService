@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+   <service name="reverseprovideprocess_client" ui:wsdlLocation="ReverseProvideProcessWrapper.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/serviceEntity/provisioning/reverseProvideProcess#wsdl.interface(BasicOrderPort)"/>
+   </service>
+   <reference name="LOG_ORCHESTRATOR_DETAIL" ui:wsdlLocation="LOG_ORCHESTRATOR_DETAIL.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_DETAIL#wsdl.interface(LOG_ORCHESTRATOR_DETAIL_ptt)"/>
+   </reference>
+   <reference name="LOG_ORCHESTRATOR_PRODUCT_UPDATE" ui:wsdlLocation="LOG_ORCHESTRATOR_PRODUCT_UPDATE.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_PRODUCT_UPDATE#wsdl.interface(LOG_ORCHESTRATOR_PRODUCT_UPDATE_ptt)"/>
+   </reference>
+   <reference name="ProvisioningMediator.ProvisioningMediator" ui:wsdlLocation="BasicProvisioningServiceWrapper3.wsdl">
+      <interface.wsdl interface="http://tigo.com/enterprise/taskService/provisioning/v1#wsdl.interface(ProvisioningPort)"/>
+   </reference>
+   <reference name="FaultNotificationService" ui:wsdlLocation="BasicFaultNotificationWrapper7.wsdl">
+      <interface.wsdl interface="http://tigo.hn/enterprise/faultNotificationService/createFault#wsdl.interface(FaultNotification_Port)"/>
+   </reference>
+</componentType>

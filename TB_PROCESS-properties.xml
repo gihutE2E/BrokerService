@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<properties>
+   <entry key="ID_VALIDATOR.PROCESS:db_column_1">NAME</entry>
+   <entry key="ID_VALIDATOR.PROCESS:db_column_0">PROCESS_ID</entry>
+   <entry key="ID_VALIDATOR.PROCESS:db_table_type">TABLE</entry>
+   <entry key="ID_VALIDATOR.PROCESS.PROCESS_ID:db_column_type">NVARCHAR2</entry>
+   <entry key="ID_VALIDATOR.PROCESS.PROCESS_ID:db_column_size">50</entry>
+   <entry key="ID_VALIDATOR.PROCESS.PROCESS_ID:db_column_not_null">true</entry>
+   <entry key="return_single_result_set">false</entry>
+   <entry key="ID_VALIDATOR.PROCESS.NAME:db_column_type">NVARCHAR2</entry>
+   <entry key="ID_VALIDATOR.PROCESS.NAME:db_column_not_null">true</entry>
+   <entry key="root_descriptor_alias">ID_VALIDATOR.PROCESS</entry>
+   <entry key="ID_VALIDATOR.PROCESS.NAME:db_column_size">150</entry>
+</properties>

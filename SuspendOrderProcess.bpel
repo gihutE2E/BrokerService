@@ -1,0 +1,87 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Wed Feb 12 16:13:41 CST 2014
+  Author:  Karen Aguilar
+  Type: BPEL 2.0 Process
+  Purpose: One Way BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="SuspendOrderProcess"
+               targetNamespace="http://xmlns.oracle.com/OrderOrchestrator/OrderOrchestrator/SuspendOrderProcess"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/OrderOrchestrator/OrderOrchestrator/SuspendOrderProcess"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:ns9="http://tigo.com/enterprise/serviceEntity/provisioning/dataChangeRequest/v1/schema"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:ns4="http://tigo.com/enterprise/businessEntity/charge/v1/schema"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:ns5="http://tigo.com/commons/resources/additional/v1/schema"
+         xmlns:ns1="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema"
+         xmlns:ns7="http://tigo.com/enterprise/businessEntity/product/basic/v1/schema"
+         xmlns:ns10="http://tigo.com/enterprise/serviceEntity/provisioning/fieldService/v1/schema"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:ns8="http://tigo.com/serviceEntity/provisioning/offeringDetail/v1/schema"
+         xmlns:ns3="http://tigo.com/enterprise/businessEntity/client/basic/v1/schema"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ns2="http://tigo.com/commons/basicRequest/v1/schema"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ns6="http://tigo.com/enterprise/serviceEntity/provisioning/order/v1/schema"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap">
+  <import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema"
+          location="xsd/BasicOrderRequest_schema.xsd"
+          importType="http://www.w3.org/2001/XMLSchema"/>
+  <import namespace="http://xmlns.oracle.com/OrderOrchestrator/OrderOrchestrator/SuspendOrderProcess" location="SuspendOrderProcess.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  --> 
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="suspendorderprocess_client" partnerLinkType="client:SuspendOrderProcess" myRole="SuspendOrderProcessProvider"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:SuspendOrderProcessRequestMessage"/>
+  </variables>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in SuspendOrderProcess.wsdl) -->
+    <receive name="receiveInput" partnerLink="suspendorderprocess_client" portType="client:SuspendOrderProcess" operation="process" variable="inputVariable" createInstance="yes"/>
+    <forEach parallel="no" counterName="ForEachProductsCounter" name="ForEachProducts">
+      <startCounterValue>1</startCounterValue>
+      <finalCounterValue>$inputVariable.payload/ServiceOffer/order[1]/productOffering/ns6:order</finalCounterValue>
+      <scope name="ForEachProductsScope" exitOnStandardFault="no"></scope>
+    </forEach>
+  </sequence>
+</process>

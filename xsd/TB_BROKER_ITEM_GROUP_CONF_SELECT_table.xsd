@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_BROKER_ITEM_GROUP_CONF_SELECT" xmlns="http://xmlns.oracle.com/pcbpel/adapter/db/top/TB_BROKER_ITEM_GROUP_CONF_SELECT" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:element name="TbBrokerItemGroupConfCollection" type="TbBrokerItemGroupConfCollection"/>
+   <xs:complexType name="TbBrokerItemGroupConfCollection">
+      <xs:sequence>
+         <xs:element name="TbBrokerItemGroupConf" type="TbBrokerItemGroupConf" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="TbBrokerItemGroupConf">
+      <xs:sequence>
+         <xs:element name="groupId" type="xs:string"/>
+         <xs:element name="itemId" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="itemAction" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="itemType" type="xs:string" minOccurs="0" nillable="true"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="TB_BROKER_ITEM_GROUP_CONF_SELECTSelectInputParameters" type="TB_BROKER_ITEM_GROUP_CONF_SELECTSelect"/>
+   <xs:complexType name="TB_BROKER_ITEM_GROUP_CONF_SELECTSelect">
+      <xs:sequence/>
+   </xs:complexType>
+</xs:schema>

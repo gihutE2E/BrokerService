@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://www.tigo.com/resource/masterStatusServices/masterStatus/v1/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:sch="http://www.tigo.com/resource/masterStatusServices/masterStatus/v1/schema" xmlns:rsc="http://tigo.hn/commons/resources/parameters" xmlns:rsc1="http://tigo.hn/commons/resources/generalResponse">
+   <xsd:import namespace="http://tigo.hn/commons/resources/parameters" schemaLocation="commons/resources/ParametersType.xsd"/>
+   <xsd:import namespace="http://tigo.hn/commons/resources/generalResponse" schemaLocation="commons/GeneralResponse.xsd"/>
+   <xsd:element name="GetMasterStatusRequest" type="sch:GetMasterStatusReq_Type"/>
+   <xsd:complexType name="GetMasterStatusReq_Type">
+      <xsd:sequence>
+         <xsd:element name="entity_id" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="entity_key" type="xsd:string" minOccurs="0"/>
+         <xsd:element ref="rsc:parameters" minOccurs="0" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="GetMasterStatusResponse" type="sch:GetMasterStatusRes_Type"/>
+   <xsd:complexType name="GetMasterStatusRes_Type">
+      <xsd:sequence>
+         <xsd:element ref="rsc1:GeneralResponse" minOccurs="1"/>
+         <xsd:element name="listMasterStatus" type="sch:ListMasterStatus_Type" minOccurs="0" maxOccurs="unbounded"/>
+         <xsd:element ref="rsc:parameters" minOccurs="0" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="ListMasterStatus" type="sch:ListMasterStatus_Type"/>
+   <xsd:complexType name="ListMasterStatus_Type">
+      <xsd:sequence>
+         <xsd:element name="masterStatus" type="sch:MasterStatus_Type" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="MasterStatus" type="sch:MasterStatus_Type"/>
+   <xsd:complexType name="MasterStatus_Type">
+      <xsd:sequence>
+         <xsd:element name="entity_id" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="entity_key" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="entity_value" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="start_date" type="xsd:dateTime" minOccurs="0"/>
+         <xsd:element name="end_date" type="xsd:dateTime" minOccurs="0"/>
+         <xsd:element name="enabled" type="xsd:string" minOccurs="0"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="SetMasterStatusRequest" type="sch:SetMasterStatusReq_Type"/>
+   <xsd:complexType name="SetMasterStatusReq_Type">
+      <xsd:sequence>
+         <xsd:element name="masterStatus" type="sch:MasterStatus_Type" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="entity_type" type="xsd:string" minOccurs="0" default="DEFAULT_TYPE"/>
+         <xsd:element name="oldEntityValue" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+         <xsd:element ref="rsc:parameters" minOccurs="0" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="SetMasterStatusResponse" type="sch:SetMasterStatusRes_Type"/>
+   <xsd:complexType name="SetMasterStatusRes_Type">
+      <xsd:sequence>
+         <xsd:element ref="rsc1:GeneralResponse" minOccurs="1"/>
+         <xsd:element ref="rsc:parameters" minOccurs="0" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="GetEntityTreeRequest" type="sch:GetEntityTreeReq_Type"/>
+   <xsd:complexType name="GetEntityTreeReq_Type">
+      <xsd:sequence>
+         <xsd:element name="entity_id" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="entity_type" type="xsd:string" minOccurs="0" default="DEFAULT_TYPE"/>
+         <xsd:element ref="rsc:parameters" minOccurs="0" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="GetEntityTreeResponse" type="sch:GetEntityTreeRes_Type"/>
+   <xsd:complexType name="GetEntityTreeRes_Type">
+      <xsd:sequence>
+         <xsd:element ref="rsc1:GeneralResponse" minOccurs="1"/>
+         <xsd:element name="entityTree" type="sch:EntityTree_Type"/>
+         <xsd:element ref="rsc:parameters" minOccurs="0" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="GetEntityTreeValueRequest" type="sch:GetEntityTreeValueReq_Type"/>
+   <xsd:complexType name="GetEntityTreeValueReq_Type">
+      <xsd:sequence>
+         <xsd:element name="entity_id" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="entity_key" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="entity_type" type="xsd:string" minOccurs="0" default="DEFAULT_TYPE"/>
+         <xsd:element ref="rsc:parameters" minOccurs="0" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="GetEntityTreeValueResponse" type="sch:GetEntityTreeValueRes_Type"/>
+   <xsd:complexType name="GetEntityTreeValueRes_Type">
+      <xsd:sequence>
+         <xsd:element ref="rsc1:GeneralResponse" minOccurs="1"/>
+         <xsd:element name="entityTree" type="sch:EntityTree_Type"/>
+         <xsd:element ref="rsc:parameters" minOccurs="0" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="entityTree" type="sch:EntityTree_Type"/>
+   <xsd:complexType name="EntityTree_Type">
+      <xsd:sequence>
+         <xsd:element name="entity" type="sch:Entity_Type" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="Entity" type="sch:Entity_Type"/>
+   <xsd:complexType name="Entity_Type">
+      <xsd:sequence>
+         <xsd:element name="entity_id" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="entity" type="xsd:string" minOccurs="1"/>
+         <xsd:element name="root" type="xsd:decimal" minOccurs="0"/>
+         <xsd:element name="bid_right" type="xsd:decimal" minOccurs="0"/>
+         <xsd:element name="value_type" type="xsd:string" minOccurs="0"/>
+         <xsd:element name="entity_type" type="xsd:string" minOccurs="0"/>
+         <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

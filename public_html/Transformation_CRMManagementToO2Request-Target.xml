@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ns12:BasicOrderRequest xmlns:ns12="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema">
+   <ns5:basicRequest xmlns:ns5="http://tigo.com/commons/basicRequest/v1/schema">
+      <utiReference>uti1</utiReference>
+   </ns5:basicRequest>
+   <ServiceOffer>
+      <order>
+         <ns4:client xmlns:ns4="http://tigo.com/enterprise/businessEntity/client/basic/v1/schema">
+            <ID>ID9</ID>
+            <idType>idType10</idType>
+         </ns4:client>
+      </order>
+      <order>
+         <ns4:client xmlns:ns4="http://tigo.com/enterprise/businessEntity/client/basic/v1/schema">
+            <ID>ID11</ID>
+            <idType>idType12</idType>
+         </ns4:client>
+      </order>
+      <order>
+         <ns4:client xmlns:ns4="http://tigo.com/enterprise/businessEntity/client/basic/v1/schema">
+            <ID>ID13</ID>
+            <idType>idType14</idType>
+         </ns4:client>
+      </order>
+   </ServiceOffer>
+</ns12:BasicOrderRequest>

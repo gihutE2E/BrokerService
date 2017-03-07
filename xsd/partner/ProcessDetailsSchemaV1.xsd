@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http:/xmlns.tigo.com/ProcessValidator/ProcessDetailsSchema/V1" xmlns="http:/xmlns.tigo.com/ProcessValidator/ProcessDetailsSchema/V1" xmlns:add="http://xmlns.tigo.com/AdditionalSchema/V1" elementFormDefault="qualified" xmlns:parameters="http://xmlns.tigo.com/ParameterType/V2">
+   <xsd:import schemaLocation="commons/ParametersTypeV2.xsd" namespace="http://xmlns.tigo.com/ParameterType/V2"/>
+   <xsd:import namespace="http://xmlns.tigo.com/AdditionalSchema/V1" schemaLocation="commons/AdditionalSchemaV1.xsd"/>
+   <xsd:element name="processDetails" type="ProcessDetailsType"/>
+   <xsd:complexType name="ProcessDetailsType">
+      <xsd:sequence>
+         <xsd:element name="cost" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="description" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="id" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="conditions" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="condition" maxOccurs="unbounded">
+                     <xsd:complexType>
+                        <xsd:sequence>
+                           <xsd:element name="name" type="xsd:string"/>
+                           <xsd:element name="value" type="xsd:string"/>
+                        </xsd:sequence>
+                     </xsd:complexType>
+                  </xsd:element>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element ref="add:additionals"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

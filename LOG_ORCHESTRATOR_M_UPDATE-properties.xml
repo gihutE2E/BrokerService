@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<properties>
+   <entry key="LOG_ORCHESTRATOR_M.UTI_REFERENCE:db_column_size">100</entry>
+   <entry key="LOG_ORCHESTRATOR_M.REQUEST_DATE:db_column_type">DATE</entry>
+   <entry key="LOG_ORCHESTRATOR_M.STATUS:db_column_type">VARCHAR2</entry>
+   <entry key="LOG_ORCHESTRATOR_M.UTI_REFERENCE:db_column_not_null">false</entry>
+   <entry key="LOG_ORCHESTRATOR_M.EXTERNAL_APPLICATION_ID:db_column_size">100</entry>
+   <entry key="LOG_ORCHESTRATOR_M.UTI:db_column_size">100</entry>
+   <entry key="LOG_ORCHESTRATOR_M.UTI:db_column_not_null">true</entry>
+   <entry key="LOG_ORCHESTRATOR_M.EXTERNAL_TRANSACTION_ID:db_column_size">100</entry>
+   <entry key="LOG_ORCHESTRATOR_M:db_column_5">UTI_REFERENCE</entry>
+   <entry key="LOG_ORCHESTRATOR_M.STATUS:db_column_size">10</entry>
+   <entry key="LOG_ORCHESTRATOR_M:db_column_4">STATUS</entry>
+   <entry key="LOG_ORCHESTRATOR_M:db_column_3">REQUEST_DATE</entry>
+   <entry key="LOG_ORCHESTRATOR_M:db_column_2">EXTERNAL_TRANSACTION_ID</entry>
+   <entry key="LOG_ORCHESTRATOR_M:db_column_1">EXTERNAL_APPLICATION_ID</entry>
+   <entry key="LOG_ORCHESTRATOR_M:db_column_0">UTI</entry>
+   <entry key="LOG_ORCHESTRATOR_M.UTI_REFERENCE:db_column_type">VARCHAR2</entry>
+   <entry key="LOG_ORCHESTRATOR_M:db_table_type">TABLE</entry>
+   <entry key="LOG_ORCHESTRATOR_M.REQUEST_DATE:db_column_not_null">false</entry>
+   <entry key="root_descriptor_alias">LOG_ORCHESTRATOR_M</entry>
+   <entry key="LOG_ORCHESTRATOR_M.EXTERNAL_APPLICATION_ID:db_column_type">VARCHAR2</entry>
+   <entry key="LOG_ORCHESTRATOR_M.STATUS:db_column_not_null">false</entry>
+   <entry key="LOG_ORCHESTRATOR_M.UTI:db_column_type">VARCHAR2</entry>
+   <entry key="LOG_ORCHESTRATOR_M.EXTERNAL_TRANSACTION_ID:db_column_type">VARCHAR2</entry>
+   <entry key="LOG_ORCHESTRATOR_M.EXTERNAL_APPLICATION_ID:db_column_not_null">true</entry>
+   <entry key="LOG_ORCHESTRATOR_M.EXTERNAL_TRANSACTION_ID:db_column_not_null">true</entry>
+</properties>

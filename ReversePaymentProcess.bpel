@@ -1,0 +1,725 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Mon Feb 25 11:54:32 COT 2013
+  Author:  Harcalejo
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="ReversePaymentProcess"
+               targetNamespace="http://xmlns.oracle.com/OrchestratorOrders/O2/ReversePaymentProcess"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/OrchestratorOrders/O2/ReversePaymentProcess"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+               xmlns:ns1="http://tigo.com/enterprise/serviceEntity/provisioning/reversePaymentProcess"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns2="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_CHARGE"
+         xmlns:ns3="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_CHARGE"
+         xmlns:ns4="http://tigo.com/enterprise/serviceEntity/provisioning/orderRequest/v1/schema"
+         xmlns:ns5="http://tigo.com/commons/basicRequest/v1/schema"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns6="http://tigo.com/enterprise/taskService/paymentService/v1"
+         xmlns:ns7="http://tigo.com/enterprise/taskService/reversePayment/v1/schema"
+         xmlns:ns8="http://tigo.com/commons/generalResponse/v1/schema"
+         xmlns:ns9="http://xmlns.oracle.com/pcbpel/adapter/db/OrchestratorOrders/Orchestrator/LOG_ORCHESTRATOR_CHARGE_UPDATE"
+         xmlns:ns10="http://xmlns.oracle.com/pcbpel/adapter/db/top/LOG_ORCHESTRATOR_CHARGE_UPDATE"
+         xmlns:ns11="http://tigo.hn/enterprise/faultNotificationService/createFault"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:ns12="http://tigo.hn/commons/resources/faultNotificationService/createFaultSchema/schema">
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  --> 
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="reversepaymentprocess_client" partnerLinkType="ns1:ReversePaymentProcess" myRole="BasicOrderPort"/>
+    <partnerLink name="LOG_ORCHESTRATOR_CHARGE" partnerLinkType="ns2:LOG_ORCHESTRATOR_CHARGE_plt"
+                 partnerRole="LOG_ORCHESTRATOR_CHARGE_role"/>
+    <partnerLink name="LOG_ORCHESTRATOR_CHARGE_UPDATE"
+                 partnerLinkType="ns9:LOG_ORCHESTRATOR_CHARGE_UPDATE_plt"
+                 partnerRole="LOG_ORCHESTRATOR_CHARGE_UPDATE_role"/>
+    <partnerLink name="PaymentMediator.PaymentMediator"
+                 partnerLinkType="ns6:PaymentMediator.PaymentMediator"
+                 partnerRole="BasicPaymentPort"/>
+    <partnerLink name="FaultNotificationService" partnerLinkType="ns11:FaultNotificationService"
+                 partnerRole="FaultNotification_Port"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="ns1:BasicVoidOrderRequest_msg"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="ns1:BasicVoidOrderResponse_msg"/>
+    <variable name="Invoke_LogCharge_Select_Input"
+              messageType="ns2:LOG_ORCHESTRATOR_CHARGESelect_inputParameters"/>
+    <variable name="Invoke_LogCharge_Select_Output"
+              messageType="ns2:LogOrchestratorChargeCollection_msg"/>
+    <variable name="Invoke_ReversePayment_Input" messageType="ns6:BasicReversePaymentRequest_msg"/>
+    <variable name="Invoke_ReversePayment_Output"
+              messageType="ns6:BasicReversePaymentResponse_msg"/>
+    <variable name="generalResponse" messageType="ns1:GeneralResponse_msg"/>
+    <variable name="Invoke_UpdateLogCharge_Input"
+              messageType="ns9:LogOrchestratorChargeCollection_msg"/>
+    <variable name="Invoke_CreateFault_Input"
+              messageType="ns11:CreateFaultRequest_msg"/>
+    <variable name="Invoke_CreateFault_Output"
+              messageType="ns11:CreateFaultResponse_msg"/>
+    <variable messageType="ns11:generalResponseMsg" name="globalFaultVar"/>
+    <variable name="uti" type="xsd:string"/>
+  </variables>
+  <faultHandlers>
+    <catch faultName="ns11:fault">
+      <sequence name="FaultNotification">
+        <reply name="Reply1" faultName="ns1:fault" variable="generalResponse"
+               partnerLink="reversepaymentprocess_client" portType="ns1:BasicOrderPort"
+               operation="ReverseOrder"/>
+        <exit name="Exit1"/>
+      </sequence>
+    </catch>
+    <catchAll>
+      <scope name="faultNotification" exitOnStandardFault="no">
+        <bpelx:annotation>
+          <bpelx:general>
+            <bpelx:property name="userImage">earth.png</bpelx:property>
+          </bpelx:general>
+        </bpelx:annotation>
+        <faultHandlers>
+          <catch faultName="ns11:fault" faultVariable="faultVariable"
+                 faultElement="ns8:GeneralResponse">
+            <sequence name="fault">
+              <assign name="GeneralResponse">
+                <copy>
+                  <from>$uti</from>
+                  <to>$generalResponse.fault/uti</to>
+                </copy>
+                <copy>
+                  <from>$faultVariable/status</from>
+                  <to>$generalResponse.fault/status</to>
+                </copy>
+                <copy>
+                  <from>$faultVariable/code</from>
+                  <to>$generalResponse.fault/code</to>
+                </copy>
+                <copy>
+                  <from>$faultVariable/message</from>
+                  <to>$generalResponse.fault/message</to>
+                </copy>
+              </assign>
+              <reply name="Reply" faultName="ns1:fault"
+                     variable="generalResponse"
+                     partnerLink="reversepaymentprocess_client"
+                     portType="ns1:BasicOrderPort" operation="ReverseOrder"/>
+              <exit name="Exit"/>
+            </sequence>
+          </catch>
+        </faultHandlers>
+        <sequence name="faultNotification">
+          <assign name="AssignFaultNotification">
+            <copy>
+              <from>$uti</from>
+              <to>$Invoke_CreateFault_Input.body/uti</to>
+            </copy>
+            <copy>
+              <from><literal>INS_O2_REVERSE_PAY_PROCESS</literal></from>
+              <to>$Invoke_CreateFault_Input.body/instanceID</to>
+            </copy>
+            <copy>
+              <from><literal>O2_TEC26</literal></from>
+              <to>$Invoke_CreateFault_Input.body/reasonID</to>
+            </copy>
+            <copy>
+              <from><literal>3</literal></from>
+              <to>$Invoke_CreateFault_Input.body/errorID</to>
+            </copy>
+            <copy>
+              <from><literal>390</literal></from>
+              <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+            </copy>
+            <copy>
+              <from>ora:getFaultAsString()</from>
+              <to>$Invoke_CreateFault_Input.body/detailError</to>
+            </copy>
+            <copy>
+              <from><literal>ReversePaymentProcess</literal></from>
+              <to>$Invoke_CreateFault_Input.body/stageName</to>
+            </copy>
+            <copy>
+              <from><literal>SOA</literal></from>
+              <to>$Invoke_CreateFault_Input.body/userName</to>
+            </copy>
+            <copy>
+              <from><literal>O2Service_Bpel</literal></from>
+              <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+            </copy>
+            <copy>
+              <from><literal>177</literal></from>
+              <to>$Invoke_CreateFault_Input.body/serviceID</to>
+            </copy>
+          </assign>
+          <invoke name="InvokeFaultNotification"
+                  partnerLink="FaultNotificationService"
+                  portType="ns11:FaultNotification_Port" operation="CreateFault"
+                  inputVariable="Invoke_CreateFault_Input"
+                  outputVariable="Invoke_CreateFault_Output"
+                  bpelx:invokeAsDetail="no"/>
+        </sequence>
+      </scope>
+    </catchAll>
+  </faultHandlers>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in ReversePaymentProcess.wsdl) -->
+    <receive name="receiveInput" partnerLink="reversepaymentprocess_client" portType="ns1:BasicOrderPort" operation="ReverseOrder" variable="inputVariable" createInstance="yes"/>
+    <assign name="AssignUti">
+      <copy>
+        <from>ora:getECID()</from>
+        <to>$uti</to>
+      </copy>
+    </assign>
+    <scope name="LogOrchestratorChargeSelect" exitOnStandardFault="no">
+      <bpelx:annotation>
+        <bpelx:general>
+          <bpelx:property name="userDescription">ErrorParametrizado</bpelx:property>
+          <bpelx:property name="userImage">database_lg.png</bpelx:property>
+        </bpelx:general>
+      </bpelx:annotation>
+      <faultHandlers>
+        <catchAll>
+          <scope name="faultNotification" exitOnStandardFault="no">
+            <bpelx:annotation>
+              <bpelx:general>
+                <bpelx:property name="userImage">earth.png</bpelx:property>
+              </bpelx:general>
+            </bpelx:annotation>
+            <faultHandlers>
+              <catch faultName="ns11:fault" faultVariable="faultVariable"
+                     faultElement="ns8:GeneralResponse">
+                <sequence name="fault">
+                  <assign name="AssignGeneralResponse">
+                    <copy>
+                      <from>$faultVariable/status</from>
+                      <to>$generalResponse.fault/status</to>
+                    </copy>
+                    <copy>
+                      <from>$uti</from>
+                      <to>$generalResponse.fault/uti</to>
+                    </copy>
+                    <copy>
+                      <from>$faultVariable/code</from>
+                      <to>$generalResponse.fault/code</to>
+                    </copy>
+                    <copy>
+                      <from>$faultVariable/message</from>
+                      <to>$generalResponse.fault/message</to>
+                    </copy>
+                  </assign>
+                  <throw name="FaultNotification" faultName="ns11:fault"
+                         faultVariable="globalFaultVar"/>
+                </sequence>
+              </catch>
+            </faultHandlers>
+            <sequence name="faultNotification">
+              <assign name="AssignFaultNotification">
+                <copy>
+                  <from>$uti</from>
+                  <to>$Invoke_CreateFault_Input.body/uti</to>
+                </copy>
+                <copy>
+                  <from><literal>5</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/errorID</to>
+                </copy>
+                <copy>
+                  <from>ora:getFaultAsString()</from>
+                  <to>$Invoke_CreateFault_Input.body/detailError</to>
+                </copy>
+                <copy>
+                  <from><literal>177</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/serviceID</to>
+                </copy>
+                <copy>
+                  <from><literal>O2Service_Bpel</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+                </copy>
+                <copy>
+                  <from><literal>SOA</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/userName</to>
+                </copy>
+                <copy>
+                  <from><literal>LogOrchestratorChargeSelect - ReversePaymentProcess</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/stageName</to>
+                </copy>
+                <copy>
+                  <from><literal>INS_ORCHESTRATOR_CHARGE_SLCT</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/instanceID</to>
+                </copy>
+                <copy>
+                  <from><literal>O2_TEC25</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/reasonID</to>
+                </copy>
+                <copy>
+                  <from><literal>351</literal></from>
+                  <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+                </copy>
+              </assign>
+              <invoke name="InvokeFaultNotification"
+                      partnerLink="FaultNotificationService"
+                      portType="ns11:FaultNotification_Port"
+                      operation="CreateFault"
+                      inputVariable="Invoke_CreateFault_Input"
+                      outputVariable="Invoke_CreateFault_Output"
+                      bpelx:invokeAsDetail="no"/>
+            </sequence>
+          </scope>
+        </catchAll>
+      </faultHandlers>
+      <sequence name="LogOrchestratorChargeSelect">
+        <assign name="Assign_LogCharge">
+          <copy>
+            <from>$inputVariable.body/ns5:basicRequest/utiReference</from>
+            <to>$Invoke_LogCharge_Select_Input.LOG_ORCHESTRATOR_CHARGESelect_inputParameters/ns3:correlationId</to>
+          </copy>
+        </assign>
+        <invoke name="Invoke_LogCharge" partnerLink="LOG_ORCHESTRATOR_CHARGE"
+                portType="ns2:LOG_ORCHESTRATOR_CHARGE_ptt" operation="LOG_ORCHESTRATOR_CHARGESelect"
+                inputVariable="Invoke_LogCharge_Select_Input"
+                outputVariable="Invoke_LogCharge_Select_Output" bpelx:invokeAsDetail="no"/>
+      </sequence>
+    </scope>
+    <if name="Charge">
+      <documentation>Not Empty</documentation>
+      <condition>ora:countNodes('Invoke_LogCharge_Select_Output','LogOrchestratorChargeCollection','ns3:LogOrchestratorCharge') &gt; 0</condition>
+      <sequence>
+        <forEach parallel="no" counterName="payCounter" name="Payment">
+          <startCounterValue>1</startCounterValue>
+          <finalCounterValue>ora:countNodes('Invoke_LogCharge_Select_Output','LogOrchestratorChargeCollection','ns3:LogOrchestratorCharge')</finalCounterValue>
+          <scope name="Payment" exitOnStandardFault="no">
+            <if name="UTI">
+              <documentation>Exist</documentation>
+              <condition>concat($Invoke_LogCharge_Select_Output.LogOrchestratorChargeCollection/ns3:LogOrchestratorCharge/ns3:uti,'') != ''</condition>
+              <sequence name="Reverse">
+                <scope name="ReversePayment" exitOnStandardFault="no">
+                  <bpelx:annotation>
+                    <bpelx:general>
+                      <bpelx:property name="userDescription">ErrorParametrizado</bpelx:property>
+                      <bpelx:property name="userImage">earth.png</bpelx:property>
+                    </bpelx:general>
+                  </bpelx:annotation>
+                  <faultHandlers>
+                    <catch faultName="ns6:fault" faultVariable="faultVariable"
+                           faultElement="ns8:GeneralResponse">
+                      <sequence name="fault">
+                        <assign name="Assign_Replyfault">
+                          <copy>
+                            <from>$faultVariable/status</from>
+                            <to>$generalResponse.fault/status</to>
+                          </copy>
+                          <copy>
+                            <from>$faultVariable/code</from>
+                            <to>$generalResponse.fault/code</to>
+                          </copy>
+                          <copy>
+                            <from>$faultVariable/message</from>
+                            <to>$generalResponse.fault/message</to>
+                          </copy>
+                          <copy>
+                            <from>$uti</from>
+                            <to>$generalResponse.fault/uti</to>
+                          </copy>
+                        </assign>
+                        <throw name="FaultNotification" faultName="ns11:fault"
+                               faultVariable="globalFaultVar"/>
+                      </sequence>
+                    </catch>
+                    <catchAll>
+                      <scope name="faultNotification" exitOnStandardFault="no">
+                        <bpelx:annotation>
+                          <bpelx:general>
+                            <bpelx:property name="userImage">earth.png</bpelx:property>
+                          </bpelx:general>
+                        </bpelx:annotation>
+                        <faultHandlers>
+                          <catch faultName="ns11:fault"
+                                 faultVariable="faultVariable"
+                                 faultElement="ns8:GeneralResponse">
+                            <sequence name="fault">
+                              <assign name="AssignGeneralResponse">
+                                <copy>
+                                  <from>$uti</from>
+                                  <to>$generalResponse.fault/uti</to>
+                                </copy>
+                                <copy>
+                                  <from>$faultVariable/status</from>
+                                  <to>$generalResponse.fault/status</to>
+                                </copy>
+                                <copy>
+                                  <from>$faultVariable/code</from>
+                                  <to>$generalResponse.fault/code</to>
+                                </copy>
+                                <copy>
+                                  <from>$faultVariable/message</from>
+                                  <to>$generalResponse.fault/message</to>
+                                </copy>
+                              </assign>
+                              <throw name="FaultNotification"
+                                     faultName="ns11:fault"
+                                     faultVariable="globalFaultVar"/>
+                            </sequence>
+                          </catch>
+                        </faultHandlers>
+                        <sequence name="faultNotification">
+                          <assign name="AssignFaultNotification">
+                            <copy>
+                              <from>$uti</from>
+                              <to>$Invoke_CreateFault_Input.body/uti</to>
+                            </copy>
+                            <copy>
+                              <from><literal>ReversePayment - ReversePaymentProcess</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/stageName</to>
+                            </copy>
+                            <copy>
+                              <from><literal>INS_O2_PAYMENT_REVERSE</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/instanceID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>O2_TEC29</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/reasonID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>394</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>6</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/errorID</to>
+                            </copy>
+                            <copy>
+                              <from>ora:getFaultAsString()</from>
+                              <to>$Invoke_CreateFault_Input.body/detailError</to>
+                            </copy>
+                            <copy>
+                              <from><literal>177</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/serviceID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>O2Service_Bpel</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>SOA</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/userName</to>
+                            </copy>
+                          </assign>
+                          <invoke name="InvokeFaultNotification"
+                                  partnerLink="FaultNotificationService"
+                                  portType="ns11:FaultNotification_Port"
+                                  operation="CreateFault"
+                                  inputVariable="Invoke_CreateFault_Input"
+                                  outputVariable="Invoke_CreateFault_Output"
+                                  bpelx:invokeAsDetail="no"/>
+                        </sequence>
+                      </scope>
+                    </catchAll>
+                  </faultHandlers>
+                  <sequence name="ReversePayment">
+                    <assign name="Assign_ReservePaymentReq">
+                      <copy ignoreMissingFromData="yes">
+                        <from>$inputVariable.body/ns5:basicRequest/externalApplicationID</from>
+                        <to>$Invoke_ReversePayment_Input.body/ns5:basicRequest/externalApplicationID</to>
+                      </copy>
+                      <copy>
+                        <from>$inputVariable.body/ns5:basicRequest/utiReference</from>
+                        <to>$Invoke_ReversePayment_Input.body/ns5:basicRequest/utiReference</to>
+                      </copy>
+                      <copy ignoreMissingFromData="yes">
+                        <from>$inputVariable.body/ns5:basicRequest/externalTransactionID</from>
+                        <to>$Invoke_ReversePayment_Input.body/ns5:basicRequest/externalTransactionID</to>
+                      </copy>
+                    </assign>
+                    <assign name="TransformReverse">
+                      <bpelx:annotation>
+                        <bpelx:pattern patternName="bpelx:transformation"/>
+                      </bpelx:annotation>
+                      <copy>
+                        <from>ora:doXSLTransformForDoc("xsl/Transformation_ReverseToReversePayment.xsl", $Invoke_ReversePayment_Input.body)</from>
+                        <to variable="Invoke_ReversePayment_Input" part="body"/>
+                      </copy>
+                    </assign>
+                    <invoke name="Invoke_ReversePayment"
+                            partnerLink="PaymentMediator.PaymentMediator"
+                            portType="ns6:BasicPaymentPort" operation="ReversePayment"
+                            inputVariable="Invoke_ReversePayment_Input"
+                            outputVariable="Invoke_ReversePayment_Output"
+                            bpelx:invokeAsDetail="no"/>
+                  </sequence>
+                </scope>
+                <scope name="UpdateLogOrchestratorCharge" exitOnStandardFault="no">
+                  <bpelx:annotation>
+                    <bpelx:general>
+                      <bpelx:property name="userDescription">ErrorParametrizado</bpelx:property>
+                      <bpelx:property name="userImage">database_lg.png</bpelx:property>
+                    </bpelx:general>
+                  </bpelx:annotation>
+                  <faultHandlers>
+                    <catchAll>
+                      <scope name="faultNotification" exitOnStandardFault="no">
+                        <bpelx:annotation>
+                          <bpelx:general>
+                            <bpelx:property name="userImage">earth.png</bpelx:property>
+                          </bpelx:general>
+                        </bpelx:annotation>
+                        <faultHandlers>
+                          <catch faultName="ns11:fault"
+                                 faultVariable="faultVariable"
+                                 faultElement="ns8:GeneralResponse">
+                            <sequence name="fault">
+                              <assign name="AssignGeneralResponse">
+                                <copy>
+                                  <from>$uti</from>
+                                  <to>$generalResponse.fault/uti</to>
+                                </copy>
+                                <copy>
+                                  <from>$faultVariable/status</from>
+                                  <to>$generalResponse.fault/status</to>
+                                </copy>
+                                <copy>
+                                  <from>$faultVariable/code</from>
+                                  <to>$generalResponse.fault/code</to>
+                                </copy>
+                                <copy>
+                                  <from>$faultVariable/message</from>
+                                  <to>$generalResponse.fault/message</to>
+                                </copy>
+                              </assign>
+                              <throw name="FaultNotification"
+                                     faultName="ns11:fault"
+                                     faultVariable="globalFaultVar"/>
+                            </sequence>
+                          </catch>
+                        </faultHandlers>
+                        <sequence name="faultNotification">
+                          <assign name="AssignFaultNotification">
+                            <copy>
+                              <from>$uti</from>
+                              <to>$Invoke_CreateFault_Input.body/uti</to>
+                            </copy>
+                            <copy>
+                              <from><literal>SOA</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/userName</to>
+                            </copy>
+                            <copy>
+                              <from><literal>O2Service_Bpel</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>177</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/serviceID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>5</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/errorID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>INS_ORCHESTRATOR_CHARGE_UPDATE</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/instanceID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>O2_TEC20</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/reasonID</to>
+                            </copy>
+                            <copy>
+                              <from><literal>656</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+                            </copy>
+                            <copy>
+                              <from>ora:getFaultAsString()</from>
+                              <to>$Invoke_CreateFault_Input.body/detailError</to>
+                            </copy>
+                            <copy>
+                              <from><literal>UpdateLogOrchestratorCharge - ReversePaymentProcess</literal></from>
+                              <to>$Invoke_CreateFault_Input.body/stageName</to>
+                            </copy>
+                          </assign>
+                          <invoke name="InvokeFaultNotification"
+                                  partnerLink="FaultNotificationService"
+                                  portType="ns11:FaultNotification_Port"
+                                  operation="CreateFault"
+                                  inputVariable="Invoke_CreateFault_Input"
+                                  outputVariable="Invoke_CreateFault_Output"
+                                  bpelx:invokeAsDetail="no"/>
+                        </sequence>
+                      </scope>
+                    </catchAll>
+                  </faultHandlers>
+                  <sequence name="UpdateLogOrchestratorCharge">
+                    <assign name="Assign_UpdateReq">
+                      <copy>
+                        <from>$Invoke_LogCharge_Select_Output.LogOrchestratorChargeCollection/ns3:LogOrchestratorCharge/ns3:id</from>
+                        <to>$Invoke_UpdateLogCharge_Input.LogOrchestratorChargeCollection/ns10:LogOrchestratorCharge/ns10:id</to>
+                      </copy>
+                      <copy>
+                        <from>$Invoke_ReversePayment_Output.body/generalResponse/uti</from>
+                        <to>$Invoke_UpdateLogCharge_Input.LogOrchestratorChargeCollection/ns10:LogOrchestratorCharge/ns10:chargeReference</to>
+                      </copy>
+                      <copy>
+                        <from><literal>REVERSE</literal></from>
+                        <to>$Invoke_UpdateLogCharge_Input.LogOrchestratorChargeCollection/ns10:LogOrchestratorCharge/ns10:status</to>
+                      </copy>
+                    </assign>
+                    <invoke name="Invoke_UpdateLogCharge"
+                            partnerLink="LOG_ORCHESTRATOR_CHARGE_UPDATE"
+                            portType="ns9:LOG_ORCHESTRATOR_CHARGE_UPDATE_ptt" operation="update"
+                            inputVariable="Invoke_UpdateLogCharge_Input" bpelx:invokeAsDetail="no"/>
+                  </sequence>
+                </scope>
+              </sequence>
+            </if>
+          </scope>
+        </forEach>
+      </sequence>
+      <else>
+        <documentation>Empty</documentation>
+        <scope name="faultNotificationBiz" exitOnStandardFault="no">
+          <bpelx:annotation>
+            <bpelx:general>
+              <bpelx:property name="userImage">earth.png</bpelx:property>
+            </bpelx:general>
+          </bpelx:annotation>
+          <faultHandlers>
+            <catch faultName="ns11:fault" faultVariable="faultVariable"
+                   faultElement="ns8:GeneralResponse">
+              <sequence name="fault">
+                <assign name="AssignGeneralResponse">
+                  <copy>
+                    <from>$uti</from>
+                    <to>$generalResponse.fault/uti</to>
+                  </copy>
+                  <copy>
+                    <from>$faultVariable/status</from>
+                    <to>$generalResponse.fault/status</to>
+                  </copy>
+                  <copy>
+                    <from>$faultVariable/code</from>
+                    <to>$generalResponse.fault/code</to>
+                  </copy>
+                  <copy>
+                    <from>$faultVariable/message</from>
+                    <to>$generalResponse.fault/message</to>
+                  </copy>
+                </assign>
+                <throw name="FaultNotification" faultName="ns11:fault"
+                       faultVariable="globalFaultVar"/>
+              </sequence>
+            </catch>
+          </faultHandlers>
+          <sequence name="faultNotification">
+            <assign name="AssignFaultNotification">
+              <copy>
+                <from>$uti</from>
+                <to>$Invoke_CreateFault_Input.body/uti</to>
+              </copy>
+              <copy>
+                <from><literal>7</literal></from>
+                <to>$Invoke_CreateFault_Input.body/errorID</to>
+              </copy>
+              <copy>
+                <from><literal>177</literal></from>
+                <to>$Invoke_CreateFault_Input.body/serviceID</to>
+              </copy>
+              <copy>
+                <from><literal>O2Service_Bpel</literal></from>
+                <to>$Invoke_CreateFault_Input.body/serviceDetailID</to>
+              </copy>
+              <copy>
+                <from><literal>SOA</literal></from>
+                <to>$Invoke_CreateFault_Input.body/userName</to>
+              </copy>
+              <copy>
+                <from><literal>Empty - ReversePaymentProcess</literal></from>
+                <to>$Invoke_CreateFault_Input.body/stageName</to>
+              </copy>
+              <copy>
+                <from><literal>No se encontraron cargos asociados al UtiReference</literal></from>
+                <to>$Invoke_CreateFault_Input.body/detailError</to>
+              </copy>
+              <copy>
+                <from><literal>INS_ORCHESTRATOR_CHARGE_SLCT</literal></from>
+                <to>$Invoke_CreateFault_Input.body/instanceID</to>
+              </copy>
+              <copy>
+                <from><literal>O2_BIZ04</literal></from>
+                <to>$Invoke_CreateFault_Input.body/reasonID</to>
+              </copy>
+              <copy>
+                <from><literal>412</literal></from>
+                <to>$Invoke_CreateFault_Input.body/errorMappingID</to>
+              </copy>
+            </assign>
+            <invoke name="InvokeFaultNotification"
+                    partnerLink="FaultNotificationService"
+                    portType="ns11:FaultNotification_Port"
+                    operation="CreateFault"
+                    inputVariable="Invoke_CreateFault_Input"
+                    outputVariable="Invoke_CreateFault_Output"
+                    bpelx:invokeAsDetail="no"/>
+          </sequence>
+        </scope>
+      </else>
+    </if>
+    <sequence name="reply">
+      <assign name="Assign_Reply">
+        <copy>
+          <from>$uti</from>
+          <to>$outputVariable.body/generalResponse/uti</to>
+        </copy>
+        <copy>
+          <from><literal>OK</literal></from>
+          <to>$outputVariable.body/generalResponse/status</to>
+        </copy>
+        <copy>
+          <from><literal>01</literal></from>
+          <to>$outputVariable.body/generalResponse/code</to>
+        </copy>
+        <copy>
+          <from><literal>Service has been completed</literal></from>
+          <to>$outputVariable.body/generalResponse/message</to>
+        </copy>
+      </assign>
+      <reply name="replyOutput" partnerLink="reversepaymentprocess_client"
+             portType="ns1:BasicOrderPort" operation="ReverseOrder" variable="outputVariable"/>
+    </sequence>
+  </sequence>
+</process>

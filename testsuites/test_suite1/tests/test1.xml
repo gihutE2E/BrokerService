@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<compositeTest compositeDN="BrokerService" xmlns="http://xmlns.oracle.com/sca/2006/test">
+   <about/>
+</compositeTest>

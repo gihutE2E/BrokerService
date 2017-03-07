@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema version="1.0" targetNamespace="http://tigo.com/enterprise/taskService/provideProcess/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:sch="http://tigo.com/enterprise/taskService/provideProcess/schema" xmlns:bsc="http://tigo.com/commons/basicRequest/v1/schema" xmlns:cmn="http://tigo.com/commons/generalResponse/v1/schema" xmlns:clt="http://tigo.com/enterprise/businessEntity/client/basic/v1/schema" xmlns:ord="http://tigo.com/enterprise/serviceEntity/provisioning/order/v1/schema" xmlns:dcr="http://tigo.com/enterprise/serviceEntity/provisioning/dataChangeRequest/v1/schema" xmlns:not="http://tigo.com/enterprise/business/task/Notification/v1/schema">
+   <xsd:import namespace="http://tigo.com/enterprise/business/task/Notification/v1/schema" schemaLocation="../partner/BasicNotification_schema.xsd"/>
+   <xsd:import namespace="http://tigo.com/commons/basicRequest/v1/schema" schemaLocation="../commons/BasicRequest_schema.xsd"/>
+   <xsd:import namespace="http://tigo.com/commons/generalResponse/v1/schema" schemaLocation="../commons/BasicGeneralResponse_schema.xsd"/>
+   <xsd:import namespace="http://tigo.com/enterprise/businessEntity/client/basic/v1/schema" schemaLocation="../client/BasicClient_schema.xsd"/>
+   <xsd:import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/order/v1/schema" schemaLocation="../BasicOrder_schema.xsd"/>
+   <xsd:import namespace="http://tigo.com/enterprise/serviceEntity/provisioning/dataChangeRequest/v1/schema" schemaLocation="../BasicDataChangeRequest_schema.xsd"/>
+   <xsd:element name="BasicProvisioningRequest" type="sch:BasicProvisioningQuery"/>
+   <xsd:complexType name="BasicProvisioningQuery">
+      <xsd:sequence>
+         <xsd:element ref="bsc:basicRequest"/>
+         <xsd:element ref="clt:client" minOccurs="1"/>
+         <xsd:element name="productOffering" type="sch:productOfferingType" minOccurs="0"/>
+         <xsd:element name="dataChangeRequest_orders" type="sch:dataChangeRequest_orders_Type" minOccurs="0"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="BasicProvisioningResponse" type="sch:BasicProvisioningResult"/>
+   <xsd:complexType name="BasicProvisioningResult">
+      <xsd:sequence>
+         <xsd:element name="generalResponse" type="cmn:GeneralResponse_type" minOccurs="1"/>
+         <xsd:element ref="not:Notify_Request" minOccurs="0"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="BasicReverseRequest" type="sch:BasicReverseQuery"/>
+   <xsd:complexType name="BasicReverseQuery">
+      <xsd:sequence>
+         <xsd:element ref="bsc:basicRequest" minOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="BasicReverseResponse" type="sch:BasicReverseResult"/>
+   <xsd:complexType name="BasicReverseResult">
+      <xsd:sequence>
+         <xsd:element name="generalResponse" type="cmn:GeneralResponse_type" minOccurs="1"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="productOfferingType">
+      <xsd:sequence>
+         <xsd:element ref="ord:order" maxOccurs="unbounded"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="dataChangeRequest_orders_Type">
+      <xsd:sequence>
+         <xsd:element ref="dcr:dataChangeRequest" maxOccurs="unbounded"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>
