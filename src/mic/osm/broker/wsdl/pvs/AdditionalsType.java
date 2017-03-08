@@ -9,10 +9,10 @@ import mic.osm.broker.wsdl.*;
 
 public class AdditionalsType implements Serializable{
 
-    protected List<AdditionalType> additional;
-    public List<AdditionalType> getAdditional() {
+      protected List<?> additional;
+    public List<?> getAdditional() {
         if (additional == null) {
-            additional = new ArrayList<AdditionalType>();
+            additional = new ArrayList<?>();
         }
         return this.additional;
     }
