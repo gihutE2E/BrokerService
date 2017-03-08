@@ -12,7 +12,7 @@ public class AdditionalsType implements Serializable{
       protected List<?> additional;
     public List<?> getAdditional() {
         if (additional == null) {
-            additional = new ArrayList<?>();
+           // additional = new ArrayList<?>();
         }
         return this.additional;
     }
