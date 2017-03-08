@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.List;
-import mic.osm.broker.wsdl.AdditionalType;
+import mic.osm.broker.wsdl.*;
 
 
 public class AdditionalsType implements Serializable{
